@@ -2,8 +2,12 @@
 <script setup>
 import sidebar from "../components/sidebar.vue";
 import navbar from "../components/navbar.vue";
+import LoadingComponent from '../components/loading.vue';
+import modalsuccess from "@/components/modalsuccess.vue";
+import modalfailed from "@/components/modalfailed.vue";
 import { fetchGet, fetchPost } from "@/api/apiFunction";
 import { parseStatusAproval } from "@/utils/helper";
+import { dateParsing } from "@/utils/helper";
 </script>
 
 <template>
@@ -24,16 +28,29 @@ import { parseStatusAproval } from "@/utils/helper";
         <h1 class="text-sm text-[#7F7F80] mt-3 ml-1">Detail Pengajuan</h1>
       </div>
       <div class="h-auto py-3 px-4 bg-slate-100">
+        <LoadingComponent :isVisible="isLoading" />
+        <modalfailed
+          :isVisible="modalFailed.isVisible"
+          :title="modalFailed.title"
+          :message="modalFailed.message"
+          @close="closeModalFailed"
+        />
+        <modalsuccess
+          :isVisible="modalSuccess.isVisible"
+          :title="modalSuccess.title"
+          :message="modalSuccess.message"
+          @close="closeModalSuccess"
+        />
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
           <div class="w-[1170px] h-[56px] ml-4 mt-4 flex justify-between">
             <div>
               <div class="flex">
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
-                <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan</h1>
+                <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan {{ base }}</h1>
               </div>
               <span class="text-base text-[#9C9C9C] pl-4">{{
-                dataBerkas?.id
+                dataBerkas?.submissionNumber
               }}</span>
             </div>
             <!-- <button class="w-[52px] h-[42px] border-[1px] border-[#2671D9] text-[#2671D9] hover:bg-[#2671D9] hover:text-white font-semibold rounded-lg mt-2">Edit</button>    -->
@@ -88,10 +105,10 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
                       <span v-if="base === 'PKS'" class="text-[#7F7F80]">{{
-                        dataBerkas?.pksNumber
+                        dataBerkas?.submissionNumber
                       }}</span>
                       <span v-else class="text-[#7F7F80]">{{
-                        dataBerkas?.mouNdaNumber
+                        dataBerkas?.submissionNumber
                       }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
@@ -152,7 +169,7 @@ import { parseStatusAproval } from "@/utils/helper";
                 <div class="flex py-4">
                   <div class="ml-6">
                     <div class="w-[541px] flex text-[#333333]">
-                      <h1 class="w-[150px]">Latar Belakang</h1>
+                      <h1 class="w-[150px]">Latar Belakang <span class="text-[#FF5656] text-xs">*</span></h1>
                       <span class="w-[317px] text-[#7F7F80]">{{
                         dataBerkas?.background
                       }}</span>
@@ -160,7 +177,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.officialUndersign
+                        dataBerkas?.user
                       }}</span>
                     </div>
                   </div>
@@ -171,10 +188,10 @@ import { parseStatusAproval } from "@/utils/helper";
                         dataBerkas?.note
                       }}</span>
                     </div>
-                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tanggal</h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.submissionDate
+                        dateParsing(dataBerkas?.submissionDate)
                       }}</span>
                     </div>
                   </div>
@@ -392,7 +409,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKB <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKB" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKB" v-if="fileNameKKB" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -404,7 +421,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKB }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKB }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -412,7 +429,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKR <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKR" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKR" v-if="fileNameKKR" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -424,7 +441,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKR }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKR }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -432,7 +449,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKF <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKF" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKF" v-if="fileNameKKF" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -444,7 +461,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKF }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKF }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -454,7 +471,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKO <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKO" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKO" v-if="fileNameKKO" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -466,7 +483,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKO }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKO }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -474,7 +491,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadmitra" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -486,7 +503,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -494,7 +511,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Surat Menyurat
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -506,7 +523,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -515,7 +532,7 @@ import { parseStatusAproval } from "@/utils/helper";
                   <div class="px-6 mt-6 mb-4">
                     <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                       <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                    <div v-if="fileNamelainnya" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <a :href="linkDownloadlainnya" v-if="fileNamelainnya" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -527,7 +544,7 @@ import { parseStatusAproval } from "@/utils/helper";
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                       </div>
-                    </div>
+                    </a>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                     </div>
@@ -538,7 +555,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadmitra" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -550,7 +567,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -560,7 +577,7 @@ import { parseStatusAproval } from "@/utils/helper";
                         Dokumen Surat Menyurat
                         <span class="text-[#FF5656] text-xs">*</span>
                       </label>
-                      <div v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -572,7 +589,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -580,7 +597,7 @@ import { parseStatusAproval } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamelainnya"
+                      <a :href="linkDownloadlainnya" v-if="fileNamelainnya"
                         class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -593,7 +610,7 @@ import { parseStatusAproval } from "@/utils/helper";
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -645,6 +662,7 @@ import { parseStatusAproval } from "@/utils/helper";
 </template>
 
 <script>
+import { baseURL } from "@/api/apiManager";
 export default {
   data() {
     return {
@@ -657,22 +675,55 @@ export default {
       id: null,
       fileNameKKB: null,
       fileSizeKKB: null,
+      linkDownloadKKB: "",
       fileNameKKR: null,
       fileSizeKKR: null,
+      linkDownloadKKR: "",
       fileNameKKF: null,
       fileSizeKKF: null,
+      linkDownloadKKF: "",
       fileNameKKO: null,
       fileSizeKKO: null,
+      linkDownloadKKO: "",
       fileNamemitra: null,
       fileSizemitra: null,
+      linkDownloadmitra: "",
       fileNamesurat: null,
       fileSizesurat: null,
+      linkDownloadsurat: "",
       fileNamelainnya: null,
       fileSizelainnya: null,
-      disableKirim: true
+      linkDownloadlainnya: "",
+      disableKirim: true,
+      isLoading: false,
+      modalFailed: {
+        isVisible: false,
+        title: '',
+        message: ''
+      },
+      modalSuccess: {
+        isVisible: false,
+        title: '',
+        message: ''
+      },
     };
   },
   methods: {
+    closeModalFailed() {
+      this.modalFailed = {
+        isVisible: false,
+        title: '',
+        message: ''
+      }
+    },
+    closeModalSuccess() {
+      this.modalSuccess = {
+        isVisible: false,
+        title: '',
+        message: ''
+      }
+      this.$router.push('/Draft')
+    },
     informasiDropdown() {
       this.dropdownInformasi = !this.dropdownInformasi;
     },
@@ -700,6 +751,7 @@ export default {
 
     // api
     async getDataApi(base, id) {
+      this.isLoading = true;
       if (base == "PKS") {
         const res = await fetchGet(`staff/pks/draft/${id}`, null, this.$router);
         if (res.status == 200) {
@@ -708,30 +760,37 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
+              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
+              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
+              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
+              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
           })
           if (
@@ -745,8 +804,14 @@ export default {
             this.disableKirim = false;
           }
           console.log(res.data);
+          this.isLoading = false;
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else {
         const res = await fetchGet(
@@ -760,14 +825,17 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
           })
           if (
@@ -777,28 +845,53 @@ export default {
             this.disableKirim = false;
           }
           console.log(res.data);
+          this.isLoading = false;
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       }
     },
     async postDataApi(base, id, status) {
+      this.isLoading = true;
       if (base == "PKS") {
         if (status == "Draft") {
           const res = await fetchPost(`staff/pks/draft/${id}/send`, null, null, this.$router);
           if (res.status == 200) {
-            alert('Berhasil dikirim');
-            this.$router.push('/Draft')
+            this.isLoading = false;
+            this.modalSuccess = {
+              isVisible: true,
+              title: 'Success',
+              message: `${base} berhasil dikirim`
+            }
           } else {
-            alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+            this.isLoading = false;
+            this.modalFailed = {
+              isVisible: true,
+              title: 'Gagal Kirim Data',
+              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+            }
           }
         } else {
           const res = await fetchPost(`staff/pks/draft/${id}/send/revision`, null, null, this.$router);
           if (res.status == 200) {
-            alert('Berhasil dikirim');
-            this.$router.push('/Draft')
+            this.isLoading = false;
+            this.modalSuccess = {
+              isVisible: true,
+              title: 'Success',
+              message: `${base} berhasil dikirim`
+            }
           } else {
-            alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+            this.isLoading = false;
+            this.modalFailed = {
+              isVisible: true,
+              title: 'Gagal Kirim Data',
+              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+            }
           }
         }
       } else {
@@ -809,10 +902,19 @@ export default {
             this.$router
           );
           if (res.status == 200) {
-            alert('Berhasil dikirim');
-            this.$router.push('/Draft')
+            this.isLoading = false;
+            this.modalSuccess = {
+              isVisible: true,
+              title: 'Success',
+              message: `${base} berhasil dikirim`
+            }
           } else {
-            alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+            this.isLoading = false;
+            this.modalFailed = {
+              isVisible: true,
+              title: 'Gagal Kirim Data',
+              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+            }
           }
         } else {
           const res = await fetchPost(
@@ -821,10 +923,19 @@ export default {
             this.$router
           );
           if (res.status == 200) {
-            alert('Berhasil dikirim');
-            this.$router.push('/Draft')
+            this.isLoading = false;
+            this.modalSuccess = {
+              isVisible: true,
+              title: 'Success',
+              message: `${base} berhasil dikirim`
+            }
           } else {
-            alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+            this.isLoading = false;
+            this.modalFailed = {
+              isVisible: true,
+              title: 'Gagal Kirim Data',
+              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+            }
           }
         }
       }

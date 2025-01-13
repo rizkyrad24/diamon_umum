@@ -192,7 +192,7 @@ import dialog from '@/assets/img/Dialog.png';
 import kirim from '@/assets/img/Dialogkirim.png';
 import gagal from '@/assets/img/Dialogkirimgagal.png';
 import LoadingComponent from '@/components/loading.vue';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { fetchPostForm } from '@/api/apiFunction';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -215,6 +215,7 @@ const fileSurat = ref(null);
 const fileLainnya = ref(null);
 const isKirimDisable = ref(false);
 const isLoading = ref(false);
+const id = ref(null);
 
 function moveNext() {
   if (positionForm.value < 5) {
@@ -247,7 +248,7 @@ function moveNext() {
 async function postMounda() {
   isLoading.value = true;
   const form = new FormData()
-  form.append('userId', '1')
+  form.append('userId', id.value)
   form.append('base', base.value)
   form.append('partnershipTitle', partnershipTitle.value)
   scopes.value.forEach((element, index) => {
@@ -375,5 +376,9 @@ function closeOk() {
 function closeFail() {
   isFailOpen.value = false;
 }
+
+onMounted(() => {
+  id.value = localStorage.getItem('userId')
+});
 
 </script>

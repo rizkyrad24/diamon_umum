@@ -2,6 +2,8 @@
 <script setup>
 import sidemanager from '@/components/sidemanager.vue';
 import navadmin from '@/components/navadmin.vue';
+import LoadingComponent from '@/components/loading.vue';
+import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
 import { mapperStatus } from "@/utils/helper";
 </script>
@@ -18,6 +20,13 @@ import { mapperStatus } from "@/utils/helper";
 
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
+          <LoadingComponent :isVisible="isLoading" />
+          <ModalFailed
+            :isVisible="modalFailed.isVisible"
+            :title="modalFailed.title"
+            :message="modalFailed.message"
+            @close="closeModalFailed"
+          />
           <div class="flex pl-4 pt-4">
             <div class="w-[6px] h-7 bg-[#2671D9]"></div>
             <h1 class="text-xl font-medium ml-[6px]">Proses</h1>
@@ -156,7 +165,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[268px] px-3">
+                    <th class="w-[350px] px-3">
                       <div class="flex justify-between">Judul
                         <svg @click="SortJudul" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16"
                           fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -169,7 +178,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[217px] px-3">
+                    <th class="w-[150px] px-3">
                       <div class="flex justify-between">No Pengajuan
                         <svg @click="SortCode" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16"
                           fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +191,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[217px] px-3">
+                    <th class="w-[100px] px-3">
                       <div class="flex justify-between">Tipe
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -195,7 +204,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[217px] px-3">
+                    <th class="w-[300px] px-3">
                       <div class="flex justify-between">Progres Kemitraan
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -235,7 +244,7 @@ import { mapperStatus } from "@/utils/helper";
                       <div v-if="activeViewIndex === index" class="absolute -translate-x-[135px] w-[160px]">
                         <!-- PKS type -->
                         <router-link v-if="row.type === 'PKS'" :to="{
-                          path: `/Detailprosesmanager/PKS/${row.code}`
+                          path: `/Detailprosesmanager/PKS/${row.did}`
                         }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
@@ -250,7 +259,7 @@ import { mapperStatus } from "@/utils/helper";
                         </router-link>
                         <!-- MoU type -->
                         <router-link v-if="row.type === 'MoU' || row.type === 'NDA'" :to="{
-                          path: `/Detailprosesmanager/MOU/${row.code}`
+                          path: `/Detailprosesmanager/MOU/${row.did}`
                         }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
@@ -350,6 +359,19 @@ const isFilterOpen = ref(false);
 const isFilterTipe = ref(false);
 const isDataOpen = ref(false);
 const filterStatus = ref('');
+const modalFailed = ref({
+  isVisible: false,
+  title: '',
+  message: ''
+});
+
+function closeModalFailed() {
+  modalFailed.value = {
+    isVisible: false,
+    title: '',
+    message: ''
+  }
+}
 
 function toggleDataDropdown() {
   isDataOpen.value = !isDataOpen.value;
@@ -379,24 +401,26 @@ export default {
       searchQuery: '',
       activeViewIndex: null,
       filterClickListener: null,
-      dataRows: [
-        { id: 1, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '101224', type: 'PKS', progres: 'Masuk Kemitraan', progresClass: 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]' },
-        { id: 2, judul: 'MoU Rencana Kerja Sama Pemanfa...', code: '200724', type: 'MoU', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 3, judul: 'MoU Rencana Kerja Sama Sistem I...', code: '201723', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 4, judul: 'Kerja Sama Reseller Penyediaan Pe...', code: '101224', type: 'PKS', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 5, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '201124', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 6, judul: 'Kerja Sama Reseller Penyediaan Pr...', code: '101224', type: 'PKS', progres: 'Evaluasi', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 7, judul: 'MoU Kerjasama Penyelenggaraan ...', code: '200824', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 8, judul: 'MoU Kerja Sama Penyelenggaraan ...', code: '101524', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 9, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '101224', type: 'PKS', progres: 'Masuk Kemitraan', progresClass: 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]' },
-        { id: 10, judul: 'MoU Rencana Kerja Sama Pemanfa...', code: '200724', type: 'MoU', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 11, judul: 'MoU Rencana Kerja Sama Sistem I...', code: '201723', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 12, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '101224', type: 'PKS', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 13, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '201124', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 14, judul: 'Kerja Sama Reseller Penyediaan Pr...', code: '101224', type: 'PKS', progres: 'Evaluasi', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 15, judul: 'MoU Kerjasama Penyelenggaraan ...', code: '200824', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-        { id: 16, judul: 'MoU Kerjasama Penyelenggaraan ...', code: '101524', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
-      ]
+      isLoading: false,
+      dataRows: [],
+      // dataRows: [
+      //   { id: 1, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '101224', type: 'PKS', progres: 'Masuk Kemitraan', progresClass: 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]' },
+      //   { id: 2, judul: 'MoU Rencana Kerja Sama Pemanfa...', code: '200724', type: 'MoU', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 3, judul: 'MoU Rencana Kerja Sama Sistem I...', code: '201723', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 4, judul: 'Kerja Sama Reseller Penyediaan Pe...', code: '101224', type: 'PKS', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 5, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '201124', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 6, judul: 'Kerja Sama Reseller Penyediaan Pr...', code: '101224', type: 'PKS', progres: 'Evaluasi', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 7, judul: 'MoU Kerjasama Penyelenggaraan ...', code: '200824', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 8, judul: 'MoU Kerja Sama Penyelenggaraan ...', code: '101524', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 9, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '101224', type: 'PKS', progres: 'Masuk Kemitraan', progresClass: 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]' },
+      //   { id: 10, judul: 'MoU Rencana Kerja Sama Pemanfa...', code: '200724', type: 'MoU', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 11, judul: 'MoU Rencana Kerja Sama Sistem I...', code: '201723', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 12, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '101224', type: 'PKS', progres: 'Proposal', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 13, judul: 'Sewa Menyewa Infrastruktur Telek...', code: '201124', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 14, judul: 'Kerja Sama Reseller Penyediaan Pr...', code: '101224', type: 'PKS', progres: 'Evaluasi', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 15, judul: 'MoU Kerjasama Penyelenggaraan ...', code: '200824', type: 'MoU', progres: 'MoU', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      //   { id: 16, judul: 'MoU Kerjasama Penyelenggaraan ...', code: '101524', type: 'MoU', progres: 'Surat Penawaran', progresClass: 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]' },
+      // ]
     };
   },
 
@@ -561,6 +585,7 @@ export default {
     },
     // api
     async getDataApi() {
+      this.isLoading = true;
       let boxResult = new Array();
       const params = null;
       const positionLevel = localStorage.getItem("position");
@@ -572,25 +597,36 @@ export default {
         url = "vp/mounda/proses";
       }
       if (!url) {
-        return alert("Posisi anda tidak dapat mengakses halaman ini");
+        this.isLoading = false;
+        return modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: "Posisi anda tidak dapat mengakses halaman ini"
+        }
       }
       const res = await fetchGet(url, params, this.$router);
       if (res.status == 200) {
         console.log(res.data);
         const cleanData = res.data.map((item) => {
           return {
+            did: item.id,
             judul: item.partnershipTitle,
-            code: item.id,
+            code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
             pelaksana: item.partnershipCandidate,
             status: item.status,
-            progres: mapperStatus(item.positionLevel, item.status)[0],
-            progresClass: mapperStatus(item.positionLevel, item.status)[1],
+            progres: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
+            progresClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
           };
         });
         boxResult = boxResult.concat(cleanData);
       } else {
-        alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+        this.isLoading = false;
+        modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
       }
 
       let url2 = null;
@@ -601,19 +637,25 @@ export default {
         url2 = "vp/pks/proses";
       }
       if (!url2) {
-        return alert("Posisi anda tidak dapat mengakses halaman ini");
+        this.isLoading = false;
+        return modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: "Posisi anda tidak dapat mengakses halaman ini"
+        }
       }
       const res2 = await fetchGet(url2, params, this.$router);
       if (res2.status == 200) {
         const cleanData2 = res2.data.map((item) => {
           return {
+            did: item.id,
             judul: item.partnershipTitle,
-            code: item.id,
+            code: item.submissionNumber,
             type: "PKS",
             pelaksana: item.partnershipCandidate,
             status: item.status,
-            progres: mapperStatus(item.positionLevel, item.status)[0],
-            progresClass: mapperStatus(item.positionLevel, item.status)[1],
+            progres: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[0],
+            progresClass: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[1],
           };
         });
         boxResult = boxResult.concat(cleanData2);
@@ -623,9 +665,15 @@ export default {
         }));
         console.log(res2.data);
       } else {
-        alert(res.data.message ? res.data.message : "Silahkan hubungi admin");
+        this.isLoading = false;
+        modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
       }
       this.dataRows = boxResult;
+      this.isLoading = false;
     },
   },
   mounted() {

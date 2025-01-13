@@ -3,6 +3,7 @@
 import sidebar from '@/components/sidebar.vue';
 import navbar from '@/components/navbar.vue';
 import LoadingComponent from '../components/loading.vue';
+import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
 import { mapperStatus } from "@/utils/helper";
 </script>
@@ -20,6 +21,12 @@ import { mapperStatus } from "@/utils/helper";
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
           <LoadingComponent :isVisible="isLoading" />
+          <ModalFailed
+            :isVisible="modalFailed.isVisible"
+            :title="modalFailed.title"
+            :message="modalFailed.message"
+            @close="closeModalFailed"
+          />
           <div class="flex pl-4 pt-4">
             <div class="w-[6px] h-7 bg-[#2671D9]"></div>
             <h1 class="text-xl font-medium ml-[6px]">Proses</h1>
@@ -237,7 +244,7 @@ import { mapperStatus } from "@/utils/helper";
                       <div v-if="activeViewIndex === index" class="absolute -translate-x-[135px] w-[160px]">
                         <!-- PKS type -->
                         <router-link v-if="row.type === 'PKS'" :to="{
-                          path: `/Detailproses/PKS/${row.code}`
+                          path: `/Detailproses/PKS/${row.did}`
                         }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
@@ -252,7 +259,7 @@ import { mapperStatus } from "@/utils/helper";
                         </router-link>
                         <!-- MoU type -->
                         <router-link v-if="row.type === 'MoU' || row.type === 'NDA'" :to="{
-                          path: `/Detailproses/MOU/${row.code}`
+                          path: `/Detailproses/MOU/${row.did}`
                         }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
@@ -351,6 +358,19 @@ const isFilterOpen = ref(false);
 const isFilterTipe = ref(false);
 const isDataOpen = ref(false);
 const filterStatus = ref('');
+const modalFailed = ref({
+  isVisible: false,
+  title: '',
+  message: ''
+});
+
+function closeModalFailed() {
+  modalFailed.value = {
+    isVisible: false,
+    title: '',
+    message: ''
+  }
+}
 
 function toggleDataDropdown() {
   isDataOpen.value = !isDataOpen.value;
@@ -569,35 +589,47 @@ export default {
 			const res = await fetchGet("staff/mounda/proses", null, this.$router);
 			if (res.status == 200) {
 				const cleanData = res.data.map((item) => ({
+            did: item.id,
             judul: item.partnershipTitle,
-            code: item.id,
+            code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
             pelaksana: item.partnershipCandidate,
             status: item.status,
-            progres: mapperStatus(item.positionLevel, item.status)[0],
-            progresClass: mapperStatus(item.positionLevel, item.status)[1],
+            progres: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
+            progresClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
           }))
 				console.log(res.data)
 				boxResult = boxResult.concat(cleanData)
 			} else {
-				alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+				this.isLoading = false;
+        modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
 			}
 			const res2 = await fetchGet("staff/pks/proses", null, this.$router);
 			if (res2.status == 200) {
 				const cleanData2 = res2.data.map((item) => ({
+            did: item.id,
             judul: item.partnershipTitle,
-            code: item.id,
+            code: item.submissionNumber,
             type: "PKS",
             pelaksana: item.partnershipCandidate,
             status: item.status,
-            progres: mapperStatus(item.positionLevel, item.status)[0],
-            progresClass: mapperStatus(item.positionLevel, item.status)[1],
+            progres: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[0],
+            progresClass: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[1],
           }))
 				boxResult = boxResult.concat(cleanData2)
 				boxResult = boxResult.map((item, index) => ({ id: index + 1, ...item }))
 				console.log(res2.data)
 			} else {
-				alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+				this.isLoading = false;
+        modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
 			}
 			this.dataRows = boxResult;
       this.isLoading = false;

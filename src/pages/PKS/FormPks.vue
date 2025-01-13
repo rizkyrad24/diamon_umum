@@ -214,7 +214,7 @@ import RuangLingkup from '@/components/FormCompPks/ruanglingkup.vue';
 import Lainnya from '@/components/FormCompPks/lainnya.vue';
 import MitraBisnis from '@/components/FormCompPks/mitrabisnis.vue';
 import Lampiran from '@/components/FormCompPks/lampiran.vue';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { fetchPostForm } from '@/api/apiFunction';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -245,6 +245,7 @@ const fileProposal = ref(null);
 const fileSurat = ref(null);
 const fileLainnya = ref(null);
 const isKirimDisable = ref(false);
+const id = ref(null);
 
 function moveNext() {
   if (positionForm.value < 6) {
@@ -291,7 +292,7 @@ function movePrevious() {
 
 async function postPks() {
   const form = new FormData()
-  form.append('userId', '1')
+  form.append('userId', id.value)
   form.append('partnershipType', partnershipType.value)
   form.append('createdDate', createdDate.value)
   form.append('budgetType', budgetType.value)
@@ -472,4 +473,8 @@ function closeOk() {
 function closeFail() {
   isFailOpen.value = false;
 }
+
+onMounted(() => {
+  id.value = localStorage.getItem('userId')
+});
 </script>

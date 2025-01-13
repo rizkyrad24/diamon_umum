@@ -35,7 +35,42 @@ export function clearDataLogin() {
   localStorage.removeItem('position');
 }
 
-export function mapperStatus(positionLevel, status) {
+export function mapperStatus(positionLevel, status, attachments, isStopClock) {
+  const fileKemitraan = {
+    file1: null,
+    file2: null,
+    file3: null,
+    file4: null,
+    file5: null,
+    file6: null,
+    file7: null,
+  }
+  attachments.forEach(item => {
+    if (item.fileType == 'Surat Penawaran') {
+      fileKemitraan['file1'] = item.fileName
+    }
+    if (item.fileType == 'Proposal') {
+      fileKemitraan['file2'] = item.fileName
+    }
+    if (item.fileType == 'Evaluasi') {
+      fileKemitraan['file3'] = item.fileName
+    }
+    if (item.fileType == 'Negosiasi') {
+      fileKemitraan['file4'] = item.fileName
+    }
+    if (item.fileType == 'BAK Pemilihan Mitra') {
+      fileKemitraan['file5'] = item.fileName
+    }
+    if (item.fileType == 'Surat Pesanan') {
+      fileKemitraan['file6'] = item.fileName
+    }
+    if (item.fileType == 'PKS') {
+      fileKemitraan['file7'] = item.fileName
+    }
+  })
+  if (isStopClock) {
+    return ['Dipending', 'bg-[#FFE5E6] text-[#FF8000] border-[#FFD6AD]']
+  }
   if (status == 'Selesai') {
     return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
@@ -49,16 +84,55 @@ export function mapperStatus(positionLevel, status) {
     return ['Draft', 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]']
   }
   if (positionLevel == 1) {
-    return ['Waiting Approval', 'bg-[#FFF6E1] text-[#FFB200] border-[#FFD064]']
+    return ['Waiting Approval Manager', 'bg-[#FFF6E1] text-[#FFB200] border-[#FFD064]']
   }
   if (positionLevel == 2) {
-    return ['Approval Manager', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Approval VP', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 3) {
-    return ['Approval VP', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel >= 4) {
     return ['Masuk Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 4) {
+    return ['Masuk Ke Staff Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file7) {
+    return ['PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file6) {
+    return ['Surat Pesanan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file5) {
+    return ['BAK Pemilihan Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file4) {
+    return ['Negosiasi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file3) {
+    return ['Evaluasi', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file2) {
+    return ['Proposal', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+  }
+  if (positionLevel == 5 && fileKemitraan.file1) {
+    return ['Surat Penawaran', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+  }
+  if (positionLevel == 5) {
+    return ['DiProses Staff Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 6) {
+    return ['Waiting Approval Manager Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7) {
+    return ['Pembuatan Kontrak', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 8) {
+    return ['Waiting Approval VP Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 9) {
+    return ['Waiting Approval Direktur Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 10) {
+    return ['Disetujui Direktur Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
 }
 
@@ -139,4 +213,12 @@ export const methodTypeParsing = (methodType) => {
   if (methodType == "Terbuka") {
     return {value: 'T2', label: 'Terbuka'}
   }
+}
+
+export const dateParsing = (input) => {
+  if (input.includes("-")) {
+    const [year, month, date] = input.split("-")
+    return `${date}-${month}-${year}`
+  }
+  return input
 }

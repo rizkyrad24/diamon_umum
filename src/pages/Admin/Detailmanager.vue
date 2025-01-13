@@ -4,7 +4,10 @@ import sidemanager from '@/components/sidemanager.vue';
 import dialog from '@/assets/img/Dialog.png';
 import kirim from '@/assets/img/Dialogkirim.png';
 import Navadmin from '@/components/navadmin.vue';
+import LoadingComponent from '@/components/loading.vue';
+import modalfailed from "@/components/modalfailed.vue";
 import { fetchGet, fetchPostForm } from '@/api/apiFunction';
+import { dateParsing } from '@/utils/helper';
 </script>
 
 <template>
@@ -13,7 +16,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
     <div class="flex-grow">
       <Navadmin />
       <div class="h-[54px] flex">
-        <router-link to="/Approvalpengajuanbaru">
+        <router-link :to="origin">
           <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Approval</h1>
         </router-link>
         <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[19px] ml-1" fill="none"
@@ -28,13 +31,20 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
 
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
+          <LoadingComponent :isVisible="isLoading" />
+          <modalfailed
+            :isVisible="modalFailed.isVisible"
+            :title="modalFailed.title"
+            :message="modalFailed.message"
+            @close="closeModalFailed"
+          />
           <div class="w-[1170px] h-[56px] ml-4 mt-4 flex justify-between">
             <div>
               <div class="flex">
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
-                <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan</h1>
+                <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan {{ dataBerkas?.base || 'PKS' }}</h1>
               </div>
-              <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.id }}</span>
+              <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber }}</span>
             </div>
           </div>
 
@@ -56,9 +66,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                   <div class="ml-6">
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
-                      <span v-if="base === 'PKS'" class="text-[#7F7F80]">{{ dataBerkas?.pksNumber
-                        }}</span>
-                      <span v-else class="text-[#7F7F80]">{{ dataBerkas?.mouNdaNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Judul</h1>
@@ -87,8 +95,8 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                       <span class="text-[#7F7F80]">{{ dataBerkas?.materialType }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
-                      <h1 class="w-[150px]">Jenis Barang</h1>
-                      <span class="text-[#7F7F80]">Lorem ipsum</span>
+                      <h1 class="w-[150px]">Jenis Kemitraan</h1>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Pelaksana</h1>
@@ -109,7 +117,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.officialUndersign }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
                   </div>
                   <div>
@@ -117,9 +125,9 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                       <h1 class="w-[150px]">Catatan</h1>
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.note }}</span>
                     </div>
-                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tanggal</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionDate }}</span>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
                     </div>
                   </div>
                 </div>
@@ -320,7 +328,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKB <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKB" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKB" v-if="fileNameKKB" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -328,11 +336,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKB }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKB }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -340,7 +348,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKR <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKR" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKR" v-if="fileNameKKR" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -348,11 +356,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKR }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKR }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -360,7 +368,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKF <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKF" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKF" v-if="fileNameKKF" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -368,11 +376,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKF }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKF }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -382,7 +390,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKO <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <div v-if="fileNameKKO" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadKKO" v-if="fileNameKKO" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -390,11 +398,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKO }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKO }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -402,7 +410,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadmitra" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -410,11 +418,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -422,7 +430,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Surat Menyurat
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -430,11 +438,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -443,7 +451,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                   <div class="px-6 mt-6 mb-4">
                     <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                       <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                    <div v-if="fileNamelainnya" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <a :href="linkDownloadlainnya" v-if="fileNamelainnya" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -451,11 +459,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                           d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                           fill="#2671D9" />
                       </svg>
-                      <div class="py-2 w-[200px] flex-grow">
+                      <div class="py-2 w-[200px] flex-grow truncate pe-3">
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                       </div>
-                    </div>
+                    </a>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                     </div>
@@ -466,7 +474,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadmitra" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -474,11 +482,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -488,7 +496,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                         Dokumen Surat Menyurat
                         <span class="text-[#FF5656] text-xs">*</span>
                       </label>
-                      <div v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -496,11 +504,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -508,7 +516,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <div v-if="fileNamelainnya"
+                      <a :href="linkDownloadlainnya" v-if="fileNamelainnya"
                         class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -517,11 +525,11 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
                             d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
                             fill="#2671D9" />
                         </svg>
-                        <div class="py-2 w-[200px] flex-grow">
+                        <div class="py-2 w-[200px] flex-grow truncate pe-3">
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                         </div>
-                      </div>
+                      </a>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -709,6 +717,7 @@ import { fetchGet, fetchPostForm } from '@/api/apiFunction';
 </template>
 
 <script>
+import { baseURL } from "@/api/apiManager";
 export default {
   data() {
     return {
@@ -732,20 +741,34 @@ export default {
       dataBerkas: null,
       base: null,
       id: null,
+      origin: null,
       fileNameKKB: null,
       fileSizeKKB: null,
+      linkDownloadKKB: "",
       fileNameKKR: null,
       fileSizeKKR: null,
+      linkDownloadKKR: "",
       fileNameKKF: null,
       fileSizeKKF: null,
+      linkDownloadKKF: "",
       fileNameKKO: null,
       fileSizeKKO: null,
+      linkDownloadKKO: "",
       fileNamemitra: null,
       fileSizemitra: null,
+      linkDownloadmitra: "",
       fileNamesurat: null,
       fileSizesurat: null,
+      linkDownloadsurat: "",
       fileNamelainnya: null,
       fileSizelainnya: null,
+      linkDownloadlainnya: "",
+      isLoading: false,
+      modalFailed: {
+        isVisible: false,
+        title: '',
+        message: ''
+      },
 
       // input
       approvalNote: '',
@@ -753,7 +776,13 @@ export default {
     };
   },
   methods: {
-
+    closeModalFailed() {
+      this.modalFailed = {
+        isVisible: false,
+        title: '',
+        message: ''
+      }
+    },
     // Popup Aprrove
     SendApprov() {
       this.isSendSetuju = true;
@@ -822,6 +851,7 @@ export default {
       this.dropdownBerkas = !this.dropdownBerkas;
     },
     async getDataApi(base, id) {
+      this.isLoading = true;
       const position = localStorage.getItem('position')
       if (base == "PKS" && position == 'manager') {
         const res = await fetchGet(`manager/pks/${id}`, null, this.$router);
@@ -833,35 +863,48 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
+              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
+              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
+              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
+              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
           })
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (base == "MOU" && position == 'manager') {
         const res = await fetchGet(`manager/mounda/${id}`, null, this.$router);
@@ -873,19 +916,28 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
           })
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (base == "PKS" && position == 'vp') {
         const res = await fetchGet(`vp/pks/${id}`, null, this.$router);
@@ -897,35 +949,48 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
+              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
+              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
+              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
+              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
           })
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (base == "MOU" && position == 'vp') {
         const res = await fetchGet(`vp/mounda/${id}`, null, this.$router);
@@ -937,23 +1002,33 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
             }
           })
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       }
     },
     async postAproval() {
+      this.isLoading = true;
       const position = localStorage.getItem('position')
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
@@ -962,42 +1037,67 @@ export default {
       if (this.base == "PKS" && position == 'manager') {
         const res = await fetchPostForm(`manager/pks/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiSetuju = true;
           this.isSendSetuju = false;
+          this.isSelesaiSetuju = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "MOU" && position == 'manager') {
         const res = await fetchPostForm(`manager/mounda/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiSetuju = true;
           this.isSendSetuju = false;
+          this.isSelesaiSetuju = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "PKS" && position == 'vp') {
         const res = await fetchPostForm(`vp/pks/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiSetuju = true;
           this.isSendSetuju = false;
+          this.isSelesaiSetuju = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "MOU" && position == 'vp') {
         const res = await fetchPostForm(`vp/mounda/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiSetuju = true;
           this.isSendSetuju = false;
+          this.isSelesaiSetuju = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       }
     },
     async postRevisi() {
+      this.isLoading = true;
       const position = localStorage.getItem('position')
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
@@ -1006,42 +1106,67 @@ export default {
       if (this.base == "PKS" && position == 'manager') {
         const res = await fetchPostForm(`manager/pks/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiRevisi = true;
           this.isSendRevisi = false;
+          this.isSelesaiRevisi = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "MOU" && position == 'manager') {
         const res = await fetchPostForm(`manager/mounda/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiRevisi = true;
           this.isSendRevisi = false;
+          this.isSelesaiRevisi = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "PKS" && position == 'vp') {
         const res = await fetchPostForm(`vp/pks/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiRevisi = true;
           this.isSendRevisi = false;
+          this.isSelesaiRevisi = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "MOU" && position == 'vp') {
         const res = await fetchPostForm(`vp/mounda/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiRevisi = true;
           this.isSendRevisi = false;
+          this.isSelesaiRevisi = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       }
     },
     async postTolak() {
+      this.isLoading = true;
       const position = localStorage.getItem('position')
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
@@ -1050,38 +1175,62 @@ export default {
       if (this.base == "PKS" && position == 'manager') {
         const res = await fetchPostForm(`manager/pks/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiTolak = true;
           this.isSendTolak = false;
+          this.isSelesaiTolak = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "MOU" && position == 'manager') {
         const res = await fetchPostForm(`manager/mounda/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiTolak = true;
           this.isSendTolak = false;
+          this.isSelesaiTolak = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "PKS" && position == 'vp') {
         const res = await fetchPostForm(`vp/pks/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiTolak = true;
           this.isSendTolak = false;
+          this.isSelesaiTolak = true;
+          this.isLoading= false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       } else if (this.base == "MOU" && position == 'vp') {
         const res = await fetchPostForm(`vp/mounda/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSelesaiTolak = true;
           this.isSendTolak = false;
+          this.isSelesaiTolak = true;
+          this.isLoading = false;
           console.log(res.data)
         } else {
-          alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Approve Gagal',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
         }
       }
     }
@@ -1091,6 +1240,7 @@ export default {
       this.getDataApi(this.$route.params.base, this.$route.params.id)
       this.base = this.$route.params.base;
       this.id = this.$route.params.id;
+      this.origin = `/${this.$route.query.origin}`;
     }
   }
 };

@@ -5,19 +5,31 @@
     <div class="flex-grow">
       <Navbar />
       <div class="h-[54px] flex">
-        <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Buat</h1>
+        <router-link to="/Draft">
+          <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Draft</h1>
+        </router-link>
         <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[19px] ml-1" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
             d="M11.2071 7.29289C11.5976 7.68342 11.5976 8.31658 11.2071 8.70711L6.20711 13.7071C5.81658 14.0976 5.18342 14.0976 4.79289 13.7071C4.40237 13.3166 4.40237 12.6834 4.79289 12.2929L9.08579 8L4.79289 3.70711C4.40237 3.31658 4.40237 2.68342 4.79289 2.29289C5.18342 1.90237 5.81658 1.90237 6.20711 2.29289L11.2071 7.29289Z"
             fill="#7F7F80" />
         </svg>
-        <h1 class="text-sm text-[#7F7F80] mt-3 ml-1">MoU/NDA</h1>
+        <router-link :to="linkBack">
+          <h1 class="text-[#2671D9] text-sm mt-3 ml-1">Detail Pengajuan</h1>
+        </router-link>
+        <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[19px] ml-1" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M11.2071 7.29289C11.5976 7.68342 11.5976 8.31658 11.2071 8.70711L6.20711 13.7071C5.81658 14.0976 5.18342 14.0976 4.79289 13.7071C4.40237 13.3166 4.40237 12.6834 4.79289 12.2929L9.08579 8L4.79289 3.70711C4.40237 3.31658 4.40237 2.68342 4.79289 2.29289C5.18342 1.90237 5.81658 1.90237 6.20711 2.29289L11.2071 7.29289Z"
+            fill="#7F7F80" />
+        </svg>
+        <h1 class="text-sm text-[#7F7F80] mt-3 ml-1">Edit Pengajuan {{ base }}</h1>
       </div>
       <div class="h-auto py-3 px-4 bg-slate-100">
 
         <!-- Start Content -->
         <div class="w-[1217px] p-1 h-auto rounded-lg bg-white min-h-screen mx-auto">
+          <LoadingComponent :isVisible="isLoading" />
           <div class="flex pl-4 pt-4">
             <div class="w-[6px] h-7 bg-[#2671D9]"></div>
             <h1 class="text-xl font-medium ml-[6px]">MoU/NDA</h1>
@@ -235,6 +247,7 @@ import Lampiran from '@/components/FormCompMou/lampiran.vue';
 import dialog from '@/assets/img/Dialog.png';
 import kirim from '@/assets/img/Dialogkirim.png';
 import gagal from '@/assets/img/Dialogkirimgagal.png';
+import LoadingComponent from '@/components/loading.vue';
 import { ref, watch, onMounted } from 'vue';
 import { fetchGet, fetchPostForm } from '@/api/apiFunction';
 import { useRouter } from 'vue-router';
@@ -264,7 +277,9 @@ const fileProposalId = ref(null);
 const fileSuratId = ref(null);
 const fileLainnyaId = ref(null);
 const dataInitial = ref(null);
+const isLoading = ref(false);
 const id = ref(null);
+const linkBack = ref("");
 
 function moveNext() {
   if (positionForm.value < 5) {
@@ -295,6 +310,7 @@ function moveNext() {
 }
 
 async function getDataApi(id) {
+  isLoading.value = true;
   const res = await fetchGet(`staff/mounda/draft/${id}`, null, router);
   if (res.status == 200) {
     base.value = res.data.base;
@@ -305,15 +321,19 @@ async function getDataApi(id) {
     partnershipCandidate.value = res.data.partnershipCandidate;
     scopes.value = res.data.scopesMou;
     dataInitial.value = res.data;
+    linkBack.value = `/Detaildraft/${res.data.base}/${id}`
     console.log(res.data, 'data di induk')
+    isLoading.value = false;
   } else {
+    isLoading.value = false;
     alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
   }
 }
 
 async function postMounda() {
+  isLoading.value = true;
   const form = new FormData()
-  form.append('userId', '1')
+  // form.append('userId', '1')
   form.append('base', base.value)
   form.append('partnershipTitle', partnershipTitle.value)
   let index = 0;
@@ -371,8 +391,10 @@ async function postMounda() {
   const res = await fetchPostForm(`staff/mounda/draft/${id.value}`, null, form, router);
   console.log(res.data)
   if (res.status == 200) {
+    isLoading.value = false;
     isOkOpen.value = true;
   } else {
+    isLoading.value = false;
     isFailOpen.value = true;
     console.log(res.data.message)
   }

@@ -9,7 +9,8 @@ import deliv1 from '../assets/img/Delivered1.png'
 import deliv2 from '../assets/img/Delivered2.png'
 import deliv3 from '../assets/img/Delivered3.png'
 import deliv4 from '../assets/img/Delivered4.png';
-import LoadingComponent from '../components/loading.vue';
+import LoadingComponent from '@/components/loading.vue';
+import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
 import { mapperStatus } from "@/utils/helper";
 </script>
@@ -25,6 +26,12 @@ import { mapperStatus } from "@/utils/helper";
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
           <LoadingComponent :isVisible="isLoading" />
+          <ModalFailed
+            :isVisible="modalFailed.isVisible"
+            :title="modalFailed.title"
+            :message="modalFailed.message"
+            @close="closeModalFailed"
+          />
           <div class="flex pl-4 pt-4">
             <div class="w-[6px] h-7 bg-[#2671D9]"></div>
             <h1 class="text-xl font-medium ml-[6px]">Dashboard</h1>
@@ -455,6 +462,19 @@ const isFilterStatus = ref(false);
 const isDataOpen = ref(false);
 const filterStatus = ref('');
 const isDate = ref('');
+const modalFailed = ref({
+  isVisible: false,
+  title: '',
+  message: ''
+});
+
+function closeModalFailed() {
+  modalFailed.value = {
+    isVisible: false,
+    title: '',
+    message: ''
+  }
+}
 
 function toggleDataDropdown() {
   isDataOpen.value = !isDataOpen.value;
@@ -786,36 +806,46 @@ export default {
 			if (res.status == 200) {
 				const cleanData = res.data.map((item) => ({
             name: item.partnershipTitle,
-            code: item.id,
+            code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
             startDate: item.submissionDate,
             endDate: item.approvalCompletionDate,
             status: item.status,
-            statusap: mapperStatus(item.positionLevel, item.status)[0],
-            statusClass: mapperStatus(item.positionLevel, item.status)[1],
+            statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
+            statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
           }))
 				console.log(res.data)
 				boxResult = boxResult.concat(cleanData)
 			} else {
-				alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+        this.isLoading = false;
+        modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
 			}
 			const res2 = await fetchGet("staff/pks", null, this.$router);
 			if (res2.status == 200) {
 				const cleanData2 = res2.data.map((item) => ({
             name: item.partnershipTitle,
-            code: item.id,
+            code: item.submissionNumber,
             type: "PKS",
             startDate: item.submissionDate,
             endDate: item.approvalCompletionDate,
             status: item.status,
-            statusap: mapperStatus(item.positionLevel, item.status)[0],
-            statusClass: mapperStatus(item.positionLevel, item.status)[1],
+            statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[0],
+            statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[1],
           }))
 				boxResult = boxResult.concat(cleanData2)
 				boxResult = boxResult.map((item, index) => ({ id: index + 1, ...item }))
 				console.log(res2.data)
 			} else {
-				alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+				this.isLoading = false;
+        modalFailed.value = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
 			}
 			this.dataRows = boxResult
       this.isLoading = false;
