@@ -71,7 +71,7 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
   if (isStopClock) {
     return ['Dipending', 'bg-[#FFE5E6] text-[#FF8000] border-[#FFD6AD]']
   }
-  if (status == 'Selesai') {
+  if (status == 'Approved' && positionLevel >= 8) {
     return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (status == 'Ditolak') {

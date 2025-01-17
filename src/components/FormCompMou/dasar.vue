@@ -19,12 +19,13 @@ const selectedOption = ref('');
 const titleInput = ref('');
 
 // const showDatePicker = ref(false);
-const today = new Date()
-const selectedDate = ref(new Date);
+// const today = new Date()
+const selectedDate = ref("");
+const minDate = ref("");
 const filterClickListener = ref(null);
 
 onMounted(() => {
-  changeDate(today.toISOString().split('T')[0]);
+  // changeDate(today.toISOString().split('T')[0]);
   filterClickListener.value = (e) => {
     if (!e.target.closest('.drop-container') 
     ){
@@ -34,8 +35,19 @@ onMounted(() => {
   document.addEventListener('click', filterClickListener.value);
   if (props.data) {
     titleInput.value = props.data.partnershipTitle;
-    selectedOption.value = props.data.base
+    selectedOption.value = props.data.base;
+    const expectedDate = new Date(props.data.expectedDate);
+    changeDate(expectedDate.toISOString().split("T")[0]);
+    const createdDate = new Date(props.data.submissionDate);
+    minDate.value = createdDate.toISOString().split("T")[0];
   }
+  const sekarang = new Date();
+  const tigaPuluhHariKedepan = new Date();
+  tigaPuluhHariKedepan.setDate(sekarang.getDate() + 30);
+  minDate.value = tigaPuluhHariKedepan.toISOString().split("T")[0];
+  const empatPuluhHariKedepan = new Date();
+  empatPuluhHariKedepan.setDate(sekarang.getDate() + 40);
+  changeDate(empatPuluhHariKedepan.toISOString().split("T")[0]);
 })
 
 watch(
@@ -43,6 +55,15 @@ watch(
   (newData) => {
     titleInput.value = newData?.partnershipTitle || "";
     selectedOption.value = newData?.base || "";
+    const sekarang = new Date();
+    const empatPuluhHariKedepan = new Date();
+    empatPuluhHariKedepan.setDate(sekarang.getDate() + 40);
+    const expectedDate = new Date(newData?.expectedDate || empatPuluhHariKedepan.toISOString().split("T")[0]);
+    changeDate(expectedDate.toISOString().split("T")[0]);
+    const tigaPuluhHariKedepan = new Date(newData?.submissionDate || sekarang.toISOString().split("T")[0]);
+    const createdDate = new Date();
+    createdDate.setDate(tigaPuluhHariKedepan.getDate() + 30);
+    minDate.value = createdDate.toISOString().split("T")[0];
   },
   { immediate: true }
 );
@@ -94,13 +115,13 @@ function changeDate(val) {
 
             <!-- Tanggal -->
             <div class="">
-                <label for="dateInput" class="text-[#4D5E80] font-medium">Tanggal <span class="text-[#FF5656]">*</span></label>
+                <label for="dateInput" class="text-[#4D5E80] font-medium">Ekspektasi Tanggal Selesai<span class="text-[#FF5656]">*</span></label>
                 <div class="w-[560px] py-[10px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between items-center">
                 <span :class="{'text-black': selectedDate, 'text-[#9C9C9C]': !selectedDate}">{{ selectedDate || "Pilih Tanggal" }}</span>
                 <svg ref="calendarIcon" width="14" height="14" class="mt-2 -translate-y-1" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 0.5C3.77614 0.5 4 0.723858 4 1V2H10V1C10 0.723858 10.2239 0.5 10.5 0.5C10.7761 0.5 11 0.723858 11 1V2H11.5C12.6046 2 13.5 2.89543 13.5 4V11.5C13.5 12.6046 12.6046 13.5 11.5 13.5H2.5C1.39543 13.5 0.5 12.6046 0.5 11.5V4C0.5 2.89543 1.39543 2 2.5 2H3V1C3 0.723858 3.22386 0.5 3.5 0.5ZM2.5 3C1.94772 3 1.5 3.44772 1.5 4V4.76756C1.79417 4.59739 2.13571 4.5 2.5 4.5H11.5C11.8643 4.5 12.2058 4.59739 12.5 4.76756V4C12.5 3.44772 12.0523 3 11.5 3H2.5ZM12.5 6.5C12.5 5.94772 12.0523 5.5 11.5 5.5H2.5C1.94772 5.5 1.5 5.94772 1.5 6.5V11.5C1.5 12.0523 1.94772 12.5 2.5 12.5H11.5C12.0523 12.5 12.5 12.0523 12.5 11.5V6.5Z" fill="#2671D9"/>
                 </svg>      
-                <input ref="dateInput" id="dateInput" type="date" @input="changeDate($event.target.value)" :value="selectedDate" class="w-[510px] opacity-0 absolute">
+                <input :min="minDate" ref="dateInput" id="dateInput" type="date" @input="changeDate($event.target.value)" :value="selectedDate" class="w-[510px] opacity-0 absolute">
                 </div>
             </div>
         </div>

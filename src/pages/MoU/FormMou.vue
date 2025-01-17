@@ -250,6 +250,7 @@ async function postMounda() {
   const form = new FormData()
   form.append('userId', id.value)
   form.append('base', base.value)
+  form.append('expectedDate', createdDate.value)
   form.append('partnershipTitle', partnershipTitle.value)
   scopes.value.forEach((element, index) => {
     form.append(`scopesMou[${index}].scopeName`, element)
@@ -348,7 +349,7 @@ function openSend() {
     isOkOpen.value = false;
     console.log('base: ', base.value)
     console.log('title: ', partnershipTitle.value)
-    console.log('createdDate', createdDate.value)
+    console.log('expectedDate', createdDate.value)
     console.log('scoopes', scopes.value)
     console.log('background', background.value)
     console.log('note', note.value)

@@ -294,7 +294,7 @@ async function postPks() {
   const form = new FormData()
   form.append('userId', id.value)
   form.append('partnershipType', partnershipType.value)
-  form.append('createdDate', createdDate.value)
+  form.append('expectedDate', createdDate.value)
   form.append('budgetType', budgetType.value)
   form.append('budgetNumber', budgetNumber.value)
   form.append('partnershipMethod', partnershipMethod.value)

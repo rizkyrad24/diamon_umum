@@ -315,7 +315,7 @@ async function getDataApi(id) {
   if (res.status == 200) {
     base.value = res.data.base;
     partnershipTitle.value = res.data.partnershipTitle;
-    createdDate.value = res.data.createdDate;
+    createdDate.value = res.data.expectedDate;
     background.value = res.data.background;
     note.value = res.data.note;
     partnershipCandidate.value = res.data.partnershipCandidate;
@@ -336,6 +336,7 @@ async function postMounda() {
   // form.append('userId', '1')
   form.append('base', base.value)
   form.append('partnershipTitle', partnershipTitle.value)
+  form.append('expectedDate', createdDate.value)
   let index = 0;
   scopes.value.forEach((element) => {
     if (element.id) {
@@ -451,7 +452,7 @@ function openSend() {
     isOkOpen.value = false;
     console.log('base: ', base.value)
     console.log('title: ', partnershipTitle.value)
-    console.log('createdDate', createdDate.value)
+    console.log('expectedDate', createdDate.value)
     console.log('scoopes', scopes.value)
     console.log('background', background.value)
     console.log('note', note.value)

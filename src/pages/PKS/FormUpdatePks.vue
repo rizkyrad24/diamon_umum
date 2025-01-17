@@ -371,7 +371,7 @@ async function getDataApi(id) {
   const res = await fetchGet(`staff/pks/draft/${id}`, null, router);
   if (res.status == 200) {
     partnershipTitle.value = res.data.partnershipTitle;
-    createdDate.value = res.data.createdDate;
+    createdDate.value = res.data.expectedDate;
     background.value = res.data.background;
     note.value = res.data.note;
     partnershipCandidate.value = res.data.partnershipCandidate;
@@ -397,7 +397,7 @@ async function postPks() {
   const form = new FormData()
   // form.append('userId', '1')
   form.append('partnershipType', partnershipType.value)
-  form.append('createdDate', createdDate.value)
+  form.append('expectedDate', createdDate.value)
   form.append('budgetType', budgetType.value)
   form.append('budgetNumber', budgetNumber.value)
   console.log(budgetNumber.value, 'ada tidak')
@@ -590,7 +590,7 @@ function openSend() {
     isSendOpen.value = true;
     isOkOpen.value = false;
     console.log('partnershipType: ', partnershipType.value)
-    console.log('createdDate', createdDate.value)
+    console.log('expectedDate', createdDate.value)
     console.log('budgetType', budgetType.value)
     console.log('budgetNumber', budgetNumber.value)
     console.log('partnershipMethod', partnershipMethod.value)
