@@ -288,7 +288,7 @@ import { mapperStatus } from '@/utils/helper';
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[130px] px-3">
+                    <th class="w-[200px] px-3">
                       <div class="flex justify-between">Status Approval
                         <svg width="16" height="16" class="cursor-pointer ml-4" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
