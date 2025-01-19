@@ -90,7 +90,7 @@
         <label class="text-[#4D5E80] font-medium">Nomor Anggaran <span class="text-[#FF5656]">*</span></label>
         <form action="" class="w-[555px] py-[10px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between">
           <input @input="changenoBudget($event.target.value)" :value="noBudgetInput" type="text"
-            placeholder="Masukkan Nomor Anggaran" class="w-[450px] outline-none">
+            placeholder="Masukkan Nomor Anggaran" class="w-full outline-none">
         </form>
       </div>
     </div>
