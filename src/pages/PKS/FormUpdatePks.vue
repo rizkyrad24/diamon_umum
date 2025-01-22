@@ -26,10 +26,16 @@
         <h1 class="text-sm text-[#7F7F80] mt-3 ml-1">Edit Pengajuan PKS</h1>
       </div>
       <div class="h-auto py-3 px-4 bg-slate-100">
+        <LoadingComponent :isVisible="isLoading" />
+        <ModalFailed :isVisible="modalFailed.isVisible" :title="modalFailed.title" :message="modalFailed.message"
+          @close="closeModalFailed" />
+        <ModalSuccess :isVisible="modalSuccess.isVisible" :title="modalSuccess.title" :message="modalSuccess.message"
+          @close="modalSuccess.closeFunction" />
+        <ModalDialog :isVisible="modalDialog.isVisible" :title="modalDialog.title" :message="modalDialog.message"
+          @close="modalDialog.closeFunction" @ok="modalDialog.okFunction" />
 
         <!-- Start Content -->
         <div class="w-[1217px] h-auto bg-white min-h-screen mx-auto">
-          <LoadingComponent :isVisible="isLoading" />
           <div class="flex pl-4 pt-4">
             <div class="w-[6px] h-7 bg-[#2671D9]"></div>
             <h1 class="text-xl font-medium ml-[6px]">PKS</h1>
@@ -179,83 +185,12 @@
                 :class="isNextDisable ? 'w-[107px] h-12 rounded-lg font-medium text-white text-sm bg-[#9C9C9C]' : 'w-[107px] h-12 rounded-lg font-medium text-white text-sm bg-[#2671D9]'">Selanjutnya</button>
             </div>
             <div v-if="positionForm == 6" class=" mr-11 py-4">
-              <button @click="openSend" :disabled="isKirimDisable"
-                :class="isKirimDisable ? 'w-[61px] h-12 rounded-lg font-medium text-white text-sm bg-[#9C9C9C]' : 'w-[61px] h-12 rounded-lg font-medium text-white text-sm bg-[#2671D9]'">Kirim</button>
+              <button @click="SendEdit" :disabled="isKirimDisable"
+                :class="isKirimDisable ? 'w-[61px] h-12 rounded-lg font-medium text-white text-sm bg-[#9C9C9C]' : 'w-[61px] h-12 rounded-lg font-medium text-white text-sm bg-[#2671D9]'">Update</button>
             </div>
           </div>
         </div>
         <!-- End Content -->
-
-
-        <!-- Start Pop up -->
-        <div>
-          <!-- Model 1: isSendOpen -->
-          <div v-if="isSendOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[476px]">
-              <div @click="closeSend" class="flex justify-end cursor-pointer">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M0.292893 0.292893C0.683418 -0.0976311 1.31658 -0.0976311 1.70711 0.292893L6 4.58579L10.2929 0.292894C10.6834 -0.0976307 11.3166 -0.0976307 11.7071 0.292894C12.0976 0.683418 12.0976 1.31658 11.7071 1.70711L7.41421 6L11.7071 10.2929C12.0976 10.6834 12.0976 11.3166 11.7071 11.7071C11.3166 12.0976 10.6834 12.0976 10.2929 11.7071L6 7.41421L1.70711 11.7071C1.31658 12.0976 0.683417 12.0976 0.292893 11.7071C-0.0976311 11.3166 -0.0976311 10.6834 0.292893 10.2929L4.58579 6L0.292893 1.70711C-0.0976311 1.31658 -0.0976311 0.683417 0.292893 0.292893Z"
-                    fill="#CCCCCC" />
-                </svg>
-              </div>
-              <div class="flex justify-center"><img :src="dialog" alt="Dialog Image" class="pt-6"></div>
-              <div class="flex justify-center">
-                <h1 class="text-[#333333] text-xl font-semibold mt-2">Ingin Mengirim Data?</h1>
-              </div>
-              <div class="flex justify-center mt-3">
-                <p>Pastikan data yang Anda masukkan</p>
-              </div>
-              <div class="flex justify-center">
-                <p>sudah benar.</p>
-              </div>
-              <div class="flex justify-center mt-8">
-                <button @click="openOk"
-                  class="w-[296px] h-[40px] bg-[#2671D9] text-white text-sm font-semibold rounded-lg">Lanjutkan</button>
-              </div>
-              <div class="flex justify-center mt-2">
-                <button @click="closeSend"
-                  class="w-[296px] h-[40px] border-[1px] border-[#2671D9] text-[#2671D9] text-sm font-semibold rounded-lg">Cek
-                  Kembali</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Model 2: isOkOpen -->
-          <div v-if="isOkOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[452px]">
-              <div class="flex justify-center"><img :src="kirim" alt="Dialog Image" class="pt-6"></div>
-              <div class="flex justify-center">
-                <h1 class="text-[#333333] text-xl font-semibold mt-2">Berhasil Dikirim</h1>
-              </div>
-              <div class="ml-8 mt-3 w-[240px]">
-                <p>Data yang Anda masukkan telah berhasil dikirim. Selanjutnya akan dilakukan approval oleh Manager.</p>
-              </div>
-              <div class="flex justify-center mt-8">
-                <button @click="closeOk"
-                  class="w-[296px] h-[40px] bg-[#2671D9] text-white text-sm font-semibold rounded-lg">Oke</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Model 2: isFailOpen -->
-          <div v-if="isFailOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[452px]">
-              <div class="flex justify-center"><img :src="gagal" alt="Dialog Image" class="pt-6"></div>
-              <div class="flex justify-center">
-                <h1 class="text-[#333333] text-xl font-semibold mt-2">Gagal Dikirim</h1>
-              </div>
-              <div class="ml-8 mt-3 w-[240px]">
-                <p>Data yang Anda masukkan gagal dikirim.</p>
-              </div>
-              <div class="flex justify-center mt-8">
-                <button @click="closeFail"
-                  class="w-[296px] h-[40px] bg-[#2671D9] text-white text-sm font-semibold rounded-lg">Oke</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Pop up -->
       </div>
     </div>
   </div>
@@ -264,9 +199,9 @@
 <script setup>
 import Navbar from '@/components/navbar.vue';
 import Sidebar from '@/components/sidebar.vue';
-import dialog from '@/assets/img/Dialog.png';
-import kirim from '@/assets/img/Dialogkirim.png';
-import gagal from '@/assets/img/Dialogkirimgagal.png';
+import ModalFailed from '@/components/modalfailed.vue';
+import ModalSuccess from '@/components/modalsuccess.vue';
+import ModalDialog from '@/components/modaldialog.vue';
 import Dasar from '@/components/FormCompPks/dasar.vue';
 import RabUpdate from '@/components/FormCompPks/rabUpdate.vue';
 import RuangLingkupUpdate from '@/components/FormCompPks/ruanglingkupupdate.vue';
@@ -284,9 +219,6 @@ const route = useRoute();
 
 // Select pks
 const positionForm = ref(1);
-const isSendOpen = ref(false);
-const isOkOpen = ref(false);
-const isFailOpen = ref(false);
 const partnershipType = ref('');
 const createdDate = ref('');
 const budgetType = ref('');
@@ -321,6 +253,88 @@ const dataInitial = ref(null);
 const isLoading = ref(false);
 const id = ref(null);
 const linkBack = ref("");
+
+const modalFailed = ref({
+  isVisible: false,
+  title: '',
+  message: ''
+});
+
+const modalSuccess = ref({
+  isVisible: false,
+  title: '',
+  message: '',
+  closeFunction: () => null
+});
+const modalDialog = ref({
+  isVisible: false,
+  title: '',
+  message: '',
+  okFunction: () => null,
+  closeFunction: () => null
+});
+
+function closeModalFailed() {
+  modalFailed.value = {
+    isVisible: false,
+    title: '',
+    message: ''
+  }
+}
+function closeModalSuccess() {
+  modalSuccess.value = {
+    isVisible: false,
+    title: '',
+    message: '',
+    closeFunction: () => null
+  }
+}
+function closeModalDialog() {
+  modalDialog.value = {
+    isVisible: false,
+    title: '',
+    message: '',
+    okFunction: () => null,
+    closeFunction: () => null
+  }
+}
+
+// Popup Edit
+function SendEdit() {
+  modalDialog.value = {
+    isVisible: true,
+    title: 'Update Pengajuan',
+    message: 'Apakan anda yakin dengan data yang anda masukan',
+    okFunction: openEdit,
+    closeFunction: closeEdit
+  }
+}
+function openEdit() {
+  closeModalDialog();
+  postPks(successEdit, failEdit);
+}
+function closeEdit() {
+  closeModalDialog()
+}
+function successEdit() {
+  modalSuccess.value = {
+    isVisible: true,
+    title: 'Success',
+    message: 'Berhasil mengupdate pengajuan',
+    closeFunction: closeSelesaiEdit
+  }
+}
+function failEdit(data) {
+  modalFailed.value = {
+    isVisible: true,
+    title: 'Gagal',
+    message: data?.message ? data.message : "Silahkan hubungi admin"
+  }
+}
+function closeSelesaiEdit() {
+  closeModalSuccess();
+  router.push('/Draft')
+}
 
 function moveNext() {
   if (positionForm.value < 6) {
@@ -392,7 +406,7 @@ async function getDataApi(id) {
   }
 }
 
-async function postPks() {
+async function postPks(successFunction, failFunction) {
   isLoading.value = true;
   const form = new FormData()
   // form.append('userId', '1')
@@ -515,10 +529,10 @@ async function postPks() {
   const res = await fetchPostForm(`staff/pks/draft/${id.value}/`, null, form, router);
   if (res.status == 200) {
     isLoading.value = false;
-    isOkOpen.value = true;
+    successFunction();
   } else {
     isLoading.value = false;
-    isFailOpen.value = true;
+    failFunction();
     console.log(res.data.message)
   }
 }
@@ -585,50 +599,35 @@ watch(
 //     scopes.value = Array.from(values);
 // }
 
-function openSend() {
-  if (!isKirimDisable.value) {
-    isSendOpen.value = true;
-    isOkOpen.value = false;
-    console.log('partnershipType: ', partnershipType.value)
-    console.log('expectedDate', createdDate.value)
-    console.log('budgetType', budgetType.value)
-    console.log('budgetNumber', budgetNumber.value)
-    console.log('partnershipMethod', partnershipMethod.value)
-    console.log('materialType', materialType.value)
-    console.log('title: ', partnershipTitle.value)
-    console.log('rabs', rabs.value)
-    console.log('scoopes', scopes.value)
-    console.log('background', background.value)
-    console.log('note', note.value)
-    console.log('candidate', partnershipCandidate.value)
-    console.log('fileKKB', fileKKB.value)
-    console.log('fileKKR', fileKKR.value)
-    console.log('fileKKF', fileKKF.value)
-    console.log('fileKKO', fileKKO.value)
-    console.log('file proposal', fileProposal.value)
-    console.log('file surat', fileSurat.value)
-    console.log('file lainnya', fileLainnya.value)
-    // isKirimDisable.value = true
-  }
-  // if (positionForm.value == 5 && fileSurat) {
-  //   isKirimDisable.value = false
-  // } 
-}
-function closeSend() {
-  isSendOpen.value = false;
-  isKirimDisable.value = false;
-}
-async function openOk() {
-  await postPks();
-  isSendOpen.value = false;
-}
-function closeOk() {
-  isOkOpen.value = false;
-  router.push("/Draft")
-}
-function closeFail() {
-  isFailOpen.value = false;
-}
+// function openSend() {
+//   if (!isKirimDisable.value) {
+//     isSendOpen.value = true;
+//     isOkOpen.value = false;
+//     console.log('partnershipType: ', partnershipType.value)
+//     console.log('expectedDate', createdDate.value)
+//     console.log('budgetType', budgetType.value)
+//     console.log('budgetNumber', budgetNumber.value)
+//     console.log('partnershipMethod', partnershipMethod.value)
+//     console.log('materialType', materialType.value)
+//     console.log('title: ', partnershipTitle.value)
+//     console.log('rabs', rabs.value)
+//     console.log('scoopes', scopes.value)
+//     console.log('background', background.value)
+//     console.log('note', note.value)
+//     console.log('candidate', partnershipCandidate.value)
+//     console.log('fileKKB', fileKKB.value)
+//     console.log('fileKKR', fileKKR.value)
+//     console.log('fileKKF', fileKKF.value)
+//     console.log('fileKKO', fileKKO.value)
+//     console.log('file proposal', fileProposal.value)
+//     console.log('file surat', fileSurat.value)
+//     console.log('file lainnya', fileLainnya.value)
+//     // isKirimDisable.value = true
+//   }
+//   // if (positionForm.value == 5 && fileSurat) {
+//   //   isKirimDisable.value = false
+//   // } 
+// }
 
 onMounted(() => {
   if (route.params.id) {

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 
 export default {
   name: "SelectSearch",
@@ -49,17 +49,22 @@ export default {
     initialValue: {
       type: Object,
       default: null
-    },
+    }
   },
   emits: ["change"],
   setup(props, { emit }) {
     const searchTerm = ref("");
     const isDropdownOpen = ref(false);
+    const filterClickListener = ref(null);
 
     const filteredOptions = computed(() => {
-      return props.options.filter((option) =>
-        option.label.toLowerCase().includes(searchTerm.value.toLowerCase())
-      );
+      if (searchTerm.value != "") {
+        return props.options.filter((option) =>
+          option?.label?.toLowerCase().includes(searchTerm?.value?.toLowerCase())
+        );
+      } else {
+        return props.options
+      }
     });
 
     const selectOption = (option) => {
@@ -84,14 +89,24 @@ export default {
       { immediate: true } // Trigger immediately on component mount
     );
 
+    onMounted(() => {
+      filterClickListener.value = (e) => {
+        if (!e.target.closest('.searchable-select')
+        ) {
+          isDropdownOpen.value = false;
+        }
+      }
+      document.addEventListener('click', filterClickListener.value);
+    });
+
     return {
       searchTerm,
       isDropdownOpen,
       filteredOptions,
       selectOption,
-      hoverOption,
+      hoverOption
     };
-  },
+  }
 };
 </script>
 

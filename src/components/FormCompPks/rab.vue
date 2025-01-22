@@ -1,5 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
+  <ModalFailed :isVisible="modalFailed.isVisible" :title="modalFailed.title" :message="modalFailed.message"
+    @close="closeModalFailed" />
   <div :class="!props.isDisplay ? 'hidden' : ''">
     <h1 class="text-xl font-medium pl-4 mt-6">RAB</h1>
     <div class="w-[1175px] h-10 mt-6 flex justify-between">
@@ -336,11 +338,17 @@
 
 <script setup>
 import SelectSearch from '../SelectSearch.vue';
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import ModalFailed from '../modalfailed.vue';
+import { fetchGet } from '@/api/apiFunction';
+
+
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
 const props = defineProps({
   isDisplay: Boolean,
 })
 const emit = defineEmits(['rabs'])
+const router = useRouter();
 
 const isOpen = ref(false);
 const isOkOpen = ref(false);
@@ -350,6 +358,11 @@ const currentPage = ref(1);
 const rowsPerPage = ref(8);
 const filterClickListener = ref(null);
 const dataRows = ref([]);
+const modalFailed = ref({
+  isVisible: false,
+  title: '',
+  message: ''
+});
 
 // Computed properties
 const totalPages = computed(() => {
@@ -384,6 +397,14 @@ const paginationPages = computed(() => {
 });
 
 // Methods
+const closeModalFailed = () => {
+  modalFailed.value = {
+    isVisible: false,
+    title: '',
+    message: ''
+  }
+};
+
 const toggleDataDropdown = () => {
   isDataOpen.value = !isDataOpen.value;
 };
@@ -558,16 +579,8 @@ const isSimpanDisable = ref(true);
 const selectedPelanggan = ref(null);
 const selectedProduk = ref(null);
 
-const pelangganList = ref([
-  { value: "pelanggan1", label: "Pelanggan 1" },
-  { value: "pelanggan2", label: "Pelanggan 2" },
-  { value: "pelanggan3", label: "Pelanggan 3" },
-])
-const produkList = ref([
-  { value: "produk1", label: "Produk 1" },
-  { value: "produk2", label: "Produk 2" },
-  { value: "produk3", label: "Produk 3" },
-])
+const pelangganList = ref([])
+const produkList = ref([])
 
 function handleChangePelanggan(option) {
   selectedPelanggan.value = option;
@@ -585,6 +598,52 @@ function plnOption(option) {
   PlnOption.value = option;
   isPlnOpen.value = false;
 }
+
+// api
+async function getDataPelangganApi() {
+  let url = 'customer';
+  let params = null;
+  const res = await fetchGet(url, params, router);
+  if (res.status == 200) {
+    console.log(res.data)
+    const cleanData = res.data.map((item) => ({
+      value: item.name,
+      label: item.name,
+    }))
+    pelangganList.value = cleanData;
+  } else {
+    modalFailed.value = {
+      isVisible: true,
+      title: 'Gagal Ambil Data',
+      message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+    }
+  }
+}
+
+async function getDataProdukApi() {
+  let url = 'product';
+  let params = null;
+  const res = await fetchGet(url, params, router);
+  if (res.status == 200) {
+    console.log(res.data)
+    const cleanData = res.data.map((item) => ({
+      value: item.productName,
+      label: item.productName,
+    }))
+    produkList.value = cleanData;
+  } else {
+    modalFailed.value = {
+      isVisible: true,
+      title: 'Gagal Ambil Data',
+      message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+    }
+  }
+}
+
+onMounted(() => {
+  getDataPelangganApi();
+  getDataProdukApi();
+})
 
 watch(
   [pelangganInput, produkInput, revenueInput, biayaInput, deskInput, PlnOption],

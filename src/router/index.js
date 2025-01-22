@@ -23,6 +23,9 @@ import Selesai from "../pages/Selesai.vue";
 import Detaildraft from "../pages/Detaildraft.vue";
 import Detailproses from "../pages/Detailproses.vue";
 import DetailMoU from "../pages/DetailMoU.vue";
+import CandidateData from "@/pages/MasterData/candidate-data.vue";
+import PelangganData from "@/pages/MasterData/pelanggan-data.vue";
+import ProdukData from "@/pages/MasterData/produk-data.vue";
 
 // MoU
 import MoU from '../pages/MoU/Mou.vue';
@@ -68,6 +71,9 @@ const routes = [
     { path: '/Detaildraft/:base/:id', name: 'Detaildraft', component: Detaildraft, meta: { requiresAuth: true, role: ['staff'] } },
     { path: '/Detailproses/:base/:id', name: 'Detailproses', component: Detailproses, meta: { requiresAuth: true, role: ['staff'] } },
     { path: '/DetailMoU', name: 'DetailMoU', component: DetailMoU, meta: { requiresAuth: true, role: ['staff'] } },
+    { path: '/pelanggan', name: 'Pelanggan', component: PelangganData, meta: { requiresAuth: true, role: ['staff'] } },
+    { path: '/produk', name: 'Produk', component: ProdukData, meta: { requiresAuth: true, role: ['staff'] } },
+    { path: '/candidate', name: 'Candidate', component: CandidateData, meta: { requiresAuth: true, role: ['staff'] } },
 
     // MoU
     // { path: '/MoU-NDA', name: 'MoU', component: MoU, meta: { requiresAuth: true, role: ['staff'] } },

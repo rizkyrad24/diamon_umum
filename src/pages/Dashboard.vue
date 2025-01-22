@@ -342,7 +342,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[97px] px-3">
+                    <th class="w-[200px] px-3">
                       <div class="flex justify-between">Status
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -577,6 +577,11 @@ export default {
       //   { id: 45, name: 'Kerja Sama Penyediaan APN Private', code: '100523', type: 'PKS', startDate: '25/08/2024', endDate: '11/09/2024', status: 'Revisi', statusClass: 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]' },
       //   { id: 46, name: 'Kerja Sama Penyediaan APN Private', code: '100523', type: 'PKS', startDate: '01/08/2024', endDate: '09/09/2024', status: 'Revisi', statusClass: 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]' },
       // ]
+      totalPermintaan: 0,
+      totalDiproses: 0,
+      totalDirevisi: 0,
+      totalDitolak: 0,
+      totalSelesai: 0,
     };
   },
 
@@ -648,26 +653,26 @@ export default {
       }
       return pages;
     },
-    totalPermintaan() {
-      const data = this.dataRows.filter(item => ['Pengajuan','Draft'].includes(item.status));
-      return data.length
-    },
-    totalDiproses() {
-      const data = this.dataRows.filter(item => ['Approved'].includes(item.status));
-      return data.length
-    },
-    totalDirevisi() {
-      const data = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status));
-      return data.length
-    },
-    totalDitolak() {
-      const data = this.dataRows.filter(item => ['Ditolak'].includes(item.status));
-      return data.length
-    },
-    totalSelesai() {
-      const data = this.dataRows.filter(item => ['Selesai'].includes(item.status));
-      return data.length
-    }
+    // totalPermintaan() {
+    //   const data = this.dataRows.filter(item => ['Pengajuan','Draft'].includes(item.status));
+    //   return data.length
+    // },
+    // totalDiproses() {
+    //   const data = this.dataRows.filter(item => ['Approved'].includes(item.status));
+    //   return data.length
+    // },
+    // totalDirevisi() {
+    //   const data = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status));
+    //   return data.length
+    // },
+    // totalDitolak() {
+    //   const data = this.dataRows.filter(item => ['Ditolak'].includes(item.status));
+    //   return data.length
+    // },
+    // totalSelesai() {
+    //   const data = this.dataRows.filter(item => ['Selesai'].includes(item.status));
+    //   return data.length
+    // }
   },
 
   methods: {
@@ -849,7 +854,29 @@ export default {
 			}
 			this.dataRows = boxResult
       this.isLoading = false;
-		}
+		},
+    async getDataAggApi() {
+      this.isLoading = true;
+      let url = 'mitra/';
+      let params = null;
+			const res = await fetchGet(url, params, this.$router);
+			if (res.status == 200) {
+        console.log(res.data)
+        this.totalPermintaan = res.data.totalNda + res.data.totalMou + res.data.totalPks;
+        this.totalDiproses = res.data.totalProcessed,
+        this.totalDirevisi = res.data.totalRevision,
+        this.totalDitolak = res.data.totalRejected,
+        this.totalSelesai = res.data.totalFinished
+        this.isLoading = false;
+			} else {
+				this.isLoading = false;
+        this.modalFailed = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+        }
+			}
+    }
   },
 
   mounted() {
@@ -866,6 +893,7 @@ export default {
     };
     document.addEventListener('click', this.filterClickListener);
     this.getDataApi();
+    this.getDataAggApi();
   }
 };
 </script>

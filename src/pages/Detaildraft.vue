@@ -3,8 +3,9 @@
 import sidebar from "../components/sidebar.vue";
 import navbar from "../components/navbar.vue";
 import LoadingComponent from '../components/loading.vue';
-import modalsuccess from "@/components/modalsuccess.vue";
-import modalfailed from "@/components/modalfailed.vue";
+import ModalSuccess from "@/components/modalsuccess.vue";
+import ModalFailed from "@/components/modalfailed.vue";
+import ModalDialog from '@/components/modaldialog.vue';
 import { fetchGet, fetchPost } from "@/api/apiFunction";
 import { parseStatusAproval } from "@/utils/helper";
 import { dateParsing } from "@/utils/helper";
@@ -29,18 +30,13 @@ import { dateParsing } from "@/utils/helper";
       </div>
       <div class="h-auto py-3 px-4 bg-slate-100">
         <LoadingComponent :isVisible="isLoading" />
-        <modalfailed
-          :isVisible="modalFailed.isVisible"
-          :title="modalFailed.title"
-          :message="modalFailed.message"
-          @close="closeModalFailed"
-        />
-        <modalsuccess
-          :isVisible="modalSuccess.isVisible"
-          :title="modalSuccess.title"
-          :message="modalSuccess.message"
-          @close="closeModalSuccess"
-        />
+        <ModalFailed :isVisible="modalFailed.isVisible" :title="modalFailed.title" :message="modalFailed.message"
+          @close="closeModalFailed" />
+        <ModalSuccess :isVisible="modalSuccess.isVisible" :title="modalSuccess.title" :message="modalSuccess.message"
+          @close="modalSuccess.closeFunction" />
+        <ModalDialog :isVisible="modalDialog.isVisible" :title="modalDialog.title" :message="modalDialog.message"
+          @close="modalDialog.closeFunction" @ok="modalDialog.okFunction" />
+
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
           <div class="w-[1170px] h-[56px] ml-4 mt-4 flex justify-between">
@@ -649,7 +645,7 @@ import { dateParsing } from "@/utils/helper";
             <button @click="pushEdit" class="w-[61px] h-[40px] bg-[#2671D9] text-white hover:bg-[#2f63ab] rounded-lg">
               Edit
             </button>
-            <button :disabled="disableKirim" @click="pushKirim" class="w-[61px] h-[40px] rounded-lg"
+            <button :disabled="disableKirim" @click="SendKirimPengajuan" class="w-[61px] h-[40px] rounded-lg"
               :class="disableKirim ? 'bg-[#9C9C9C] text-black' : 'bg-[#2671D9] text-white hover:bg-[#2f63ab]'">
               Kirim
             </button>
@@ -704,7 +700,15 @@ export default {
       modalSuccess: {
         isVisible: false,
         title: '',
-        message: ''
+        message: '',
+        closeFunction: () => null
+      },
+      modalDialog: {
+        isVisible: false,
+        title: '',
+        message: '',
+        okFunction: () => null,
+        closeFunction: () => null
       },
     };
   },
@@ -720,10 +724,57 @@ export default {
       this.modalSuccess = {
         isVisible: false,
         title: '',
-        message: ''
+        message: '',
+        closeFunction: () => null
       }
+    },
+    closeModalDialog() {
+      this.modalDialog = {
+        isVisible: false,
+        title: '',
+        message: '',
+        okFunction: () => null,
+        closeFunction: () => null
+      }
+    },
+    // Popup Kirim
+    SendKirimPengajuan() {
+      this.modalDialog = {
+        isVisible: true,
+        title: 'Kirim Pengajuan',
+        message: 'Apakan anda yakin akan mengirim pengajuan ini?',
+        okFunction: this.openKirimPengajuan,
+        closeFunction: this.closeKirimPengajuan
+      }
+    },
+    openKirimPengajuan() {
+      this.closeModalDialog();
+      this.postDataApi(this.successKirimPengajuan, this.failKirimPengajuan);
+    },
+    closeKirimPengajuan() {
+      this.closeModalDialog()
+    },
+    successKirimPengajuan() {
+      this.modalSuccess = {
+        isVisible: true,
+        title: 'Success',
+        message: 'Berhasil kirim pengajuan',
+        closeFunction: this.closeSelesaiKirimPengajuan
+      }
+    },
+    failKirimPengajuan(data) {
+      this.modalFailed = {
+        isVisible: true,
+        title: 'Gagal',
+        message: data?.message ? data.message : "Silahkan hubungi admin"
+      }
+    },
+    closeSelesaiKirimPengajuan() {
+      this.closeModalSuccess();
       this.$router.push('/Draft')
     },
+
+
     informasiDropdown() {
       this.dropdownInformasi = !this.dropdownInformasi;
     },
@@ -744,9 +795,6 @@ export default {
           this.$router.push(`/MoU-NDA/${this.id}`);
         }
       }
-    },
-    pushKirim() {
-      this.postDataApi(this.base, this.id, this.dataBerkas?.status)
     },
 
     // api
@@ -856,86 +904,54 @@ export default {
         }
       }
     },
-    async postDataApi(base, id, status) {
+    async postDataApi(successFunction, failFunction) {
       this.isLoading = true;
-      if (base == "PKS") {
-        if (status == "Draft") {
-          const res = await fetchPost(`staff/pks/draft/${id}/send`, null, null, this.$router);
+      if (this.base == "PKS") {
+        if (this.dataBerkas?.status == "Draft") {
+          const res = await fetchPost(`staff/pks/draft/${this.id}/send`, null, null, this.$router);
           if (res.status == 200) {
             this.isLoading = false;
-            this.modalSuccess = {
-              isVisible: true,
-              title: 'Success',
-              message: `${base} berhasil dikirim`
-            }
+            successFunction();
           } else {
             this.isLoading = false;
-            this.modalFailed = {
-              isVisible: true,
-              title: 'Gagal Kirim Data',
-              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-            }
+            failFunction();
           }
         } else {
-          const res = await fetchPost(`staff/pks/draft/${id}/send/revision`, null, null, this.$router);
+          const res = await fetchPost(`staff/pks/draft/${this.id}/send/revision`, null, null, this.$router);
           if (res.status == 200) {
             this.isLoading = false;
-            this.modalSuccess = {
-              isVisible: true,
-              title: 'Success',
-              message: `${base} berhasil dikirim`
-            }
+            successFunction();
           } else {
             this.isLoading = false;
-            this.modalFailed = {
-              isVisible: true,
-              title: 'Gagal Kirim Data',
-              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-            }
+            failFunction();
           }
         }
       } else {
-        if (status == "Draft") {
+        if (this.dataBerkas?.status == "Draft") {
           const res = await fetchPost(
-            `staff/mounda/draft/${id}/send`,
+            `staff/mounda/draft/${this.id}/send`,
             null, null,
             this.$router
           );
           if (res.status == 200) {
             this.isLoading = false;
-            this.modalSuccess = {
-              isVisible: true,
-              title: 'Success',
-              message: `${base} berhasil dikirim`
-            }
+            successFunction();
           } else {
             this.isLoading = false;
-            this.modalFailed = {
-              isVisible: true,
-              title: 'Gagal Kirim Data',
-              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-            }
+            failFunction();
           }
         } else {
           const res = await fetchPost(
-            `staff/mounda/draft/${id}/send/revision`,
+            `staff/mounda/draft/${this.id}/send/revision`,
             null, null,
             this.$router
           );
           if (res.status == 200) {
             this.isLoading = false;
-            this.modalSuccess = {
-              isVisible: true,
-              title: 'Success',
-              message: `${base} berhasil dikirim`
-            }
+            successFunction();
           } else {
             this.isLoading = false;
-            this.modalFailed = {
-              isVisible: true,
-              title: 'Gagal Kirim Data',
-              message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-            }
+            failFunction();
           }
         }
       }

@@ -33,6 +33,26 @@ import { computed } from 'vue';
             </div>
           </router-link>
 
+          <!-- Masterdata -->
+          <div @click="setActive('masterdata')" :class="{'bg-[#2671D9] text-white': isMasterDataActive, 'hover:bg-[#E9F1FB] hover:text-[#2671D9]': !isMasterDataActive}" class="flex mt-2 h-10 py-[10px] px-3 rounded-lg cursor-pointer">
+            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" :fill="isMasterDataActive ? '#ffffff' : '#2671D9'">
+              <path d="M2.75 12.5H5.93C6.0287 12.5006 6.12655 12.4817 6.21793 12.4443C6.30931 12.407 6.39242 12.352 6.4625 12.2825L11.6525 7.08502L13.7825 5.00002C13.8528 4.93029 13.9086 4.84734 13.9467 4.75595C13.9847 4.66455 14.0043 4.56652 14.0043 4.46752C14.0043 4.36851 13.9847 4.27048 13.9467 4.17908C13.9086 4.08769 13.8528 4.00474 13.7825 3.93502L10.6025 0.717515C10.5328 0.647219 10.4498 0.591423 10.3584 0.553347C10.267 0.51527 10.169 0.495667 10.07 0.495667C9.97099 0.495667 9.87296 0.51527 9.78157 0.553347C9.69017 0.591423 9.60722 0.647219 9.5375 0.717515L7.4225 2.84002L2.2175 8.03752C2.14799 8.1076 2.093 8.19071 2.05567 8.28209C2.01835 8.37346 1.99943 8.47131 2 8.57001V11.75C2 11.9489 2.07902 12.1397 2.21967 12.2803C2.36032 12.421 2.55109 12.5 2.75 12.5ZM10.07 2.30752L12.1925 4.43002L11.1275 5.49502L9.005 3.37252L10.07 2.30752ZM3.5 8.87752L7.9475 4.43002L10.07 6.55252L5.6225 11H3.5V8.87752ZM14.75 14H1.25C1.05109 14 0.860322 14.079 0.71967 14.2197C0.579018 14.3603 0.5 14.5511 0.5 14.75C0.5 14.9489 0.579018 15.1397 0.71967 15.2803C0.860322 15.421 1.05109 15.5 1.25 15.5H14.75C14.9489 15.5 15.1397 15.421 15.2803 15.2803C15.421 15.1397 15.5 14.9489 15.5 14.75C15.5 14.5511 15.421 14.3603 15.2803 14.2197C15.1397 14.079 14.9489 14 14.75 14Z"/>
+            </svg>
+            <span class="text-sm font-semibold ml-3 -translate-y-[2px]">Master Data</span>
+            <span :class="{'rotate-0': isDropdownMasterDataOpen, 'rotate-180': !isDropdownMasterDataOpen}" class="ml-auto mt-2 mb-2 transition-transform duration-300">
+              <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 8">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"/>
+              </svg>
+            </span>
+          </div>
+
+          <!-- Dropdown Menu Masterdata -->
+          <div v-show="isDropdownMasterDataOpen" class="ml-[48px]" id="submenu">
+            <router-link to="/pelanggan"><h1  @click="setActive('pelanggan')" :class="{'text-[#2671D9] font-semibold': isPelangganActive}" class="cursor-pointer text-sm mt-3 hover:text-[#2671D9]">Pelanggan</h1></router-link>
+            <router-link to="/produk"><h1  @click="setActive('produk')" :class="{'text-[#2671D9] font-semibold': isProdukActive}" class="cursor-pointer text-sm mt-3 hover:text-[#2671D9]">Produk</h1></router-link>
+            <router-link to="/candidate"><h1  @click="setActive('candidate')" :class="{'text-[#2671D9] font-semibold': isCandidateActive}" class="cursor-pointer text-sm mt-3 hover:text-[#2671D9]">Candidate</h1></router-link>
+          </div>
+
           <!-- Buat -->
           <div @click="setActive('buat')" :class="{'bg-[#2671D9] text-white': isBuatActive, 'hover:bg-[#E9F1FB] hover:text-[#2671D9]': !isBuatActive}" class="flex mt-2 h-10 py-[10px] px-3 rounded-lg cursor-pointer">
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" :fill="isBuatActive ? '#ffffff' : '#2671D9'">
@@ -96,6 +116,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();   
 
 const isDropdownOpen = ref(false);
+const isDropdownMasterDataOpen = ref(false);
 
 const isDashboardActive = computed(() => route.name === 'Dashboard');
 const isPksActive = computed(() => ['PKS', 'Rab', 'Pksruanglingkup', 'Pkslainnya', 'Pksmitrabisnis', 'Pkslampiran'].includes(route.name));
@@ -104,14 +125,23 @@ const isDraftActive = computed(() => ['Draft', 'Detaildraft'].includes(route.nam
 const isProsesActive = computed(() => ['Proses', 'Detailproses', 'DetailMoU'].includes(route.name));
 const isSelesaiActive = computed(() => route.name === 'Selesai');
 const isBuatActive = computed(() => ['MoU', 'Ruanglingkup', 'Lainnya', 'Mitrabisnis', 'Lampiran', 'PKS', 'Rab', 'Pksruanglingkup', 'Pkslainnya', 'Pksmitrabisnis', 'Pkslampiran'].includes(route.name));
+const isPelangganActive = computed(() => route.name === 'Pelanggan');
+const isProdukActive = computed(() => route.name === 'Produk');
+const isCandidateActive = computed(() => route.name === 'Candidate');
+const isMasterDataActive = computed(() => ['Pelanggan', 'Produk', 'Candidate'].includes(route.name));
 
 watch(
   () => route.name,
   () => {
     if (isMouActive.value || isPksActive.value) {
-      isDropdownOpen.value = true; 
+      isDropdownOpen.value = true;
+      isDropdownMasterDataOpen.value = false;
+    } else if (isProdukActive.value || isPelangganActive.value || isCandidateActive.value) {
+      isDropdownMasterDataOpen.value = true;
+      isDropdownOpen.value = false;
     } else {
-      isDropdownOpen.value = false; 
+      isDropdownOpen.value = false;
+      isDropdownMasterDataOpen.value = false;
     }
   },
   { immediate: true }
@@ -121,27 +151,50 @@ function setActive(tab) {
   if (tab === 'Dashboard') {
     isDashboardActive.value = true;
     isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = false;
   } else if (tab === 'buat') {
     isDropdownOpen.value = !isDropdownOpen.value;
+    isDropdownMasterDataOpen.value = false;
   } else if (tab === 'mou') {
     isMouActive.value = true;
     isPksActive.value = false;
+    isDropdownMasterDataOpen.value = false;
     isDropdownOpen.value = true;
   } else if (tab === 'pks') {
     isPksActive.value = true;
     isMouActive.value = false;
     isDropdownOpen.value = true;
+    isDropdownMasterDataOpen.value = false;
   } else if (tab === 'draft') {
     isDraftActive.value = true;
     isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = false;
   } else if (tab === 'proses') { 
     isProsesActive.value = true;
     isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = false;
   } else if (tab === 'selesai') { 
     isSelesaiActive.value = true;
     isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = false;
+  } else if (tab === 'masterdata') { 
+    isDropdownMasterDataOpen.value = !isDropdownMasterDataOpen.value;
+    isDropdownOpen.value = false;
+  } else if (tab === 'pelanggan') { 
+    isPelangganActive.value = true;
+    isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = true;
+  } else if (tab === 'produk') { 
+    isProdukActive.value = true;
+    isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = true;
+  } else if (tab === 'candidate') { 
+    isCandidateActive.value = true;
+    isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = true;
   } else {
     isDropdownOpen.value = false;
+    isDropdownMasterDataOpen.value = false;
   }
 }
 </script>
