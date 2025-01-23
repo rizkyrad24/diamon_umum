@@ -5,7 +5,9 @@ import dialog from '@/assets/img/Dialog.png';
 import kirim from '@/assets/img/Dialogkirim.png';
 import Navadmin from '@/components/navadmin.vue';
 import LoadingComponent from '@/components/loading.vue';
-import modalfailed from "@/components/modalfailed.vue";
+import ModalSuccess from "@/components/modalsuccess.vue";
+import ModalFailed from "@/components/modalfailed.vue";
+import ModalDialog from '@/components/modaldialog.vue';
 import { fetchGet, fetchPostForm } from '@/api/apiFunction';
 import { dateParsing } from '@/utils/helper';
 </script>
@@ -32,12 +34,13 @@ import { dateParsing } from '@/utils/helper';
         <!-- Start Content -->
         <div class="w-[1217px] h-auto p-1 rounded-lg bg-white min-h-screen mx-auto">
           <LoadingComponent :isVisible="isLoading" />
-          <modalfailed
-            :isVisible="modalFailed.isVisible"
-            :title="modalFailed.title"
-            :message="modalFailed.message"
-            @close="closeModalFailed"
-          />
+          <ModalFailed :isVisible="modalFailed.isVisible" :title="modalFailed.title" :message="modalFailed.message"
+            @close="closeModalFailed" />
+          <ModalSuccess :isVisible="modalSuccess.isVisible" :title="modalSuccess.title" :message="modalSuccess.message"
+            @close="modalSuccess.closeFunction" />
+          <ModalDialog :isVisible="modalDialog.isVisible" :title="modalDialog.title" :message="modalDialog.message"
+            @close="modalDialog.closeFunction" @ok="modalDialog.okFunction" />
+
           <div class="w-[1170px] h-[56px] ml-4 mt-4 flex justify-between">
             <div>
               <div class="flex">
@@ -577,7 +580,7 @@ import { dateParsing } from '@/utils/helper';
         <!-- Start Pop up -->
         <div>
           <!-- Setujui Pengajuan -->
-          <div v-if="isSendSetuju" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <!-- <div v-if="isSendSetuju" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[476px]">
               <div @click="closeApprov" class="flex justify-end cursor-pointer">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -602,9 +605,9 @@ import { dateParsing } from '@/utils/helper';
                   class="w-[296px] h-[40px] border-[1px] border-[#2671D9] text-[#2671D9] text-sm font-semibold rounded-lg">Batal</button>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Setujui Pengajuan -->
-          <div v-if="isSelesaiSetuju" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <!-- <div v-if="isSelesaiSetuju" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[428px]">
               <div class="flex justify-center"><img :src="kirim" alt="Dialog Image" class="pt-6"></div>
               <div class="flex justify-center">
@@ -618,10 +621,10 @@ import { dateParsing } from '@/utils/helper';
                   class="w-[296px] h-[40px] bg-[#2671D9] text-white text-sm font-semibold rounded-lg">Selesai</button>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Tolak Pengajuan -->
-          <div v-if="isSendTolak" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <!-- <div v-if="isSendTolak" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[476px]">
               <div @click="closeTolak" class="flex justify-end cursor-pointer">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -646,9 +649,9 @@ import { dateParsing } from '@/utils/helper';
                   class="w-[296px] h-[40px] border-[1px] border-[#2671D9] text-[#2671D9] text-sm font-semibold rounded-lg">Batal</button>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Tolak Pengajuan -->
-          <div v-if="isSelesaiTolak" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <!-- <div v-if="isSelesaiTolak" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[428px]">
               <div class="flex justify-center"><img :src="kirim" alt="Dialog Image" class="pt-6"></div>
               <div class="flex justify-center">
@@ -662,10 +665,10 @@ import { dateParsing } from '@/utils/helper';
                   class="w-[296px] h-[40px] bg-[#2671D9] text-white text-sm font-semibold rounded-lg">Selesai</button>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Revisi Pengajuan -->
-          <div v-if="isSendRevisi" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <!-- <div v-if="isSendRevisi" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[476px]">
               <div @click="closeRevisi" class="flex justify-end cursor-pointer">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -690,9 +693,9 @@ import { dateParsing } from '@/utils/helper';
                   class="w-[296px] h-[40px] border-[1px] border-[#2671D9] text-[#2671D9] text-sm font-semibold rounded-lg">Batal</button>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Revisi Pengajuan -->
-          <div v-if="isSelesaiRevisi" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <!-- <div v-if="isSelesaiRevisi" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[360px] h-[428px]">
               <div class="flex justify-center"><img :src="kirim" alt="Dialog Image" class="pt-6"></div>
               <div class="flex justify-center">
@@ -707,7 +710,7 @@ import { dateParsing } from '@/utils/helper';
                   class="w-[296px] h-[40px] bg-[#2671D9] text-white text-sm font-semibold rounded-lg">Selesai</button>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- End Pop up -->
 
@@ -721,17 +724,17 @@ import { baseURL } from "@/api/apiManager";
 export default {
   data() {
     return {
-      // Popup Acprrove
-      isSendSetuju: false,
-      isSelesaiSetuju: false,
+      // // Popup Acprrove
+      // isSendSetuju: false,
+      // isSelesaiSetuju: false,
 
-      // Popup Tolak
-      isSendTolak: false,
-      isSelesaiTolak: false,
+      // // Popup Tolak
+      // isSendTolak: false,
+      // isSelesaiTolak: false,
 
-      // Popup Revisi
-      isSendRevisi: false,
-      isSelesaiRevisi: false,
+      // // Popup Revisi
+      // isSendRevisi: false,
+      // isSelesaiRevisi: false,
 
       // Dropdown
       dropdownInformasi: false,
@@ -769,6 +772,19 @@ export default {
         title: '',
         message: ''
       },
+      modalSuccess: {
+        isVisible: false,
+        title: '',
+        message: '',
+        closeFunction: () => null
+      },
+      modalDialog: {
+        isVisible: false,
+        title: '',
+        message: '',
+        okFunction: () => null,
+        closeFunction: () => null
+      },
 
       // input
       approvalNote: '',
@@ -783,59 +799,186 @@ export default {
         message: ''
       }
     },
-    // Popup Aprrove
+    closeModalSuccess() {
+      this.modalSuccess = {
+        isVisible: false,
+        title: '',
+        message: '',
+        closeFunction: () => null
+      }
+    },
+    closeModalDialog() {
+      this.modalDialog = {
+        isVisible: false,
+        title: '',
+        message: '',
+        okFunction: () => null,
+        closeFunction: () => null
+      }
+    },
+    // Popup Approv
     SendApprov() {
-      this.isSendSetuju = true;
-      this.isSelesaiSetuju = false;
+      this.modalDialog = {
+        isVisible: true,
+        title: 'Approve Pengajuan',
+        message: 'Apakan anda yakin akan approve pengajuan ini?',
+        okFunction: this.openApprov,
+        closeFunction: this.closeApprov
+      }
+    },
+    openApprov() {
+      this.closeModalDialog();
+      this.postAproval(this.successApprov, this.failApprov);
     },
     closeApprov() {
-      this.isSendSetuju = false;
+      this.closeModalDialog()
     },
-    openSetuju() {
-      this.postAproval();
-      // this.isSelesaiSetuju = true;
-      // this.isSendSetuju = false; 
+    successApprov() {
+      this.modalSuccess = {
+        isVisible: true,
+        title: 'Success',
+        message: 'Berhasil approve pengajuan',
+        closeFunction: this.closeSelesaiApprov
+      }
     },
-    closeSelesai() {
-      this.isSelesaiSetuju = false;
+    failApprov(data) {
+      this.modalFailed = {
+        isVisible: true,
+        title: 'Gagal',
+        message: data?.message ? data.message : "Silahkan hubungi admin"
+      }
+    },
+    closeSelesaiApprov() {
+      this.closeModalSuccess();
       this.$router.push('/Approvalpengajuanbaru')
     },
-
     // Popup Tolak
     SendTolak() {
-      this.isSendTolak = true;
-      this.isSelesaiTolak = false;
-    },
-    closeTolak() {
-      this.isSendTolak = false;
+      this.modalDialog = {
+        isVisible: true,
+        title: 'Tolak Pengajuan',
+        message: 'Apakan anda yakin akan menolak pengajuan ini?',
+        okFunction: this.openTolak,
+        closeFunction: this.closeTolak
+      }
     },
     openTolak() {
-      this.postTolak();
-      // this.isSelesaiTolak = true;
-      // this.isSendTolak = false; 
+      this.closeModalDialog();
+      this.postTolak(this.successTolak, this.failTolak);
     },
-    closeSelesaitolak() {
-      this.isSelesaiTolak = false;
+    closeTolak() {
+      this.closeModalDialog()
+    },
+    successTolak() {
+      this.modalSuccess = {
+        isVisible: true,
+        title: 'Success',
+        message: 'Berhasil menolak pengajuan',
+        closeFunction: this.closeSelesaiTolak
+      }
+    },
+    failTolak(data) {
+      this.modalFailed = {
+        isVisible: true,
+        title: 'Gagal',
+        message: data?.message ? data.message : "Silahkan hubungi admin"
+      }
+    },
+    closeSelesaiTolak() {
+      this.closeModalSuccess();
+      this.$router.push('/Approvalpengajuanbaru')
+    },
+    // Popup Revisi
+    SendRevisi() {
+      this.modalDialog = {
+        isVisible: true,
+        title: 'Revisi Pengajuan',
+        message: 'Apakan anda yakin akan meminta revisi pengajuan ini?',
+        okFunction: this.openRevisi,
+        closeFunction: this.closeRevisi
+      }
+    },
+    openRevisi() {
+      this.closeModalDialog();
+      this.postRevisi(this.successRevisi, this.failRevisi);
+    },
+    closeRevisi() {
+      this.closeModalDialog()
+    },
+    successRevisi() {
+      this.modalSuccess = {
+        isVisible: true,
+        title: 'Success',
+        message: 'Berhasil meminta revisi pengajuan',
+        closeFunction: this.closeSelesaiRevisi
+      }
+    },
+    failRevisi(data) {
+      this.modalFailed = {
+        isVisible: true,
+        title: 'Gagal',
+        message: data?.message ? data.message : "Silahkan hubungi admin"
+      }
+    },
+    closeSelesaiRevisi() {
+      this.closeModalSuccess();
       this.$router.push('/Approvalpengajuanbaru')
     },
 
-    // Popup Revisi
-    SendRevisi() {
-      this.isSendRevisi = true;
-      this.isSelesaiRevisi = false;
-    },
-    closeRevisi() {
-      this.isSendRevisi = false;
-    },
-    openRevisi() {
-      this.postRevisi();
-      // this.isSelesaiRevisi = true;
-      // this.isSendRevisi = false; 
-    },
-    closeSelesaiRevisi() {
-      this.isSelesaiRevisi = false;
-      this.$router.push('/Approvalpengajuanbaru')
-    },
+
+    // Popup Aprrove
+    // SendApprov() {
+    //   this.isSendSetuju = true;
+    //   this.isSelesaiSetuju = false;
+    // },
+    // closeApprov() {
+    //   this.isSendSetuju = false;
+    // },
+    // openSetuju() {
+    //   this.postAproval();
+    //   // this.isSelesaiSetuju = true;
+    //   // this.isSendSetuju = false; 
+    // },
+    // closeSelesai() {
+    //   this.isSelesaiSetuju = false;
+    //   this.$router.push('/Approvalpengajuanbaru')
+    // },
+
+    // // Popup Tolak
+    // SendTolak() {
+    //   this.isSendTolak = true;
+    //   this.isSelesaiTolak = false;
+    // },
+    // closeTolak() {
+    //   this.isSendTolak = false;
+    // },
+    // openTolak() {
+    //   this.postTolak();
+    //   // this.isSelesaiTolak = true;
+    //   // this.isSendTolak = false; 
+    // },
+    // closeSelesaitolak() {
+    //   this.isSelesaiTolak = false;
+    //   this.$router.push('/Approvalpengajuanbaru')
+    // },
+
+    // // Popup Revisi
+    // SendRevisi() {
+    //   this.isSendRevisi = true;
+    //   this.isSelesaiRevisi = false;
+    // },
+    // closeRevisi() {
+    //   this.isSendRevisi = false;
+    // },
+    // openRevisi() {
+    //   this.postRevisi();
+    //   // this.isSelesaiRevisi = true;
+    //   // this.isSendRevisi = false; 
+    // },
+    // closeSelesaiRevisi() {
+    //   this.isSelesaiRevisi = false;
+    //   this.$router.push('/Approvalpengajuanbaru')
+    // },
 
     // Dropdown
     informasiDropdown() {
@@ -1027,7 +1170,7 @@ export default {
         }
       }
     },
-    async postAproval() {
+    async postAproval(successFunction, failFunction) {
       this.isLoading = true;
       const position = localStorage.getItem('position')
       const payload = new FormData();
@@ -1037,66 +1180,54 @@ export default {
       if (this.base == "PKS" && position == 'manager') {
         const res = await fetchPostForm(`manager/pks/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendSetuju = false;
-          this.isSelesaiSetuju = true;
+          // this.isSendSetuju = false;
+          // this.isSelesaiSetuju = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "MOU" && position == 'manager') {
         const res = await fetchPostForm(`manager/mounda/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendSetuju = false;
-          this.isSelesaiSetuju = true;
+          // this.isSendSetuju = false;
+          // this.isSelesaiSetuju = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "PKS" && position == 'vp') {
         const res = await fetchPostForm(`vp/pks/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendSetuju = false;
-          this.isSelesaiSetuju = true;
+          // this.isSendSetuju = false;
+          // this.isSelesaiSetuju = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "MOU" && position == 'vp') {
         const res = await fetchPostForm(`vp/mounda/${this.id}`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendSetuju = false;
-          this.isSelesaiSetuju = true;
+          // this.isSendSetuju = false;
+          // this.isSelesaiSetuju = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       }
     },
-    async postRevisi() {
+    async postRevisi(successFunction, failFunction) {
       this.isLoading = true;
       const position = localStorage.getItem('position')
       const payload = new FormData();
@@ -1106,66 +1237,54 @@ export default {
       if (this.base == "PKS" && position == 'manager') {
         const res = await fetchPostForm(`manager/pks/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendRevisi = false;
-          this.isSelesaiRevisi = true;
+          // this.isSendRevisi = false;
+          // this.isSelesaiRevisi = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "MOU" && position == 'manager') {
         const res = await fetchPostForm(`manager/mounda/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendRevisi = false;
-          this.isSelesaiRevisi = true;
+          // this.isSendRevisi = false;
+          // this.isSelesaiRevisi = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "PKS" && position == 'vp') {
         const res = await fetchPostForm(`vp/pks/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendRevisi = false;
-          this.isSelesaiRevisi = true;
+          // this.isSendRevisi = false;
+          // this.isSelesaiRevisi = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "MOU" && position == 'vp') {
         const res = await fetchPostForm(`vp/mounda/${this.id}/revision`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendRevisi = false;
-          this.isSelesaiRevisi = true;
+          // this.isSendRevisi = false;
+          // this.isSelesaiRevisi = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       }
     },
-    async postTolak() {
+    async postTolak(successFunction, failFunction) {
       this.isLoading = true;
       const position = localStorage.getItem('position')
       const payload = new FormData();
@@ -1175,62 +1294,50 @@ export default {
       if (this.base == "PKS" && position == 'manager') {
         const res = await fetchPostForm(`manager/pks/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendTolak = false;
-          this.isSelesaiTolak = true;
+          // this.isSendTolak = false;
+          // this.isSelesaiTolak = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "MOU" && position == 'manager') {
         const res = await fetchPostForm(`manager/mounda/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendTolak = false;
-          this.isSelesaiTolak = true;
+          // this.isSendTolak = false;
+          // this.isSelesaiTolak = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "PKS" && position == 'vp') {
         const res = await fetchPostForm(`vp/pks/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendTolak = false;
-          this.isSelesaiTolak = true;
+          // this.isSendTolak = false;
+          // this.isSelesaiTolak = true;
           this.isLoading= false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       } else if (this.base == "MOU" && position == 'vp') {
         const res = await fetchPostForm(`vp/mounda/${this.id}/reject`, null, payload, this.$router);
         if (res.status == 200) {
-          this.isSendTolak = false;
-          this.isSelesaiTolak = true;
+          // this.isSendTolak = false;
+          // this.isSelesaiTolak = true;
           this.isLoading = false;
+          successFunction();
           console.log(res.data)
         } else {
           this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Approve Gagal',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
+          failFunction();
         }
       }
     }
