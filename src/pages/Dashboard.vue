@@ -807,7 +807,7 @@ export default {
 		async getDataApi() {
       this.isLoading = true;
 			let boxResult = new Array;
-			const res = await fetchGet("staff/mounda", null, this.$router);
+			const res = await fetchGet("mitra/list-mounda", null, this.$router);
 			if (res.status == 200) {
 				const cleanData = res.data.map((item) => ({
             name: item.partnershipTitle,
@@ -829,7 +829,7 @@ export default {
           message: res.data.message ? res.data.message : "Silahkan hubungi admin"
         }
 			}
-			const res2 = await fetchGet("staff/pks", null, this.$router);
+			const res2 = await fetchGet("mitra/list-pks", null, this.$router);
 			if (res2.status == 200) {
 				const cleanData2 = res2.data.map((item) => ({
             name: item.partnershipTitle,
