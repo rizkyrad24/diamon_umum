@@ -53,15 +53,15 @@ const routes = [
     { path: '/', name: 'Login', component: Login },
     
     // Admin (Manager, VP, Direksi)
-    { path: '/Dashboardadmin', name: 'Dashboardmanager', component: Dashboardmanager, meta: { requiresAuth: true, role: ['manager', 'vp'] } },
-    { path: '/Approvalpengajuanbaru', name: 'Pengajuanbaru', component: Pengajuanbaru, meta: { requiresAuth: true, role: ['manager', 'vp'] } },
-    { path: '/Approvaldisetujui', name: 'Disetujui', component: Disetujui, meta: { requiresAuth: true, role: ['manager', 'vp'] } },
-    { path: '/Approvalditolak', name: 'Ditolak', component: Ditolak, meta: { requiresAuth: true, role: ['manager', 'vp'] } },
-    { path: '/Prosesadmin', name: 'Prosesmanager', component: Prosesmanager, meta: { requiresAuth: true, role: ['manager', 'vp'] } },
-    { path: '/Selesaiadmin', name: 'Selesaimanager', component: Selesaimanager, meta: { requiresAuth: true, role: ['manager', 'vp'] } },
-    { path: '/Detailpengajuanadmin/:base/:id', name: 'Detailmanager', component: Detailmanager, meta: { requiresAuth: true, role: ['manager', 'vp'] }},
-    { path: '/Detailprosesmanager/:base/:id', name: 'Detailprosesmanager', component: Detailprosesmanager, meta: { requiresAuth: true, role: ['manager', 'vp'] }},
-    { path: '/DetailMoUmanager', name: 'DetailMoUmanager', component: DetailMoUmanager, meta: { requiresAuth: true, role: ['manager', 'vp'] }},
+    { path: '/Dashboardadmin', name: 'Dashboardmanager', component: Dashboardmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
+    { path: '/Approvalpengajuanbaru', name: 'Pengajuanbaru', component: Pengajuanbaru, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
+    { path: '/Approvaldisetujui', name: 'Disetujui', component: Disetujui, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
+    { path: '/Approvalditolak', name: 'Ditolak', component: Ditolak, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
+    { path: '/Prosesadmin', name: 'Prosesmanager', component: Prosesmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
+    { path: '/Selesaiadmin', name: 'Selesaimanager', component: Selesaimanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
+    { path: '/Detailpengajuanadmin/:base/:id', name: 'Detailmanager', component: Detailmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] }},
+    { path: '/Detailprosesmanager/:base/:id', name: 'Detailprosesmanager', component: Detailprosesmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] }},
+    { path: '/DetailMoUmanager', name: 'DetailMoUmanager', component: DetailMoUmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] }},
 
     // User
     { path: '/Dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true, role: ['staff'] } },
@@ -122,7 +122,7 @@ router.beforeEach((to, from, next) => {
       const accessToken = localStorage.getItem('access');
       if (accessToken) {
         const position = localStorage.getItem('position');
-        if (position == 'manager' || position == 'vp') {
+        if (position == 'manager' || position == 'vp' || position == 'direksi') {
           next({ name: 'Dashboardmanager' });
         } else if (position == 'staff') {
           next({ name: 'Dashboard' });

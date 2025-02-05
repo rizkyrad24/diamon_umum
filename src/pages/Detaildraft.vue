@@ -100,11 +100,8 @@ import { dateParsing } from "@/utils/helper";
                   <div class="ml-6">
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
-                      <span v-if="base === 'PKS'" class="text-[#7F7F80]">{{
-                        dataBerkas?.submissionNumber
-                      }}</span>
-                      <span v-else class="text-[#7F7F80]">{{
-                        dataBerkas?.submissionNumber
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.submissionNumber ||'-'
                       }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
@@ -113,46 +110,52 @@ import { dateParsing } from "@/utils/helper";
                         dataBerkas?.partnershipTitle
                       }}</span>
                     </div>
-                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base == 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Nomor Anggaran <span class="text-[#FF5656] text-xs">*</span></h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.budgetNumber
+                        dataBerkas?.budgetNumber || '-'
                       }}</span>
                     </div>
-                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base == 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tipe Anggaran <span class="text-[#FF5656] text-xs">*</span></h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.budgetType
+                        dataBerkas?.budgetType || '-'
                       }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Calon Mitra Bisnis <span class="text-[#FF5656] text-xs">*</span></h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.partnershipCandidate
+                        dataBerkas?.partnershipCandidate || '-'
                       }}</span>
                     </div>
                   </div>
-                  <div v-if="base === 'PKS'">
-                    <div class="w-[541px] flex text-[#333333]">
+                  <div>
+                    <div v-if="base == 'PKS'" class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">Metode Kemitraan <span class="text-[#FF5656] text-xs">*</span></h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.partnershipMethod
+                        dataBerkas?.partnershipMethod || '-'
                       }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base == 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Material <span class="text-[#FF5656] text-xs">*</span></h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.materialType
+                        dataBerkas?.materialType || '-'
                       }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base == 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Kemitraan <span class="text-[#FF5656] text-xs">*</span></h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Pelaksana</h1>
                       <span class="text-[#7F7F80]">{{
-                        dataBerkas?.disposedStaff
+                        dataBerkas?.disposedStaff || '-'
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tipe Bisnis <span class="text-[#FF5656] text-xs">*</span></h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.bisnisType || '-'
                       }}</span>
                     </div>
                   </div>
@@ -171,6 +174,12 @@ import { dateParsing } from "@/utils/helper";
                       }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Dibuat</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dateParsing(dataBerkas?.submissionDate)
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{
                         dataBerkas?.user
@@ -185,9 +194,9 @@ import { dateParsing } from "@/utils/helper";
                       }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
-                      <h1 class="w-[150px]">Tanggal</h1>
+                      <h1 class="w-[150px]">Tanggal Target Selesai</h1>
                       <span class="text-[#7F7F80]">{{
-                        dateParsing(dataBerkas?.submissionDate)
+                        dateParsing(dataBerkas?.expectedDate)
                       }}</span>
                     </div>
                   </div>

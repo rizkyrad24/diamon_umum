@@ -115,7 +115,7 @@ async function submit() {
       if (res.data.role == "Staff") {
       saveDataLogin(res.data);
       router.push('/Dashboard')
-    } else if (res.data.role == "Manager" || res.data.role == "VP") {
+    } else if (res.data.role == "Manager" || res.data.role == "VP" || res.data.role == "Direksi") {
       saveDataLogin(res.data);
       isLoading.value = false;
       router.push('/Dashboardadmin')

@@ -11,12 +11,25 @@ const props = defineProps({
     default: null, // data opsional dengan default null
   },
 });
-const emit = defineEmits(['base', 'partnershipTitle', 'createdDate'])
+const emit = defineEmits(['base', 'partnershipTitle', 'createdDate', 'bisnisType'])
 console.log(props.data, 'dasar')
 
 const isDropdownOpen = ref(false);
 const selectedOption = ref('');
 const titleInput = ref('');
+
+// Bisnis Type
+const isBisnisTypeOpen = ref(false);
+const bisnisTypeOption = ref(null);
+function BisnisTypeDropdown() {
+  isBisnisTypeOpen.value = !isBisnisTypeOpen.value;
+  isDropdownOpen.value = false;
+}
+function BisnisTypeOption(option) {
+  bisnisTypeOption.value = option;
+  emit('bisnisType', option.value);
+  isBisnisTypeOpen.value = false;
+}
 
 // const showDatePicker = ref(false);
 // const today = new Date()
@@ -55,6 +68,7 @@ watch(
   (newData) => {
     titleInput.value = newData?.partnershipTitle || "";
     selectedOption.value = newData?.base || "";
+    bisnisTypeOption.value = newData? {value: newData.bisnisType, label: newData.bisnisType} : null;
     const sekarang = new Date();
     const empatPuluhHariKedepan = new Date();
     empatPuluhHariKedepan.setDate(sekarang.getDate() + 40);
@@ -70,6 +84,7 @@ watch(
 
 function toggleDropdown() {
   isDropdownOpen.value = !isDropdownOpen.value;
+  isBisnisTypeOpen.value = false;
 }
 
 function selectOption(option) {
@@ -124,6 +139,36 @@ function changeDate(val) {
                 <input :min="minDate" ref="dateInput" id="dateInput" type="date" @input="changeDate($event.target.value)" :value="selectedDate" class="w-[510px] opacity-0 absolute">
                 </div>
             </div>
+        </div>
+
+        <div class="pl-4 w-[1160px] flex justify-between mt-4">
+          <!-- Bisnis Type -->
+          <div>
+            <label class="text-[#4D5E80] font-medium">Tipe Bisnis <span class="text-[#FF5656]">*</span></label>
+            <div class="relative w-[540px] mt-2 material-container">
+              <button @click="BisnisTypeDropdown"
+                :class="{ 'rounded-t-lg': isBisnisTypeOpen, 'rounded-lg text-[#7F7F80]': !isBisnisTypeOpen }"
+                class="w-[555px] py-[10px] px-4 border-[1px] text-sm flex justify-between items-center">
+                <span :class="{ 'text-black': bisnisTypeOption, 'text-[#9C9C9C]': !bisnisTypeOption }">{{ bisnisTypeOption?.label
+                  || 'Pilih Tipe Bisnis' }}</span>
+                <svg width="16" height="16" class="ml-3" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M8.70711 11.2071C8.31658 11.5976 7.68342 11.5976 7.29289 11.2071L2.29289 6.20711C1.90237 5.81658 1.90237 5.18342 2.29289 4.79289C2.68342 4.40237 3.31658 4.40237 3.70711 4.79289L8 9.08579L12.2929 4.79289C12.6834 4.40237 13.3166 4.40237 13.7071 4.79289C14.0976 5.18342 14.0976 5.81658 13.7071 6.20711L8.70711 11.2071Z"
+                    fill="#2671D9" />
+                </svg>
+              </button>
+              <div v-show="isBisnisTypeOpen" class="w-[555px] border-[1px] rounded-b-lg z-10">
+                <ul class="text-sm">
+                  <li @click="BisnisTypeOption({ value: 'Infrastruktur', label: 'Infrastruktur' })"
+                    :class="{ 'bg-[#2671D9] text-white': bisnisTypeOption?.value === 'Infrastruktur', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': bisnisTypeOption?.value !== 'Infrastruktur' }"
+                    class="cursor-pointer border-b-[1px] px-4 py-2">Infrastruktur</li>
+                  <li @click="BisnisTypeOption({ value: 'Digital', label: 'Digital' })"
+                    :class="{ 'bg-[#2671D9] text-white': bisnisTypeOption?.value === 'Digital', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': bisnisTypeOption?.value !== 'Digital' }"
+                    class="cursor-pointer border-b-[1px] px-4 py-2">Digital</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Judul Kemitraan -->

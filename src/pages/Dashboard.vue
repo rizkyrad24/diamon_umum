@@ -4,11 +4,11 @@ import sidebar from '../components/sidebar.vue'
 import navbar from '../components/navbar.vue'
 import user from '../assets/img/User.png'
 import group from '../assets/img/Group.png'
-import deliv from '../assets/img/Delivered.png'
-import deliv1 from '../assets/img/Delivered1.png'
-import deliv2 from '../assets/img/Delivered2.png'
-import deliv3 from '../assets/img/Delivered3.png'
-import deliv4 from '../assets/img/Delivered4.png';
+// import deliv from '../assets/img/Delivered.png'
+// import deliv1 from '../assets/img/Delivered1.png'
+// import deliv2 from '../assets/img/Delivered2.png'
+// import deliv3 from '../assets/img/Delivered3.png'
+// import deliv4 from '../assets/img/Delivered4.png';
 import LoadingComponent from '@/components/loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
@@ -56,35 +56,105 @@ import { mapperStatus } from "@/utils/helper";
                 <span class="text-xs text-white">Total Permintaan</span>
                 <h1 class="text-[24px] text-white font-medium">{{ totalPermintaan }}</h1>
               </div>
-              <img :src="deliv1" alt="Direvisi Image" class="object-none">
+              <div class="flex flex-col h-full justify-center me-3 w-[45px]">
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-t-[1px] border-white">
+                  <span>MoU:</span>
+                  <span>{{ totalPermintaanMOU }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-white">
+                  <span>NDA:</span>
+                  <span>{{ totalPermintaanNDA }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-b-[1px] border-white">
+                  <span>PKS:</span>
+                  <span>{{ totalPermintaanPKS }}</span>
+                </div>
+              </div>
+              <!-- <img :src="deliv1" alt="Direvisi Image" class="object-none"> -->
             </div>
             <div class="w-[196.4px] h-full bg-[#8C62FF] border-[1px] rounded-lg flex justify-between">
               <div class="mt-[5px] ml-4">
                 <span class="text-xs text-white">Total Diproses</span>
                 <h1 class="text-[24px] text-white font-medium">{{ totalDiproses }}</h1>
               </div>
-              <img :src="deliv" alt="Diproses Image" class="object-none">
+              <div class="flex flex-col h-full justify-center me-3 w-[45px]">
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-t-[1px] border-white">
+                  <span>MoU:</span>
+                  <span>{{ totalDiprosesMOU }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-white">
+                  <span>NDA:</span>
+                  <span>{{ totalDiprosesNDA }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-b-[1px] border-white">
+                  <span>PKS:</span>
+                  <span>{{ totalDiprosesPKS }}</span>
+                </div>
+              </div>
+              <!-- <img :src="deliv" alt="Diproses Image" class="object-none"> -->
             </div>
             <div class="w-[196.4px] h-full bg-[#FFA229] border-[1px] rounded-lg flex justify-between">
               <div class="mt-[5px] ml-4">
                 <span class="text-xs text-white">Total Direvisi</span>
                 <h1 class="text-[24px] text-white font-medium">{{ totalDirevisi }}</h1>
               </div>
-              <img :src="deliv2" alt="Direvisi Image" class="object-none">
+              <div class="flex flex-col h-full justify-center me-3 w-[45px]">
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-t-[1px] border-white">
+                  <span>MoU:</span>
+                  <span>{{ totalDirevisiMOU }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-white">
+                  <span>NDA:</span>
+                  <span>{{ totalDirevisiNDA }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-b-[1px] border-white">
+                  <span>PKS:</span>
+                  <span>{{ totalDirevisiPKS }}</span>
+                </div>
+              </div>
+              <!-- <img :src="deliv2" alt="Direvisi Image" class="object-none"> -->
             </div>
             <div class="w-[196.4px] h-full bg-[#FF5656] border-[1px] rounded-lg flex justify-between">
               <div class="mt-[5px] ml-4">
                 <span class="text-xs text-white">Total Ditolak</span>
                 <h1 class="text-[24px] text-white font-medium">{{ totalDitolak }}</h1>
               </div>
-              <img :src="deliv3" alt="Dilotak Image" class="object-none">
+              <div class="flex flex-col h-full justify-center me-3 w-[45px]">
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-t-[1px] border-white">
+                  <span>MoU:</span>
+                  <span>{{ totalDitolakMOU }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-white">
+                  <span>NDA:</span>
+                  <span>{{ totalDitolakNDA }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-b-[1px] border-white">
+                  <span>PKS:</span>
+                  <span>{{ totalDitolakPKS }}</span>
+                </div>
+              </div>
+              <!-- <img :src="deliv3" alt="Dilotak Image" class="object-none"> -->
             </div>
             <div class="w-[196.4px] h-full bg-[#0EA976] border-[1px] rounded-lg flex justify-between">
               <div class="mt-[5px] ml-4">
                 <span class="text-xs text-white">Total Selesai</span>
                 <h1 class="text-[24px] text-white font-medium">{{ totalSelesai }}</h1>
               </div>
-              <img :src="deliv4" alt="Selesai Image" class="object-none">
+              <div class="flex flex-col h-full justify-center me-3 w-[45px]">
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-t-[1px] border-white">
+                  <span>MoU:</span>
+                  <span>{{ totalSelesaiMOU }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-white">
+                  <span>NDA:</span>
+                  <span>{{ totalSelesaiNDA }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-white border-x-[1px] px-1 border-b-[1px] border-white">
+                  <span>PKS:</span>
+                  <span>{{ totalSelesaiPKS }}</span>
+                </div>
+              </div>
+              <!-- <img :src="deliv4" alt="Selesai Image" class="object-none"> -->
             </div>
           </div>
 
@@ -577,15 +647,89 @@ export default {
       //   { id: 45, name: 'Kerja Sama Penyediaan APN Private', code: '100523', type: 'PKS', startDate: '25/08/2024', endDate: '11/09/2024', status: 'Revisi', statusClass: 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]' },
       //   { id: 46, name: 'Kerja Sama Penyediaan APN Private', code: '100523', type: 'PKS', startDate: '01/08/2024', endDate: '09/09/2024', status: 'Revisi', statusClass: 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]' },
       // ]
-      totalPermintaan: 0,
-      totalDiproses: 0,
-      totalDirevisi: 0,
-      totalDitolak: 0,
-      totalSelesai: 0,
     };
   },
 
   computed: {
+    totalPermintaan() {
+      return this.dataRows.length
+    },
+    totalPermintaanMOU() {
+      const filtered = this.dataRows.filter(item => item.type == 'MoU')
+      return filtered.length
+    },
+    totalPermintaanNDA() {
+      const filtered = this.dataRows.filter(item => item.type == 'NDA')
+      return filtered.length
+    },
+    totalPermintaanPKS() {
+      const filtered = this.dataRows.filter(item => item.type == 'PKS')
+      return filtered.length
+    },
+    totalDiproses() {
+      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10)
+      return filtered.length
+    },
+    totalDiprosesMOU() {
+      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      return filtered.length
+    },
+    totalDiprosesNDA() {
+      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      return filtered.length
+    },
+    totalDiprosesPKS() {
+      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      return filtered.length
+    },
+    totalDirevisi() {
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10)
+      return filtered.length
+    },
+    totalDirevisiMOU() {
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      return filtered.length
+    },
+    totalDirevisiNDA() {
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      return filtered.length
+    },
+    totalDirevisiPKS() {
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      return filtered.length
+    },
+    totalDitolak() {
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10)
+      return filtered.length
+    },
+    totalDitolakMOU() {
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      return filtered.length
+    },
+    totalDitolakNDA() {
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      return filtered.length
+    },
+    totalDitolakPKS() {
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      return filtered.length
+    },
+    totalSelesai() {
+      const filtered = this.dataRows.filter(item => item.positionLevel == 10)
+      return filtered.length
+    },
+    totalSelesaiMOU() {
+      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'MoU')
+      return filtered.length
+    },
+    totalSelesaiNDA() {
+      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'NDA')
+      return filtered.length
+    },
+    totalSelesaiPKS() {
+      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'PKS')
+      return filtered.length
+    },
     searchedRows() {
       const searched = this.dataRows.filter((row) => {
         const searchQuery = this.searchQuery.toLowerCase();
@@ -653,26 +797,6 @@ export default {
       }
       return pages;
     },
-    // totalPermintaan() {
-    //   const data = this.dataRows.filter(item => ['Pengajuan','Draft'].includes(item.status));
-    //   return data.length
-    // },
-    // totalDiproses() {
-    //   const data = this.dataRows.filter(item => ['Approved'].includes(item.status));
-    //   return data.length
-    // },
-    // totalDirevisi() {
-    //   const data = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status));
-    //   return data.length
-    // },
-    // totalDitolak() {
-    //   const data = this.dataRows.filter(item => ['Ditolak'].includes(item.status));
-    //   return data.length
-    // },
-    // totalSelesai() {
-    //   const data = this.dataRows.filter(item => ['Selesai'].includes(item.status));
-    //   return data.length
-    // }
   },
 
   methods: {
@@ -807,19 +931,21 @@ export default {
 		async getDataApi() {
       this.isLoading = true;
 			let boxResult = new Array;
-			const res = await fetchGet("mitra/list-mounda", null, this.$router);
+			const res = await fetchGet("staff/mounda", null, this.$router);
 			if (res.status == 200) {
-				const cleanData = res.data.map((item) => ({
+				let cleanData = res.data.map((item) => ({
             name: item.partnershipTitle,
             code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
             startDate: item.submissionDate,
             endDate: item.approvalCompletionDate,
+            positionLevel: item.positionLevel,
             status: item.status,
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
           }))
 				console.log(res.data)
+        cleanData = cleanData.filter(item => item.positionLevel > 0);
 				boxResult = boxResult.concat(cleanData)
 			} else {
         this.isLoading = false;
@@ -829,18 +955,20 @@ export default {
           message: res.data.message ? res.data.message : "Silahkan hubungi admin"
         }
 			}
-			const res2 = await fetchGet("mitra/list-pks", null, this.$router);
+			const res2 = await fetchGet("staff/pks", null, this.$router);
 			if (res2.status == 200) {
-				const cleanData2 = res2.data.map((item) => ({
+				let cleanData2 = res2.data.map((item) => ({
             name: item.partnershipTitle,
             code: item.submissionNumber,
             type: "PKS",
             startDate: item.submissionDate,
             endDate: item.approvalCompletionDate,
+            positionLevel: item.positionLevel,
             status: item.status,
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[1],
           }))
+        cleanData2 = cleanData2.filter(item => item.positionLevel > 0);
 				boxResult = boxResult.concat(cleanData2)
 				boxResult = boxResult.map((item, index) => ({ id: index + 1, ...item }))
 				console.log(res2.data)
@@ -855,28 +983,6 @@ export default {
 			this.dataRows = boxResult
       this.isLoading = false;
 		},
-    async getDataAggApi() {
-      this.isLoading = true;
-      let url = 'mitra/';
-      let params = null;
-			const res = await fetchGet(url, params, this.$router);
-			if (res.status == 200) {
-        console.log(res.data)
-        this.totalPermintaan = res.data.totalNda + res.data.totalMou + res.data.totalPks;
-        this.totalDiproses = res.data.totalProcessed,
-        this.totalDirevisi = res.data.totalRevision,
-        this.totalDitolak = res.data.totalRejected,
-        this.totalSelesai = res.data.totalFinished
-        this.isLoading = false;
-			} else {
-				this.isLoading = false;
-        this.modalFailed = {
-          isVisible: true,
-          title: 'Gagal Ambil Data',
-          message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-        }
-			}
-    }
   },
 
   mounted() {
@@ -893,7 +999,6 @@ export default {
     };
     document.addEventListener('click', this.filterClickListener);
     this.getDataApi();
-    this.getDataAggApi();
   }
 };
 </script>

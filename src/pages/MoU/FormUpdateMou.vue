@@ -131,7 +131,8 @@
           <!-- End layout angka -->
 
           <Dasar @base="(val) => (base = val)" @partnershipTitle="(val) => (partnershipTitle = val)"
-            @createdDate="(val) => (createdDate = val)" :isDisplay="positionForm == 1" :data="dataInitial" />
+            @createdDate="(val) => (createdDate = val)" @bisnisType="(val) => (bisnisType = val)"
+            :isDisplay="positionForm == 1" :data="dataInitial" />
           <RuangLingkupUpdate :isDisplay="positionForm == 2"
             @mainList="(val) => (scopes = val.map(({ key, ...rest }) => rest))"
             @listDeleted="(val) => (deletedScopes = val.filter(item => item != null))" :data="dataInitial" />
@@ -194,6 +195,7 @@ const route = useRoute();
 const positionForm = ref(1);
 const base = ref('');
 const partnershipTitle = ref('');
+const bisnisType = ref('');
 const createdDate = ref('');
 const isNextDisable = ref(true);
 const scopes = ref([]);
@@ -329,6 +331,7 @@ async function getDataApi(id) {
   if (res.status == 200) {
     base.value = res.data.base;
     partnershipTitle.value = res.data.partnershipTitle;
+    bisnisType.value = res.data.bisnisType;
     createdDate.value = res.data.expectedDate;
     background.value = res.data.background;
     note.value = res.data.note;
@@ -351,6 +354,7 @@ async function postMounda(successFunction, failFunction) {
   form.append('base', base.value)
   form.append('partnershipTitle', partnershipTitle.value)
   form.append('expectedDate', createdDate.value)
+  form.append('bisnisType', bisnisType.value)
   let index = 0;
   scopes.value.forEach((element) => {
     if (element.id) {
@@ -416,11 +420,12 @@ async function postMounda(successFunction, failFunction) {
 }
 
 watch(
-  [base, partnershipTitle, createdDate],
-  ([newBase, newPartnershipTitle, newCreatedDate]) => {
+  [base, partnershipTitle, createdDate, bisnisType],
+  ([newBase, newPartnershipTitle, newCreatedDate, newbisnisType]) => {
     isNextDisable.value =
       !(newBase.trim() !== '' &&
         newPartnershipTitle.trim() !== '' &&
+        newbisnisType !== '' &&
         newCreatedDate !== '');
   },
   { immediate: true } // Trigger immediately on initialization

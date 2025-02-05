@@ -120,7 +120,8 @@
           <!-- End layout angka -->
 
           <Dasar @base="(val) => (base = val)" @partnershipTitle="(val) => (partnershipTitle = val)"
-            @createdDate="(val) => (createdDate = val)" :isDisplay="positionForm == 1" />
+            @createdDate="(val) => (createdDate = val)" @bisnisType="(val) => (bisnisType = val)"
+            :isDisplay="positionForm == 1" />
           <RuangLingkup :isDisplay="positionForm == 2" @isPos2Filled="(val) => (isNextDisable = !val)" />
           <Lainnya :isDisplay="positionForm == 3" @background="(val) => (background = val)"
             @note="(val) => (note = val)" />
@@ -177,6 +178,7 @@ const positionForm = ref(1);
 const base = ref('');
 const partnershipTitle = ref('');
 const createdDate = ref('');
+const bisnisType = ref('');
 const isNextDisable = ref(true);
 const scopes = ref([]);
 const background = ref('');
@@ -306,6 +308,7 @@ async function postMounda(successFunction, failFunction) {
   form.append('userId', id.value)
   form.append('base', base.value)
   form.append('expectedDate', createdDate.value)
+  form.append('bisnisType', bisnisType.value)
   form.append('partnershipTitle', partnershipTitle.value)
   scopes.value.forEach((element, index) => {
     form.append(`scopesMou[${index}].scopeName`, element)
@@ -347,11 +350,12 @@ async function postMounda(successFunction, failFunction) {
 }
 
 watch(
-  [base, partnershipTitle, createdDate],
-  ([newBase, newPartnershipTitle, newCreatedDate]) => {
+  [base, partnershipTitle, createdDate, bisnisType],
+  ([newBase, newPartnershipTitle, newCreatedDate, newbisnisType]) => {
     isNextDisable.value =
       !(newBase.trim() !== '' &&
         newPartnershipTitle.trim() !== '' &&
+        newbisnisType.trim() !== '' &&
         newCreatedDate.trim() !== '');
   },
   { immediate: true } // Trigger immediately on initialization

@@ -69,10 +69,7 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     }
   })
   if (isStopClock) {
-    return ['Dipending', 'bg-[#FFE5E6] text-[#FF8000] border-[#FFD6AD]']
-  }
-  if (status == 'Approved' && positionLevel >= 8) {
-    return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Stopclock', 'bg-[#FFE5E6] text-[#FF8000] border-[#FFD6AD]']
   }
   if (status == 'Ditolak') {
     return ['Ditolak', 'bg-[#FFE5E6] text-[#FF5656] border-[#FD8A8A]']
@@ -84,61 +81,71 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     return ['Draft', 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]']
   }
   if (positionLevel == 1) {
-    return ['Waiting Approval Manager', 'bg-[#FFF6E1] text-[#FFB200] border-[#FFD064]']
+    return ['Waiting Apv Manager', 'bg-[#FFF6E1] text-[#FFB200] border-[#FFD064]']
   }
   if (positionLevel == 2) {
-    return ['Waiting Approval VP', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv VP', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 3) {
-    return ['Masuk Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv Direksi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 4) {
-    return ['Masuk Ke Staff Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file7) {
-    return ['PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file6) {
-    return ['Surat Pesanan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file5) {
-    return ['BAK Pemilihan Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file4) {
-    return ['Negosiasi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file3) {
-    return ['Evaluasi', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file2) {
-    return ['Proposal', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
-  }
-  if (positionLevel == 5 && fileKemitraan.file1) {
-    return ['Surat Penawaran', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+    return ['Masuk Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 5) {
-    return ['DiProses Staff Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Masuk Ke Manager Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 6) {
-    return ['Waiting Approval Manager Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Masuk Ke Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file7) {
+    return ['PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file6) {
+    return ['Surat Pesanan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file5) {
+    return ['BAK Pemilihan Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file4) {
+    return ['Negosiasi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file3) {
+    return ['Evaluasi', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file2) {
+    return ['Proposal', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file1) {
+    return ['Surat Penawaran', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
   }
   if (positionLevel == 7) {
-    return ['Pembuatan Kontrak', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['DiProses Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 8) {
-    return ['Waiting Approval VP Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv Manager Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 9) {
-    return ['Waiting Approval Direktur Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv VP Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
-  if (positionLevel == 10) {
-    return ['Disetujui Direktur Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  if (status == 'Approved' && positionLevel == 10) {
+    return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
 }
 
-export function mapperKeterangan(positionLevel, status) {
-  if (status == 'Selesai') {
-    return 'Pengajuan Selesai'
+export function mapperKeterangan(positionLevel, status, endContract) {
+  if (endContract) {
+    const targetDate = new Date(endContract);
+    const today = new Date();
+    const differenceInMillis = targetDate - today;
+    const differenceInDays = Math.ceil(differenceInMillis / (1000 * 60 * 60 * 24));
+    if (differenceInDays > 0) {
+      return 'Perjanjian Aktif'
+    }
+    if (differenceInDays == 0) {
+      return 'Hari Terakhir Perjanjian'
+    }
+    return 'Perjanjian Tidak AKtif'
   }
   if (status == 'Ditolak') {
     if (positionLevel == 1) {
@@ -216,9 +223,27 @@ export const methodTypeParsing = (methodType) => {
 }
 
 export const dateParsing = (input) => {
-  if (input.includes("-")) {
+  if (input && input.includes("-")) {
     const [year, month, date] = input.split("-")
     return `${date}-${month}-${year}`
+  }
+  return input
+}
+
+export const dueDateParsing = (input) => {
+  console.log(input)
+  if (input) {
+    const targetDate = new Date(input);
+    const today = new Date();
+    const differenceInMillis = targetDate - today;
+    const differenceInDays = Math.ceil(differenceInMillis / (1000 * 60 * 60 * 24));
+    // if (differenceInDays > 0) {
+    //   return `H-${differenceInDays}`
+    // }
+    // if (differenceInDays < 0) {
+    //   return `H+${differenceInDays}`
+    // }
+    return differenceInDays
   }
   return input
 }

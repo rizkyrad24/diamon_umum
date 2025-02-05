@@ -112,41 +112,45 @@ import { dateParsing } from '@/utils/helper';
                   <div class="ml-6">
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Judul</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipTitle }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipTitle || '-' }}</span>
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Nomor Anggaran</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetNumber || '-' }}</span>
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tipe Anggaran</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetType || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Calon Mitra Bisnis</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipCandidate }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipCandidate || '-' }}</span>
                     </div>
                   </div>
-                  <div v-if="base === 'PKS'">
-                    <div class="w-[541px] flex text-[#333333]">
+                  <div>
+                    <div v-if="base === 'PKS'" class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">Metode Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipMethod }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipMethod || '-' }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Material</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.materialType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.materialType || '-' }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Pelaksana</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.disposedStaff }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.disposedStaff || '-' }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tipe Bisnis</h1>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.bisnisType || '-' }}</span>
                     </div>
                   </div>
                 </div>
@@ -162,6 +166,10 @@ import { dateParsing } from '@/utils/helper';
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.background }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Dibuat</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
@@ -171,9 +179,9 @@ import { dateParsing } from '@/utils/helper';
                       <h1 class="w-[150px]">Catatan</h1>
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.note }}</span>
                     </div>
-                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
-                      <h1 class="w-[150px]">Tanggal</h1>
-                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Target Selesai</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.expectedDate) }}</span>
                     </div>
                   </div>
                 </div>
@@ -637,7 +645,8 @@ import { dateParsing } from '@/utils/helper';
                     </div>
                   </div>
                   <div>
-                    <label class="text-[#4D5E80] font-semibold">Evaluasi</label>
+                    <label v-if="base == 'PKS'" class="text-[#4D5E80] font-semibold">Evaluasi</label>
+                    <label v-else class="text-[#4D5E80] font-semibold">MoU/NDA</label>
                     <a :href="linkDownloadKemitraan3" v-if="fileNameKemitraan3"
                       class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
@@ -1218,10 +1227,13 @@ import { dateParsing } from '@/utils/helper';
 
                   <!-- Berhasil -->
                   <a :href="linkDownloadKemitraan3" v-if="fileNameKemitraan3" class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
-                    <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
-                        class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span></div>
+                    <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
+                    </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen MoU/NDA</span>
                       <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_d_685_22194)">
@@ -1280,10 +1292,13 @@ import { dateParsing } from '@/utils/helper';
                     </div>
                   </a>
                   <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
-                    <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
-                        class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span></div>
+                    <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
+                    </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
                       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2111,7 +2126,7 @@ export default {
               this.fileSizeKemitraan2 = item.fileSize;
               this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
             }
-            if (item.fileType == 'Evaluasi') {
+            if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
               this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
@@ -2247,7 +2262,143 @@ export default {
               this.fileSizeKemitraan2 = item.fileSize;
               this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
             }
+            if (item.fileType == 'MoU/NDA') {
+              this.fileNameKemitraan3 = item.fileName;
+              this.fileSizeKemitraan3 = item.fileSize;
+              this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+          })
+          this.isLoading = false;
+          console.log(res.data)
+        } else {
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
+        }
+      } else if (base == "PKS" && position == 'direksi') {
+        const res = await fetchGet(`direksi/pks/proses/${id}`, null, this.$router);
+        if (res.status == 200) {
+          this.dataBerkas = res.data;
+          this.approvalNote = res.data.approvalNote;
+          this.responseText = res.data.responseText;
+          res.data.attachmentsPks.forEach((item) => {
+            if (item.fileType == 'KKO') {
+              this.fileNameKKO = item.fileName;
+              this.fileSizeKKO = item.fileSize;
+              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'KKF') {
+              this.fileNameKKF = item.fileName;
+              this.fileSizeKKF = item.fileSize;
+              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'KKR') {
+              this.fileNameKKR = item.fileName;
+              this.fileSizeKKR = item.fileSize;
+              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'KKB') {
+              this.fileNameKKB = item.fileName;
+              this.fileSizeKKB = item.fileSize;
+              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Dokumen Surat Menyurat') {
+              this.fileNamesurat = item.fileName;
+              this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Proposal Mitra') {
+              this.fileNamemitra = item.fileName;
+              this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Dokumen Lainnya') {
+              this.fileNamelainnya = item.fileName;
+              this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Surat Penawaran') {
+              this.fileNameKemitraan1 = item.fileName;
+              this.fileSizeKemitraan1 = item.fileSize;
+              this.linkDownloadKemitraan1 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Proposal') {
+              this.fileNameKemitraan2 = item.fileName;
+              this.fileSizeKemitraan2 = item.fileSize;
+              this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
             if (item.fileType == 'Evaluasi') {
+              this.fileNameKemitraan3 = item.fileName;
+              this.fileSizeKemitraan3 = item.fileSize;
+              this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Negosiasi') {
+              this.fileNameKemitraan4 = item.fileName;
+              this.fileSizeKemitraan4 = item.fileSize;
+              this.linkDownloadKemitraan4 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'BAK Pemilihan Mitra') {
+              this.fileNameKemitraan5 = item.fileName;
+              this.fileSizeKemitraan5 = item.fileSize;
+              this.linkDownloadKemitraan5 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Surat Pesanan') {
+              this.fileNameKemitraan6 = item.fileName;
+              this.fileSizeKemitraan6 = item.fileSize;
+              this.linkDownloadKemitraan6 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'PKS') {
+              this.fileNameKemitraan7 = item.fileName;
+              this.fileSizeKemitraan7 = item.fileSize;
+              this.linkDownloadKemitraan7 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+          })
+          this.isLoading = false;
+          console.log(res.data)
+        } else {
+          this.isLoading = false;
+          this.modalFailed = {
+            isVisible: true,
+            title: 'Gagal Ambil Data',
+            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+          }
+        }
+      } else if (base == "MOU" && position == 'direksi') {
+        const res = await fetchGet(`direksi/mounda/proses/${id}`, null, this.$router);
+        if (res.status == 200) {
+          this.dataBerkas = res.data;
+          this.approvalNote = res.data.approvalNote;
+          this.responseText = res.data.responseText;
+          res.data.attachmentsMou.forEach((item) => {
+            if (item.fileType == 'Dokumen Surat Menyurat') {
+              this.fileNamesurat = item.fileName;
+              this.fileSizesurat = item.fileSize;
+              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Proposal Mitra') {
+              this.fileNamemitra = item.fileName;
+              this.fileSizemitra = item.fileSize;
+              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Dokumen Lainnya') {
+              this.fileNamelainnya = item.fileName;
+              this.fileSizelainnya = item.fileSize;
+              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Surat Penawaran') {
+              this.fileNameKemitraan1 = item.fileName;
+              this.fileSizeKemitraan1 = item.fileSize;
+              this.linkDownloadKemitraan1 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'Proposal') {
+              this.fileNameKemitraan2 = item.fileName;
+              this.fileSizeKemitraan2 = item.fileSize;
+              this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            }
+            if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
               this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;

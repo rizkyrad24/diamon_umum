@@ -140,7 +140,8 @@
           <Dasar @partnershipType="(val) => (partnershipType = val)" @createdDate="(val) => (createdDate = val)"
             @budgetType="(val) => (budgetType = val)" @budgetNumber="(val) => (budgetNumber = val)"
             @partnershipMethod="(val) => (partnershipMethod = val)" @materialType="(val) => (materialType = val)"
-            @partnershipTitle="(val) => (partnershipTitle = val)" :isDisplay="positionForm == 1" />
+            @partnershipTitle="(val) => (partnershipTitle = val)" @bisnisType="(val) => (bisnisType = val)"
+            :isDisplay="positionForm == 1" />
           <Rab :isDisplay="positionForm == 2" @rabs="(val) => (rabs = val)" />
           <RuangLingkup :isDisplay="positionForm == 3" @isPos3Filled="(val) => (isNextDisable = !val)" />
           <Lainnya :isDisplay="positionForm == 4" @background="(val) => (background = val)"
@@ -204,6 +205,7 @@ const budgetNumber = ref('');
 const partnershipMethod = ref('');
 const materialType = ref('');
 const partnershipTitle = ref('');
+const bisnisType = ref('');
 const isNextDisable = ref(true);
 const rabs = ref([]);
 const scopes = ref([]);
@@ -357,6 +359,7 @@ async function postPks(successFunction, failFunction) {
   form.append('partnershipMethod', partnershipMethod.value)
   form.append('materialType', materialType.value)
   form.append('partnershipTitle', partnershipTitle.value)
+  form.append('bisnisType', bisnisType.value)
   rabs.value.forEach((element, index) => {
     form.append(`rab[${index}].customer`, element.pelanggan)
     form.append(`rab[${index}].product`, element.produk)

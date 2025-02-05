@@ -5,7 +5,7 @@ import navadmin from '@/components/navadmin.vue';
 import LoadingComponent from '@/components/loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
-import { mapperStatus } from "@/utils/helper";
+import { mapperStatus, dateParsing } from "@/utils/helper";
 </script>
 
 <template>
@@ -285,7 +285,33 @@ import { mapperStatus } from "@/utils/helper";
                       </div>
                     </th>
                     <th class="w-[130px] px-3">
+                      <div class="flex justify-between">Tipe Bisnis
+                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
+                            fill="#93B8EC" />
+                          <path
+                            d="M4.21369 3.14482C4.41312 2.95238 4.73647 2.95238 4.9359 3.14482L8.00001 6.10158C8.19945 6.29403 8.19945 6.60605 8.00001 6.79849C7.80058 6.99094 7.47723 6.99094 7.27779 6.79849L5.08548 4.68299V12.3635C5.08548 12.6357 4.85684 12.8563 4.57479 12.8563C4.29275 12.8563 4.06411 12.6357 4.06411 12.3635V4.68299L1.87179 6.79849C1.67236 6.99094 1.34901 6.99094 1.14958 6.79849C0.950141 6.60605 0.950141 6.29403 1.14958 6.10158L4.21369 3.14482Z"
+                            fill="#93B8EC" />
+                        </svg>
+                      </div>
+                    </th>
+                    <th class="w-[130px] px-3">
                       <div class="flex justify-between">Pelaksana
+                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
+                            fill="#93B8EC" />
+                          <path
+                            d="M4.21369 3.14482C4.41312 2.95238 4.73647 2.95238 4.9359 3.14482L8.00001 6.10158C8.19945 6.29403 8.19945 6.60605 8.00001 6.79849C7.80058 6.99094 7.47723 6.99094 7.27779 6.79849L5.08548 4.68299V12.3635C5.08548 12.6357 4.85684 12.8563 4.57479 12.8563C4.29275 12.8563 4.06411 12.6357 4.06411 12.3635V4.68299L1.87179 6.79849C1.67236 6.99094 1.34901 6.99094 1.14958 6.79849C0.950141 6.60605 0.950141 6.29403 1.14958 6.10158L4.21369 3.14482Z"
+                            fill="#93B8EC" />
+                        </svg>
+                      </div>
+                    </th>
+                    <th class="w-[130px] px-3">
+                      <div class="flex justify-between">Target Selesai
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -310,7 +336,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[130px] px-3">
+                    <th class="w-[350px] px-3">
                       <div class="flex justify-between">Status Approval
                         <svg width="16" height="16" class="cursor-pointer ml-4 mt-2" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -334,11 +360,13 @@ import { mapperStatus } from "@/utils/helper";
                     <td class="w-[268px] px-3">{{ row.judul }}</td>
                     <td class="w-[130px] px-3">{{ row.code }}</td>
                     <td class="w-[130px] px-3">{{ row.type }}</td>
+                    <td class="w-[130px] px-3">{{ row.bisnis_type }}</td>
                     <td class="w-[130px] px-3">{{ row.pelaksana }}</td>
+                    <td class="w-[130px] px-3">{{ dateParsing(row.expected_date) || '-' }}</td>
                     <td class="w-[130px] px-3">
                       <span :class="row.statusClass" class="px-2 py-1 text-xs font-medium">{{ row.status }}</span>
                     </td>
-                    <td class="w-[130px] px-3">
+                    <td class="w-[350px] px-3">
                       <span
                         class="px-[5px] bg-[#FFE5E6] text-[#FF5656] border-[#FD8A8A] py-1 text-xs font-medium border-1 rounded-[100px]">{{
                         row.statusap }}</span>
@@ -740,6 +768,9 @@ export default {
       if (positionLevel == "vp") {
         url = "vp/mounda";
       }
+      if (positionLevel == "direksi") {
+        url = "direksi/mounda";
+      }
       if (!url) {
         this.isLoading = false;
         return modalFailed.value = {
@@ -757,7 +788,9 @@ export default {
             judul: item.partnershipTitle,
             code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
-            pelaksana: item.partnershipCandidate,
+            pelaksana: item.disposedStaff,
+            expected_date: item.expectedDate,
+            bisnis_type: item.bisnisType,
             status: item.status,
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
@@ -780,6 +813,9 @@ export default {
       if (positionLevel == "vp") {
         url2 = "vp/pks";
       }
+      if (positionLevel == "direksi") {
+        url2 = "direksi/pks";
+      }
       if (!url2) {
         this.isLoading = false;
         return modalFailed.value = {
@@ -796,7 +832,9 @@ export default {
             judul: item.partnershipTitle,
             code: item.submissionNumber,
             type: "PKS",
-            pelaksana: item.partnershipCandidate,
+            pelaksana: item.disposedStaff,
+            expected_date: item.expectedDate,
+            bisnis_type: item.bisnisType,
             status: item.status,
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[1],

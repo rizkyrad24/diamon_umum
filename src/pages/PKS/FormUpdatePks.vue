@@ -151,7 +151,8 @@
           <Dasar @partnershipType="(val) => (partnershipType = val)" @createdDate="(val) => (createdDate = val)"
             @budgetType="(val) => (budgetType = val)" @budgetNumber="(val) => (budgetNumber = val)"
             @partnershipMethod="(val) => (partnershipMethod = val)" @materialType="(val) => (materialType = val)"
-            @partnershipTitle="(val) => (partnershipTitle = val)" :isDisplay="positionForm == 1" :data="dataInitial" />
+            @partnershipTitle="(val) => (partnershipTitle = val)" @bisnisType="(val) => (bisnisType = val)"
+            :isDisplay="positionForm == 1" :data="dataInitial" />
           <RabUpdate :isDisplay="positionForm == 2" @rabs="(val) => (rabs = val)" :data="dataInitial"
             @deleteRabs="(val) => (deletedRabs = val)" />
           <RuangLingkupUpdate :isDisplay="positionForm == 3"
@@ -226,6 +227,7 @@ const budgetNumber = ref('');
 const partnershipMethod = ref('');
 const materialType = ref('');
 const partnershipTitle = ref('');
+const bisnisType = ref('');
 const isNextDisable = ref(true);
 const rabs = ref([]);
 const deletedRabs = ref([]);
@@ -395,6 +397,7 @@ async function getDataApi(id) {
     budgetNumber.value = res.data.budgetNumber;
     partnershipMethod.value = methodTypeParsing(res.data.partnershipMethod).value;
     materialType.value = materialTypeParsing(res.data.materialType).value;
+    bisnisType.value = res.data.bisnisType;
     // rabs.value = res.data.rab;
     scopes.value = res.data.scopesPks;
     dataInitial.value = res.data;
@@ -418,6 +421,7 @@ async function postPks(successFunction, failFunction) {
   form.append('partnershipMethod', partnershipMethod.value)
   form.append('materialType', materialType.value)
   form.append('partnershipTitle', partnershipTitle.value)
+  form.append('bisnisType', bisnisType.value)
   let indexRab = 0;
   rabs.value.forEach((element) => {
     form.append(`rab[${indexRab}].customer`, element.pelanggan)
@@ -538,14 +542,15 @@ async function postPks(successFunction, failFunction) {
 }
 
 watch(
-  [partnershipType, partnershipTitle, createdDate, budgetType, budgetNumber, partnershipMethod, materialType],
-  ([newpartnershipType, newPartnershipTitle, newCreatedDate, newbudgetType, newbudgetNumber, newpartnershipMethod, newmaterialType]) => {
+  [partnershipType, partnershipTitle, createdDate, budgetType, budgetNumber, partnershipMethod, materialType, bisnisType],
+  ([newpartnershipType, newPartnershipTitle, newCreatedDate, newbudgetType, newbudgetNumber, newpartnershipMethod, newmaterialType, newBisnisType]) => {
     isNextDisable.value =
       !(newpartnershipType !== '' &&
         newbudgetType !== '' &&
         newbudgetNumber !== '' &&
         newpartnershipMethod !== '' &&
         newmaterialType !== '' &&
+        newBisnisType !== '' &&
         newPartnershipTitle.trim() !== '')
   },
   { immediate: true } // Trigger immediately on initialization

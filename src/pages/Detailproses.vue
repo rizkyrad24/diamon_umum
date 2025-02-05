@@ -42,7 +42,7 @@ import { dateParsing } from '@/utils/helper';
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
                 <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan {{ base }}</h1>
               </div>
-              <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber }}</span>
+              <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber || '-' }}</span>
             </div>
             <div class="w-[209px] h-[72px] border-[1px] border-[#E5E7E9] rounded-xl">
               <div class="w-auto h-[29px] bg-[#FFB200] rounded-t-xl text-[10px] text-[#333333] px-4 py-[7px]">Progres
@@ -112,41 +112,47 @@ import { dateParsing } from '@/utils/helper';
                   <div class="ml-6">
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Judul</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipTitle }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipTitle || '-' }}</span>
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Nomor Anggaran</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetNumber || '-' }}</span>
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tipe Anggaran</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetType || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Calon Mitra Bisnis</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipCandidate }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipCandidate || '-' }}</span>
                     </div>
                   </div>
-                  <div v-if="base === 'PKS'">
-                    <div class="w-[541px] flex text-[#333333]">
+                  <div>
+                    <div v-if="base === 'PKS'" class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">Metode Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipMethod }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipMethod || '-' }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Material</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.materialType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.materialType || '-' }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Pelaksana</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.disposedStaff }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tipe Bisnis <span class="text-[#FF5656] text-xs">*</span></h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.bisnisType || '-'
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -162,6 +168,10 @@ import { dateParsing } from '@/utils/helper';
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.background }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Dibuat</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
@@ -172,8 +182,10 @@ import { dateParsing } from '@/utils/helper';
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.note }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
-                      <h1 class="w-[150px]">Tanggal</h1>
-                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
+                      <h1 class="w-[150px]">Tanggal Target Selesai</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dateParsing(dataBerkas?.expectedDate)
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -637,7 +649,8 @@ import { dateParsing } from '@/utils/helper';
                     </div>
                   </div>
                   <div>
-                    <label class="text-[#4D5E80] font-semibold">Evaluasi</label>
+                    <label v-if="base == 'PKS'" class="text-[#4D5E80] font-semibold">Evaluasi</label>
+                    <label v-else class="text-[#4D5E80] font-semibold">MoU/NDA</label>
                     <a :href="linkDownloadKemitraan3" v-if="fileNameKemitraan3"
                       class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
@@ -1219,10 +1232,13 @@ import { dateParsing } from '@/utils/helper';
 
                   <!-- Berhasil -->
                   <a :href="linkDownloadKemitraan3" v-if="fileNameKemitraan3" class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
-                    <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
-                        class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span></div>
+                    <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
+                    </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen MoU/NDA</span>
                       <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_d_685_22194)">
@@ -1281,10 +1297,13 @@ import { dateParsing } from '@/utils/helper';
                     </div>
                   </a>
                   <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
-                    <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
-                        class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span></div>
+                    <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
+                    </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
                       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2120,7 +2139,7 @@ export default {
               this.fileSizeKemitraan2 = item.fileSize;
               this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
             }
-            if (item.fileType == 'Evaluasi') {
+            if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
               this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;

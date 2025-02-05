@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import sidemanager from '@/components/sidemanager.vue';
-import dialog from '@/assets/img/Dialog.png';
-import kirim from '@/assets/img/Dialogkirim.png';
+// import dialog from '@/assets/img/Dialog.png';
+// import kirim from '@/assets/img/Dialogkirim.png';
 import Navadmin from '@/components/navadmin.vue';
 import LoadingComponent from '@/components/loading.vue';
 import ModalSuccess from "@/components/modalsuccess.vue";
@@ -69,41 +69,45 @@ import { dateParsing } from '@/utils/helper';
                   <div class="ml-6">
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Judul</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipTitle }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipTitle || '-'  }}</span>
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Nomor Anggaran</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetNumber }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetNumber || '-'  }}</span>
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tipe Anggaran</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.budgetType || '-'  }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Calon Mitra Bisnis</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipCandidate }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipCandidate || '-'  }}</span>
                     </div>
                   </div>
-                  <div v-if="base === 'PKS'">
-                    <div class="w-[541px] flex text-[#333333]">
+                  <div>
+                    <div v-if="base === 'PKS'" class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">Metode Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipMethod }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipMethod || '-'  }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Material</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.materialType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.materialType || '-'  }}</span>
                     </div>
-                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                    <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType || '-' }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Pelaksana</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.disposedStaff }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.disposedStaff || '-' }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tipe Bisnis</h1>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.bisnisType || '-' }}</span>
                     </div>
                   </div>
                 </div>
@@ -119,6 +123,10 @@ import { dateParsing } from '@/utils/helper';
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.background }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Dibuat</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
@@ -129,8 +137,8 @@ import { dateParsing } from '@/utils/helper';
                       <span class="w-[317px] text-[#7F7F80]">{{ dataBerkas?.note }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
-                      <h1 class="w-[150px]">Tanggal</h1>
-                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.submissionDate) }}</span>
+                      <h1 class="w-[150px]">Tanggal Target Selesai</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.expectedDate) }}</span>
                     </div>
                   </div>
                 </div>
@@ -995,9 +1003,39 @@ export default {
     },
     async getDataApi(base, id) {
       this.isLoading = true;
-      const position = localStorage.getItem('position')
-      if (base == "PKS" && position == 'manager') {
-        const res = await fetchGet(`manager/pks/${id}`, null, this.$router);
+      const positionLevel = localStorage.getItem('position')
+      let url = null;
+      if (positionLevel == "manager") {
+        if (base == "PKS") {
+          url = `manager/pks/${id}`;
+        } else {
+          url = `manager/mounda/${id}`;
+        }
+      }
+      if (positionLevel == "vp") {
+        if (base == "PKS") {
+          url = `vp/pks/${id}`;
+        } else {
+          url = `vp/mounda/${id}`;
+        }
+      }
+      if (positionLevel == "direksi") {
+        if (base == "PKS") {
+          url = `direksi/pks/${id}`
+        } else {
+          url = `direksi/mounda/${id}`;
+        }
+      }
+      if (!url) {
+        this.isLoading = false;
+        return this.modalFailed = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: "Posisi anda tidak dapat mengakses halaman ini"
+        }
+      }
+      if (base == "PKS") {
+        const res = await fetchGet(url, null, this.$router);
         if (res.status == 200) {
           this.dataBerkas = res.data;
           this.approvalNote = res.data.approvalNote;
@@ -1049,94 +1087,8 @@ export default {
             message: res.data.message ? res.data.message : "Silahkan hubungi admin"
           }
         }
-      } else if (base == "MOU" && position == 'manager') {
-        const res = await fetchGet(`manager/mounda/${id}`, null, this.$router);
-        if (res.status == 200) {
-          this.dataBerkas = res.data;
-          this.approvalNote = res.data.approvalNote;
-          this.responseText = res.data.responseText;
-          res.data.attachmentsMou.forEach((item) => {
-            if (item.fileType == 'Dokumen Surat Menyurat') {
-              this.fileNamesurat = item.fileName;
-              this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'Proposal Mitra') {
-              this.fileNamemitra = item.fileName;
-              this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'Dokumen Lainnya') {
-              this.fileNamelainnya = item.fileName;
-              this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-          })
-          this.isLoading = false;
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Gagal Ambil Data',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
-        }
-      } else if (base == "PKS" && position == 'vp') {
-        const res = await fetchGet(`vp/pks/${id}`, null, this.$router);
-        if (res.status == 200) {
-          this.dataBerkas = res.data;
-          this.approvalNote = res.data.approvalNote;
-          this.responseText = res.data.responseText;
-          res.data.attachmentsPks.forEach((item) => {
-            if (item.fileType == 'KKO') {
-              this.fileNameKKO = item.fileName;
-              this.fileSizeKKO = item.fileSize;
-              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'KKF') {
-              this.fileNameKKF = item.fileName;
-              this.fileSizeKKF = item.fileSize;
-              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'KKR') {
-              this.fileNameKKR = item.fileName;
-              this.fileSizeKKR = item.fileSize;
-              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'KKB') {
-              this.fileNameKKB = item.fileName;
-              this.fileSizeKKB = item.fileSize;
-              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'Dokumen Surat Menyurat') {
-              this.fileNamesurat = item.fileName;
-              this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'Proposal Mitra') {
-              this.fileNamemitra = item.fileName;
-              this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-            if (item.fileType == 'Dokumen Lainnya') {
-              this.fileNamelainnya = item.fileName;
-              this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`
-            }
-          })
-          this.isLoading = false;
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          this.modalFailed = {
-            isVisible: true,
-            title: 'Gagal Ambil Data',
-            message: res.data.message ? res.data.message : "Silahkan hubungi admin"
-          }
-        }
-      } else if (base == "MOU" && position == 'vp') {
-        const res = await fetchGet(`vp/mounda/${id}`, null, this.$router);
+      } else {
+        const res = await fetchGet(url, null, this.$router);
         if (res.status == 200) {
           this.dataBerkas = res.data;
           this.approvalNote = res.data.approvalNote;
@@ -1172,174 +1124,297 @@ export default {
     },
     async postAproval(successFunction, failFunction) {
       this.isLoading = true;
-      const position = localStorage.getItem('position')
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
       payload.append('responseText', this.responseText);
       console.log(payload)
-      if (this.base == "PKS" && position == 'manager') {
-        const res = await fetchPostForm(`manager/pks/${this.id}`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendSetuju = false;
-          // this.isSelesaiSetuju = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
+      const positionLevel = localStorage.getItem('position')
+      let url = null;
+      if (positionLevel == "manager") {
+        if (this.base == "PKS") {
+          url = `manager/pks/${this.id}`;
         } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "MOU" && position == 'manager') {
-        const res = await fetchPostForm(`manager/mounda/${this.id}`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendSetuju = false;
-          // this.isSelesaiSetuju = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "PKS" && position == 'vp') {
-        const res = await fetchPostForm(`vp/pks/${this.id}`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendSetuju = false;
-          // this.isSelesaiSetuju = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "MOU" && position == 'vp') {
-        const res = await fetchPostForm(`vp/mounda/${this.id}`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendSetuju = false;
-          // this.isSelesaiSetuju = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
+          url = `manager/mounda/${this.id}`;
         }
       }
+      if (positionLevel == "vp") {
+        if (this.base == "PKS") {
+          url = `vp/pks/${this.id}`;
+        } else {
+          url = `vp/mounda/${this.id}`;
+        }
+      }
+      if (positionLevel == "direksi") {
+        if (this.base == "PKS") {
+          url = `direksi/pks/${this.id}`
+        } else {
+          url = `direksi/mounda/${this.id}`;
+        }
+      }
+      if (!url) {
+        this.isLoading = false;
+        return this.modalFailed = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: "Posisi anda tidak dapat mengakses halaman ini"
+        }
+      }
+      const res = await fetchPostForm(url, null, payload, this.$router);
+      if (res.status == 200) {
+        // this.isSendSetuju = false;
+        // this.isSelesaiSetuju = true;
+        this.isLoading = false;
+        successFunction();
+        console.log(res.data)
+      } else {
+        this.isLoading = false;
+        failFunction();
+      }
+      // if (this.base == "PKS" && position == 'manager') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendSetuju = false;
+      //     // this.isSelesaiSetuju = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "MOU" && position == 'manager') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendSetuju = false;
+      //     // this.isSelesaiSetuju = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "PKS" && position == 'vp') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendSetuju = false;
+      //     // this.isSelesaiSetuju = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "MOU" && position == 'vp') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendSetuju = false;
+      //     // this.isSelesaiSetuju = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // }
     },
     async postRevisi(successFunction, failFunction) {
       this.isLoading = true;
-      const position = localStorage.getItem('position')
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
       payload.append('responseText', this.responseText);
       console.log(payload)
-      if (this.base == "PKS" && position == 'manager') {
-        const res = await fetchPostForm(`manager/pks/${this.id}/revision`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendRevisi = false;
-          // this.isSelesaiRevisi = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
+      const positionLevel = localStorage.getItem('position')
+      let url = null;
+      if (positionLevel == "manager") {
+        if (this.base == "PKS") {
+          url = `manager/pks/${this.id}/revision`;
         } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "MOU" && position == 'manager') {
-        const res = await fetchPostForm(`manager/mounda/${this.id}/revision`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendRevisi = false;
-          // this.isSelesaiRevisi = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "PKS" && position == 'vp') {
-        const res = await fetchPostForm(`vp/pks/${this.id}/revision`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendRevisi = false;
-          // this.isSelesaiRevisi = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "MOU" && position == 'vp') {
-        const res = await fetchPostForm(`vp/mounda/${this.id}/revision`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendRevisi = false;
-          // this.isSelesaiRevisi = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
+          url = `manager/mounda/${this.id}/revision`;
         }
       }
+      if (positionLevel == "vp") {
+        if (this.base == "PKS") {
+          url = `vp/pks/${this.id}/revision`;
+        } else {
+          url = `vp/mounda/${this.id}/revision`;
+        }
+      }
+      if (positionLevel == "direksi") {
+        if (this.base == "PKS") {
+          url = `direksi/pks/${this.id}/revision`
+        } else {
+          url = `direksi/mounda/${this.id}/revision`;
+        }
+      }
+      if (!url) {
+        this.isLoading = false;
+        return this.modalFailed = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: "Posisi anda tidak dapat mengakses halaman ini"
+        }
+      }
+      const res = await fetchPostForm(url, null, payload, this.$router);
+      if (res.status == 200) {
+        // this.isSendRevisi = false;
+        // this.isSelesaiRevisi = true;
+        this.isLoading = false;
+        successFunction();
+        console.log(res.data)
+      } else {
+        this.isLoading = false;
+        failFunction();
+      }
+      // if (this.base == "PKS" && position == 'manager') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendRevisi = false;
+      //     // this.isSelesaiRevisi = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "MOU" && position == 'manager') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendRevisi = false;
+      //     // this.isSelesaiRevisi = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "PKS" && position == 'vp') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendRevisi = false;
+      //     // this.isSelesaiRevisi = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "MOU" && position == 'vp') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendRevisi = false;
+      //     // this.isSelesaiRevisi = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // }
     },
     async postTolak(successFunction, failFunction) {
       this.isLoading = true;
-      const position = localStorage.getItem('position')
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
       payload.append('responseText', this.responseText);
       console.log(payload)
-      if (this.base == "PKS" && position == 'manager') {
-        const res = await fetchPostForm(`manager/pks/${this.id}/reject`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendTolak = false;
-          // this.isSelesaiTolak = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
+      const positionLevel = localStorage.getItem('position')
+      let url = null;
+      if (positionLevel == "manager") {
+        if (this.base == "PKS") {
+          url = `manager/pks/${this.id}/reject`;
         } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "MOU" && position == 'manager') {
-        const res = await fetchPostForm(`manager/mounda/${this.id}/reject`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendTolak = false;
-          // this.isSelesaiTolak = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "PKS" && position == 'vp') {
-        const res = await fetchPostForm(`vp/pks/${this.id}/reject`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendTolak = false;
-          // this.isSelesaiTolak = true;
-          this.isLoading= false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
-        }
-      } else if (this.base == "MOU" && position == 'vp') {
-        const res = await fetchPostForm(`vp/mounda/${this.id}/reject`, null, payload, this.$router);
-        if (res.status == 200) {
-          // this.isSendTolak = false;
-          // this.isSelesaiTolak = true;
-          this.isLoading = false;
-          successFunction();
-          console.log(res.data)
-        } else {
-          this.isLoading = false;
-          failFunction();
+          url = `manager/mounda/${this.id}/reject`;
         }
       }
+      if (positionLevel == "vp") {
+        if (this.base == "PKS") {
+          url = `vp/pks/${this.id}/reject`;
+        } else {
+          url = `vp/mounda/${this.id}/reject`;
+        }
+      }
+      if (positionLevel == "direksi") {
+        if (this.base == "PKS") {
+          url = `direksi/pks/${this.id}/reject`;
+        } else {
+          url = `direksi/mounda/${this.id}/reject`;
+        }
+      }
+      if (!url) {
+        this.isLoading = false;
+        return this.modalFailed = {
+          isVisible: true,
+          title: 'Gagal Ambil Data',
+          message: "Posisi anda tidak dapat mengakses halaman ini"
+        }
+      }
+      const res = await fetchPostForm(url, null, payload, this.$router);
+      if (res.status == 200) {
+        // this.isSendTolak = false;
+        // this.isSelesaiTolak = true;
+        this.isLoading = false;
+        successFunction();
+        console.log(res.data)
+      } else {
+        this.isLoading = false;
+        failFunction();
+      }
+      // if (this.base == "PKS" && position == 'manager') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendTolak = false;
+      //     // this.isSelesaiTolak = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "MOU" && position == 'manager') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendTolak = false;
+      //     // this.isSelesaiTolak = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "PKS" && position == 'vp') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendTolak = false;
+      //     // this.isSelesaiTolak = true;
+      //     this.isLoading= false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // } else if (this.base == "MOU" && position == 'vp') {
+      //   const res = await fetchPostForm(, null, payload, this.$router);
+      //   if (res.status == 200) {
+      //     // this.isSendTolak = false;
+      //     // this.isSelesaiTolak = true;
+      //     this.isLoading = false;
+      //     successFunction();
+      //     console.log(res.data)
+      //   } else {
+      //     this.isLoading = false;
+      //     failFunction();
+      //   }
+      // }
     }
   },
   mounted() {
