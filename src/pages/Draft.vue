@@ -127,43 +127,12 @@ import { mapperStatus, dateParsing } from '@/utils/helper';
                 <div v-show="isFilterStatus"
                   class="absolute w-[240px] ml-[247px] mt-[90px] border-[1px] rounded-lg bg-white z-10">
                   <ul class="text-sm w-full">
-                    <li @click="updateFilterStatus('Approval Manager')"
+                    <li v-for="item in statusList" :key="item" @click="updateFilterStatus(item)"
                       class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
                       <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Approval Manager'" readonly>
+                        :checked="filterStatus === item" readonly>
                       <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Approval Manager' }">Approval
-                        Manager</span>
-                    </li>
-                    <li @click="updateFilterStatus('Approval VP')"
-                      class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
-                      <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Approval VP'" readonly>
-                      <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Approval VP' }">Approval VP</span>
-                    </li>
-                    <li @click="updateFilterStatus('Approval Direksi')"
-                      class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
-                      <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Approval Direksi'" readonly>
-                      <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Approval Direksi' }">Approval
-                        Direksi</span>
-                    </li>
-                    <li @click="updateFilterStatus('Waiting Approval')"
-                      class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
-                      <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Waiting Approval'" readonly>
-                      <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Waiting Approval' }">Waiting
-                        Approval</span>
-                    </li>
-                    <li @click="updateFilterStatus('Revisi')"
-                      class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
-                      <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Revisi'" readonly>
-                      <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Revisi' }">Revisi</span>
+                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === item }">{{ item }}</span>
                     </li>
                   </ul>
                 </div>
@@ -288,7 +257,7 @@ import { mapperStatus, dateParsing } from '@/utils/helper';
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[130px] px-3">
+                    <!-- <th class="w-[130px] px-3">
                       <div class="flex justify-between">Target Selesai
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -300,8 +269,8 @@ import { mapperStatus, dateParsing } from '@/utils/helper';
                             fill="#93B8EC" />
                         </svg>
                       </div>
-                    </th>
-                    <th class="w-[130px] px-3">
+                    </th> -->
+                    <th class="w-[150px] px-3">
                       <div class="flex justify-between">Status
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -340,7 +309,7 @@ import { mapperStatus, dateParsing } from '@/utils/helper';
                     <td class="w-[130px] px-3">{{ row.type }}</td>
                     <td class="w-[130px] px-3">{{ row.bisnis_type }}</td>
                     <td class="w-[130px] px-3">{{ row.pelaksana }}</td>
-                    <td class="w-[130px] px-3">{{ dateParsing(row.expected_date) || '-' }}</td>
+                    <!-- <td class="w-[130px] px-3">{{ dateParsing(row.expected_date) || '-' }}</td> -->
                     <td class="w-[130px] px-3">
                       <span
                         class="px-2 py-1 text-xs bg-[#E7F1FD] font-medium text-[#4791F2] border-[#91BEF7] border-1 rounded-[100px]">{{
@@ -352,51 +321,57 @@ import { mapperStatus, dateParsing } from '@/utils/helper';
                     </td>
                     <td class="w-[54px] px-3">
                       <div @click="toggleView1(index, row.type)"
-                        class="w-6 h-6 bg-[#E5E7E9] rounded-lg flex justify-center cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-[2px]" viewBox="0 0 128 512">
+                        class="bg-[#E5E7E9] rounded-lg flex justify-center cursor-pointer">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-[2px]" viewBox="0 0 128 512">
                           <path
                             d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+                        </svg> -->
+                        <svg width="16" height="12" class="mx-2 my-2" viewBox="0 0 16 12" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.00054 1.66634C5.20282 1.66634 2.82717 3.48083 1.98949 5.99905C1.989 6.00052 1.989 6.00234 1.98949 6.00381C2.82821 8.52021 5.20296 10.333 7.99937 10.333C10.7971 10.333 13.1727 8.51852 14.0104 6.0003C14.0109 5.99882 14.0109 5.99701 14.0104 5.99554C13.1717 3.47914 10.797 1.66634 8.00054 1.66634ZM0.724321 5.5782C1.7378 2.53148 4.61156 0.333008 8.00054 0.333008C11.3879 0.333008 14.2606 2.52944 15.2753 5.57394C15.367 5.84883 15.367 6.14622 15.2756 6.42115C14.2621 9.46787 11.3883 11.6663 7.99937 11.6663C4.61197 11.6663 1.7393 9.46991 0.72457 6.42541C0.632951 6.15052 0.632864 5.85314 0.724321 5.5782ZM8 4.66634C7.26362 4.66634 6.66666 5.26329 6.66666 5.99967C6.66666 6.73605 7.26362 7.33301 8 7.33301C8.73638 7.33301 9.33333 6.73605 9.33333 5.99967C9.33333 5.26329 8.73638 4.66634 8 4.66634ZM5.33333 5.99967C5.33333 4.52692 6.52724 3.33301 8 3.33301C9.47276 3.33301 10.6667 4.52691 10.6667 5.99967C10.6667 7.47243 9.47276 8.66634 8 8.66634C6.52724 8.66634 5.33333 7.47243 5.33333 5.99967Z"
+                            fill="#2671D9" />
                         </svg>
                       </div>
                       <!-- View -->
-                      <div v-if="activeViewIndex === index" class="absolute -translate-x-[135px] w-[160px]">
+                      <div v-if="activeViewIndex === index" class="absolute -translate-x-[70px] -translate-y-[36px]">
                         <!-- PKS type -->
                         <router-link v-if="row.type === 'PKS'" :to="{ path: `/Detaildraft/${row.type}/${row.did}` }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
-                            <svg width="16" height="12" class="mx-3 my-3" viewBox="0 0 16 12" fill="none"
+                            <!-- <svg width="16" height="12" class="mx-3 my-3" viewBox="0 0 16 12" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M8.00054 1.66634C5.20282 1.66634 2.82717 3.48083 1.98949 5.99905C1.989 6.00052 1.989 6.00234 1.98949 6.00381C2.82821 8.52021 5.20296 10.333 7.99937 10.333C10.7971 10.333 13.1727 8.51852 14.0104 6.0003C14.0109 5.99882 14.0109 5.99701 14.0104 5.99554C13.1717 3.47914 10.797 1.66634 8.00054 1.66634ZM0.724321 5.5782C1.7378 2.53148 4.61156 0.333008 8.00054 0.333008C11.3879 0.333008 14.2606 2.52944 15.2753 5.57394C15.367 5.84883 15.367 6.14622 15.2756 6.42115C14.2621 9.46787 11.3883 11.6663 7.99937 11.6663C4.61197 11.6663 1.7393 9.46991 0.72457 6.42541C0.632951 6.15052 0.632864 5.85314 0.724321 5.5782ZM8 4.66634C7.26362 4.66634 6.66666 5.26329 6.66666 5.99967C6.66666 6.73605 7.26362 7.33301 8 7.33301C8.73638 7.33301 9.33333 6.73605 9.33333 5.99967C9.33333 5.26329 8.73638 4.66634 8 4.66634ZM5.33333 5.99967C5.33333 4.52692 6.52724 3.33301 8 3.33301C9.47276 3.33301 10.6667 4.52691 10.6667 5.99967C10.6667 7.47243 9.47276 8.66634 8 8.66634C6.52724 8.66634 5.33333 7.47243 5.33333 5.99967Z"
                                 fill="#2671D9" />
-                            </svg>
-                            <span class="text-[#333333] mt-[10px] hover:text-[#2671D9]">View</span>
+                            </svg> -->
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
                           </div>
                         </router-link>
                         <!-- MoU type -->
                         <router-link v-if="row.type === 'MoU'" :to="{ path: `/Detaildraft/${row.type}/${row.did}` }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
-                            <svg width="16" height="12" class="mx-3 my-3" viewBox="0 0 16 12" fill="none"
+                            <!-- <svg width="16" height="12" class="mx-3 my-3" viewBox="0 0 16 12" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M8.00054 1.66634C5.20282 1.66634 2.82717 3.48083 1.98949 5.99905C1.989 6.00052 1.989 6.00234 1.98949 6.00381C2.82821 8.52021 5.20296 10.333 7.99937 10.333C10.7971 10.333 13.1727 8.51852 14.0104 6.0003C14.0109 5.99882 14.0109 5.99701 14.0104 5.99554C13.1717 3.47914 10.797 1.66634 8.00054 1.66634ZM0.724321 5.5782C1.7378 2.53148 4.61156 0.333008 8.00054 0.333008C11.3879 0.333008 14.2606 2.52944 15.2753 5.57394C15.367 5.84883 15.367 6.14622 15.2756 6.42115C14.2621 9.46787 11.3883 11.6663 7.99937 11.6663C4.61197 11.6663 1.7393 9.46991 0.72457 6.42541C0.632951 6.15052 0.632864 5.85314 0.724321 5.5782ZM8 4.66634C7.26362 4.66634 6.66666 5.26329 6.66666 5.99967C6.66666 6.73605 7.26362 7.33301 8 7.33301C8.73638 7.33301 9.33333 6.73605 9.33333 5.99967C9.33333 5.26329 8.73638 4.66634 8 4.66634ZM5.33333 5.99967C5.33333 4.52692 6.52724 3.33301 8 3.33301C9.47276 3.33301 10.6667 4.52691 10.6667 5.99967C10.6667 7.47243 9.47276 8.66634 8 8.66634C6.52724 8.66634 5.33333 7.47243 5.33333 5.99967Z"
                                 fill="#2671D9" />
-                            </svg>
-                            <span class="text-[#333333] mt-[10px] hover:text-[#2671D9]">View</span>
+                            </svg> -->
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
                           </div>
                         </router-link>
                         <!-- NDA type -->
                         <router-link v-if="row.type === 'NDA'" :to="{ path: `/Detaildraft/${row.type}/${row.did}` }">
                           <div
                             class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
-                            <svg width="16" height="12" class="mx-3 my-3" viewBox="0 0 16 12" fill="none"
+                            <!-- <svg width="16" height="12" class="mx-3 my-3" viewBox="0 0 16 12" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M8.00054 1.66634C5.20282 1.66634 2.82717 3.48083 1.98949 5.99905C1.989 6.00052 1.989 6.00234 1.98949 6.00381C2.82821 8.52021 5.20296 10.333 7.99937 10.333C10.7971 10.333 13.1727 8.51852 14.0104 6.0003C14.0109 5.99882 14.0109 5.99701 14.0104 5.99554C13.1717 3.47914 10.797 1.66634 8.00054 1.66634ZM0.724321 5.5782C1.7378 2.53148 4.61156 0.333008 8.00054 0.333008C11.3879 0.333008 14.2606 2.52944 15.2753 5.57394C15.367 5.84883 15.367 6.14622 15.2756 6.42115C14.2621 9.46787 11.3883 11.6663 7.99937 11.6663C4.61197 11.6663 1.7393 9.46991 0.72457 6.42541C0.632951 6.15052 0.632864 5.85314 0.724321 5.5782ZM8 4.66634C7.26362 4.66634 6.66666 5.26329 6.66666 5.99967C6.66666 6.73605 7.26362 7.33301 8 7.33301C8.73638 7.33301 9.33333 6.73605 9.33333 5.99967C9.33333 5.26329 8.73638 4.66634 8 4.66634ZM5.33333 5.99967C5.33333 4.52692 6.52724 3.33301 8 3.33301C9.47276 3.33301 10.6667 4.52691 10.6667 5.99967C10.6667 7.47243 9.47276 8.66634 8 8.66634C6.52724 8.66634 5.33333 7.47243 5.33333 5.99967Z"
                                 fill="#2671D9" />
-                            </svg>
-                            <span class="text-[#333333] mt-[10px] hover:text-[#2671D9]">View</span>
+                            </svg> -->
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
                           </div>
                         </router-link>
                       </div>
@@ -480,6 +455,7 @@ const isFilterTipe = ref(false);
 const isFilterStatus = ref(false);
 const filterStatus = ref('');
 const isDataOpen = ref(false);
+const statusList = ref([]);
 
 function toggleDataDropdown() {
   isDataOpen.value = !isDataOpen.value;
@@ -565,7 +541,7 @@ export default {
     filteredRows() {
       const filtered = this.dataRows.filter((row) => {
         const typeMatch = this.filterType === '' || row.type === this.filterType;
-        const statusMatch = filterStatus.value === '' || row.statusap === filterStatus.value;
+        const statusMatch = filterStatus.value === '' || row.status === filterStatus.value;
         return typeMatch && statusMatch;
       });
       return filtered;
@@ -754,7 +730,8 @@ export default {
       } else {
         alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
       }
-      this.dataRows = boxResult
+      this.dataRows = boxResult;
+      statusList.value = [...new Set(boxResult.map(item => item.status))];
       this.isLoading = false;
     }
   },

@@ -36,7 +36,7 @@ import { dateParsing } from '@/utils/helper';
             :message="modalFailed.message"
             @close="closeModalFailed"
           />
-          <div class="w-[1170px] h-[56px] ml-4 mt-4 flex justify-between">
+          <div class="w-[1170px] ml-4 mt-4 flex justify-between">
             <div>
               <div class="flex">
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
@@ -44,13 +44,13 @@ import { dateParsing } from '@/utils/helper';
               </div>
               <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber }}</span>
             </div>
-            <div class="w-[209px] h-[72px] border-[1px] border-[#E5E7E9] rounded-xl">
-              <div class="w-auto h-[29px] bg-[#FFB200] rounded-t-xl text-[10px] text-[#333333] px-4 py-[7px]">Progres
+            <div class="w-[209px] border-[1px] border-[#E5E7E9] rounded-xl">
+              <div :class="{ 'bg-[#FFB200]': !isProgressFinish, 'bg-[#0ea976]': isProgressFinish }" class="w-auto h-[29px] rounded-t-xl text-[10px] text-[#333333] px-4 py-[7px]">Progres
                 Kemitraan</div>
-              <div class="text-[#FFB200] text-lg font-bold flex px-4">
-                <span class="py-2">Proposal</span>
-                <svg width="60" height="60" @click="openAlur"
-                  class="cursor-pointer translate-x-[50px] -translate-y-[1px]" viewBox="0 0 46 45" fill="none"
+              <div :class="{ 'text-[#FFB200]': !isProgressFinish, 'text-[#0ea976]': isProgressFinish }" class="font-bold flex px-3">
+                <span class="py-2 w-[180px]">{{ progress }}</span>
+                <svg v-if="!isProgressFinish" width="50" height="50" @click="openAlur"
+                  class="cursor-pointer translate-x-[20px]" viewBox="0 0 46 45" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <g filter="url(#filter0_d_1290_22642)">
                     <g opacity="0.4" filter="url(#filter1_d_1290_22642)">
@@ -63,7 +63,7 @@ import { dateParsing } from '@/utils/helper';
                       fill="#F08800" />
                   </g>
                   <defs>
-                    <filter id="filter0_d_1290_22642" x="6" y="6.5" width="26" height="26" filterUnits="userSpaceOnUse"
+                    <filter id="filter0_d_1290_22642" x="6" y="6.5" width="30" height="30" filterUnits="userSpaceOnUse"
                       color-interpolation-filters="sRGB">
                       <feFlood flood-opacity="0" result="BackgroundImageFix" />
                       <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
@@ -87,6 +87,50 @@ import { dateParsing } from '@/utils/helper';
                         values="0 0 0 0 0.763946 0 0 0 0 0.970231 0 0 0 0 0.498223 0 0 0 0.5 0" />
                       <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1290_22642" />
                       <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1290_22642" result="shape" />
+                    </filter>
+                  </defs>
+                </svg>
+                <svg v-else width="50" height="50" @click="openAlur"
+                  class="cursor-pointer translate-x-[20px]" viewBox="0 0 46 46" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g filter="url(#filter0_d_685_22194)">
+                    <g opacity="0.4" filter="url(#filter1_d_685_22194)">
+                      <path
+                        d="M19 26.5C23.1421 26.5 26.5 23.1421 26.5 19C26.5 14.8579 23.1421 11.5 19 11.5C14.8579 11.5 11.5 14.8579 11.5 19C11.5 23.1421 14.8579 26.5 19 26.5Z"
+                        fill="#8ADFC3" />
+                    </g>
+                    <path
+                      d="M18.3081 22.1256C18.1581 22.1256 18.0156 22.0656 17.9106 21.9606L15.7881 19.8381C15.5706 19.6206 15.5706 19.2606 15.7881 19.0431C16.0056 18.8256 16.3656 18.8256 16.5831 19.0431L18.3081 20.7681L22.1631 16.9131C22.3806 16.6956 22.7406 16.6956 22.9581 16.9131C23.1756 17.1306 23.1756 17.4906 22.9581 17.7081L18.7056 21.9606C18.6006 22.0656 18.4581 22.1256 18.3081 22.1256Z"
+                      fill="#0C8D63" />
+                  </g>
+                  <defs>
+                    <filter id="filter0_d_685_22194" x="6" y="7" width="26" height="26"
+                      filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix in="SourceAlpha" type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                      <feOffset dy="1" />
+                      <feGaussianBlur stdDeviation="2" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix type="matrix"
+                        values="0 0 0 0 0.054902 0 0 0 0 0.662745 0 0 0 0 0.462745 0 0 0 0.15 0" />
+                      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_685_22194" />
+                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_685_22194"
+                        result="shape" />
+                    </filter>
+                    <filter id="filter1_d_685_22194" x="0.5" y="0.5" width="45" height="45"
+                      filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix in="SourceAlpha" type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                      <feOffset dx="4" dy="4" />
+                      <feGaussianBlur stdDeviation="7.5" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix type="matrix"
+                        values="0 0 0 0 0.763946 0 0 0 0 0.970231 0 0 0 0 0.498223 0 0 0 0.5 0" />
+                      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_685_22194" />
+                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_685_22194"
+                        result="shape" />
                     </filter>
                   </defs>
                 </svg>
@@ -1965,6 +2009,50 @@ export default {
         message: ''
       },
     };
+  },
+  computed: {
+    progress() {
+      if (this.base == 'PKS') {
+        if (this.fileNameKemitraan7 || this.fileNameKemitraan6) {
+          return "PKS"
+        } else if(this.fileNameKemitraan5) {
+          return "Surat Pesanan"
+        } else if(this.fileNameKemitraan4) {
+          return "BAK Pemilihan Mitra"
+        } else if(this.fileNameKemitraan3) {
+          return "Negosiasi"
+        } else if(this.fileNameKemitraan2) {
+          return "Evaluasi"
+        } else if(this.fileNameKemitraan1) {
+          return "Proposal"
+        } else {
+          return "Surat Penawaran"
+        }
+      } else {
+        if (this.fileNameKemitraan2 || this.fileNameKemitraan3) {
+          return "MoU/NDA"
+        } else if(this.fileNameKemitraan1) {
+          return "Proposal"
+        } else {
+          return "Surat Penawaran"
+        }
+      }
+    },
+    isProgressFinish() {
+      if (this.base == 'PKS') {
+        if (this.fileNameKemitraan7) {
+          return true
+        }else {
+          return false
+        }
+      } else {
+        if (this.fileNameKemitraan3) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
   },
   methods: {
     closeModalFailed() {

@@ -351,7 +351,7 @@ function movePrevious() {
 async function postPks(successFunction, failFunction) {
   isLoading.value = true;
   const form = new FormData()
-  form.append('userId', id.value)
+  // form.append('userId', id.value)
   form.append('partnershipType', partnershipType.value)
   form.append('expectedDate', createdDate.value)
   form.append('budgetType', budgetType.value)

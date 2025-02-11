@@ -305,7 +305,7 @@ function moveNext() {
 async function postMounda(successFunction, failFunction) {
   isLoading.value = true;
   const form = new FormData()
-  form.append('userId', id.value)
+  // form.append('userId', id.value)
   form.append('base', base.value)
   form.append('expectedDate', createdDate.value)
   form.append('bisnisType', bisnisType.value)

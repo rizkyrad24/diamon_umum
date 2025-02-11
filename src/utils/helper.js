@@ -21,7 +21,7 @@ export function saveDataLogin(dataUser) {
   localStorage.setItem('access', dataUser.token);
   localStorage.setItem('userId', dataUser.id);
   localStorage.setItem('username', dataUser.username);
-  localStorage.setItem('firsName', dataUser.firsName);
+  localStorage.setItem('firstName', dataUser.firstName);
   localStorage.setItem('lastName', dataUser.lastName);
   localStorage.setItem('position', dataUser.role.toLowerCase());
 }
@@ -30,7 +30,7 @@ export function clearDataLogin() {
   localStorage.removeItem('access');
   localStorage.removeItem('userId');
   localStorage.removeItem('username');
-  localStorage.removeItem('firsName');
+  localStorage.removeItem('firstName');
   localStorage.removeItem('lastName');
   localStorage.removeItem('position');
 }
@@ -40,6 +40,7 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     file1: null,
     file2: null,
     file3: null,
+    file3A: null,
     file4: null,
     file5: null,
     file6: null,
@@ -54,6 +55,9 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     }
     if (item.fileType == 'Evaluasi') {
       fileKemitraan['file3'] = item.fileName
+    }
+    if (item.fileType == 'MoU/NDA') {
+      fileKemitraan['file3A'] = item.fileName
     }
     if (item.fileType == 'Negosiasi') {
       fileKemitraan['file4'] = item.fileName
@@ -109,6 +113,9 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
   }
   if (positionLevel == 7 && fileKemitraan.file4) {
     return ['Negosiasi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file3A) {
+    return ['MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 7 && fileKemitraan.file3) {
     return ['Evaluasi', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']

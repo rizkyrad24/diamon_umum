@@ -261,26 +261,19 @@ import { mapperStatus } from "@/utils/helper";
                 <div v-show="isFilterStatus"
                   class="absolute w-[240px] ml-[247px] mt-[90px] border-[1px] rounded-lg bg-white z-10">
                   <ul class="text-sm w-full">
-                    <li @click="updateFilterStatus('Selesai')"
+                    <li v-for="item in statusList" :key="item" @click="updateFilterStatus(item)"
                       class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
                       <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Selesai'" readonly>
+                        :checked="filterStatus === item" readonly>
                       <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Selesai' }">Selesai</span>
-                    </li>
-                    <li @click="updateFilterStatus('Revisi')"
-                      class="border-b h-[40px] flex items-center group hover:bg-[#E9F1FB]">
-                      <input type="checkbox" class="w-4 h-4 border-[2px] ml-4 accent-[#2671D9]"
-                        :checked="filterStatus === 'Revisi'" readonly>
-                      <span class="text-[#333333] ml-2 group-hover:font-semibold group-hover:text-[#2671D9]"
-                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === 'Revisi' }">Revisi</span>
+                        :class="{ 'text-[#2671D9] font-semibold': filterStatus === item }">{{ item }}</span>
                     </li>
                   </ul>
                 </div>
 
               </div>
 
-              <div class="w-[109px] ml-2 filter-date-container">
+              <!-- <div class="w-[109px] ml-2 filter-date-container">
                 <button @click="dateDropdown" class="w-auto border-[1px] px-3 py-2 flex justify-center rounded-lg">
                   <svg width="16" height="16" class="mt-1" viewBox="0 0 16 16" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -292,7 +285,7 @@ import { mapperStatus } from "@/utils/helper";
                 </button>
                 <DatePicker v-show="isDate" v-model="selectedDay" @date-selected="updateSelectedDay" :key="selectedDay"
                   class="z-10 mt-2" />
-              </div>
+              </div> -->
             </div>
 
             <!-- All -->
@@ -310,9 +303,9 @@ import { mapperStatus } from "@/utils/helper";
                   </svg>
                 </div>
                 <div v-if="isFilterVisibleStatus"
-                  class="w-[70px] h-[24px] ml-[6px] bg-[#E9F1FB] border-[1px] border-[#BAD1F3] rounded-[100px] flex justify-between">
+                  class="h-[24px] ml-[6px] bg-[#E9F1FB] border-[1px] border-[#BAD1F3] rounded-[100px] flex justify-between">
                   <span class=" text-xs text-[#2671D9] font-semibold ml-[10px] mt-[3px]">{{ filterStatus }}</span>
-                  <svg @click="clearFilterStatus" width="10" height="10" class="cursor-pointer mr-[7px] mt-[7px]"
+                  <svg @click="clearFilterStatus" width="10" height="10" class="cursor-pointer mr-[7px] mt-[7px] ms-[5px]"
                     viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                       d="M1.43306 1.43306C1.67714 1.18898 2.07286 1.18898 2.31694 1.43306L5 4.11612L7.68306 1.43306C7.92714 1.18898 8.32286 1.18898 8.56694 1.43306C8.81102 1.67714 8.81102 2.07286 8.56694 2.31694L5.88388 5L8.56694 7.68306C8.81102 7.92714 8.81102 8.32286 8.56694 8.56694C8.32286 8.81102 7.92714 8.81102 7.68306 8.56694L5 5.88388L2.31694 8.56694C2.07286 8.81102 1.67714 8.81102 1.43306 8.56694C1.18898 8.32286 1.18898 7.92714 1.43306 7.68306L4.11612 5L1.43306 2.31694C1.18898 2.07286 1.18898 1.67714 1.43306 1.43306Z"
@@ -412,7 +405,7 @@ import { mapperStatus } from "@/utils/helper";
                         </svg>
                       </div>
                     </th>
-                    <th class="w-[97px] px-3">
+                    <th class="w-[150px] px-3">
                       <div class="flex justify-between">Status
                         <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -531,6 +524,7 @@ const isFilterTipe = ref(false);
 const isFilterStatus = ref(false);
 const isDataOpen = ref(false);
 const filterStatus = ref('');
+const statusList = ref([]);
 const isDate = ref('');
 const modalFailed = ref({
   isVisible: false,
@@ -1026,6 +1020,7 @@ export default {
         }
       }
       this.dataRows = boxResult;
+      statusList.value = [...new Set(boxResult.map(item => item.status))];
       this.isLoading = false;
     },
   },
