@@ -160,6 +160,23 @@ async function submit() {
   }
 }
 
+// async function loginSSO() {
+//   isLoading.value = true;
+//   const res = await fetchGetPublic('account/sso/umum', null, router);
+//   if (res.status == 200) {
+//     console.log(res.data)
+//     isLoading.value = false;
+//     window.location = res.data.data.uri;
+//   } else {
+//     isLoading.value = false;
+//     modalFailed.value = {
+//       isVisible: true,
+//       title: 'Invalid Login SSO',
+//       message: res.data
+//     }
+//   }
+// }
+
 </script>
 
 

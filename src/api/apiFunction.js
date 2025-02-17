@@ -26,6 +26,25 @@ export const fetchGet = async (endpoint, params, router) => {
     }
 }
 
+export const fetchGetPublic = async (endpoint, params, router) => {
+    try {
+        const result = await ApiManager(`/${endpoint}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        params: params
+        })
+        return result
+    } catch (error) {
+        if (error.response.status == 401) {
+            clearDataLogin();
+            router.push("/");
+        }
+        return error.response
+    }
+}
+
 export const fetchPost = async (endpoint, params, data, router) => {
     const token = localStorage.getItem('access');
     if (!token) {
