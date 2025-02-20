@@ -29,14 +29,14 @@
         <h1 class="text-[40px] font-semibold mt-[48px] ml-[186px] text-[#21252B]">Login</h1>
         <div class="mt-8">
           <label class="text-base font-semibold text-[#4D5E80]">Username <span class="text-[#FF5656]">*</span></label>
-          <form action="" class="mt-2">
+          <div class="mt-2">
             <input type="text" v-model="username" class="w-[480px] h-[40px] border-[1px] outline-none rounded-lg px-3"
               placeholder="Masukkan username" name="username" id="username">
-          </form>
+          </div>
         </div>
         <div class="mt-6">
           <label class="text-base font-semibold text-[#4D5E80]">Password <span class="text-[#FF5656]">*</span></label>
-          <form action="" class="mt-2 flex absolute">
+          <div class="mt-2 flex absolute">
             <input v-model="password" :type="isPasswordVisible ? 'text' : 'password'"
               class="w-[480px] h-[40px] border-[1px] outline-none rounded-lg px-3" placeholder="Masukkan password"
               name="password" id="password">
@@ -70,7 +70,7 @@
                 d="M12 5C7.5 5 3.735 7.61 2 12C3.735 16.39 7.5 19 12 19C16.5 19 20.265 16.39 22 12C20.265 7.61 16.5 5 12 5ZM12 17C9.239 17 7 14.761 7 12C7 9.239 9.239 7 12 7C14.761 7 17 9.239 17 12C17 14.761 14.761 17 12 17ZM12 9C10.346 9 9 10.346 9 12C9 13.654 10.346 15 12 15C13.654 15 15 13.654 15 12C15 10.346 13.654 9 12 9Z"
                 stroke="#2671D9" stroke-width="1" fill="none" />
             </svg>
-          </form>
+          </div>
         </div>
         <div class="mt-20">
           <button @click="submit" :disabled="isDisableLogin"
