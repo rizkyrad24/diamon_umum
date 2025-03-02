@@ -14,7 +14,10 @@ import { dateParsing } from '@/utils/helper';
     <div class="flex-grow">
       <navbar />
       <div class="h-[54px] flex">
-        <router-link to="/Proses">
+        <router-link v-if="origin == 'dashboard'" to="/Dashboard">
+          <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Dashboard</h1>
+        </router-link>
+        <router-link v-else to="/Proses">
           <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Proses</h1>
         </router-link>
         <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[19px] ml-1" fill="none"
@@ -2006,6 +2009,7 @@ export default {
       fileNameKemitraan7: null,
       fileSizeKemitraan7: null,
       linkDownloadKemitraan7: "",
+      origin: null,
 
       isLoading: false,
       modalFailed: {
@@ -2257,6 +2261,9 @@ export default {
       this.getDataApi(this.$route.params.base, this.$route.params.id)
       this.base = this.$route.params.base;
       this.id = this.$route.params.id;
+    }
+    if (this.$route.query.origin) {
+      this.origin = this.$route.query.origin;
     }
   }
 };

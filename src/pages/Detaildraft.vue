@@ -580,7 +580,7 @@ import { dateParsing } from "@/utils/helper";
                     <div>
                       <label class="text-[#4D5E80] font-semibold">
                         Dokumen Surat Menyurat
-                        <span class="text-[#FF5656] text-xs">*</span>
+                        <span class="text-[#B3B3B3] text-xs">(Opsional)</span>
                       </label>
                       <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
@@ -896,7 +896,7 @@ export default {
             }
           })
           if (
-            this.fileNamesurat && this.fileSizesurat && res.data.partnershipTitle &&
+            res.data.partnershipTitle &&
             res.data.partnershipCandidate && res.data.scopesMou.length > 0
           ) {
             this.disableKirim = false;

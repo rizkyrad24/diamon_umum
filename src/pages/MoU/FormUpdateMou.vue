@@ -350,7 +350,6 @@ async function getDataApi(id) {
 async function postMounda(successFunction, failFunction) {
   isLoading.value = true;
   const form = new FormData()
-  // form.append('userId', '1')
   form.append('base', base.value)
   form.append('partnershipTitle', partnershipTitle.value)
   form.append('expectedDate', createdDate.value)
@@ -365,6 +364,7 @@ async function postMounda(successFunction, failFunction) {
   });
   deletedScopes.value.forEach((element) => {
     form.append(`scopesMou[${index}].id`, element)
+    form.append(`scopesMou[${index}].toDeleted`, true)
     index++
   })
   form.append('background', background.value)

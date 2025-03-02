@@ -41,8 +41,8 @@ import { mapperStatus } from "@/utils/helper";
             <div class="ml-[23px] flex">
               <img :src="user" alt="User Image" class="w-[18px] h-[18px] mt-[23px]">
               <div class="mt-[23px]">
-                <h1 class="text-[15px] ml-2 text-white font-medium">OFFICER KEMITRAAN BISNIS</h1>
-                <h1 class="text-[20px] text-white ml-2 mt-2 w-[600px]">Staff Sub Bidang Kemitraan Bisnis Konektivitas
+                <h1 class="text-[15px] ml-2 text-white font-medium">STAFF KEMITRAAN BISNIS</h1>
+                <h1 class="text-[20px] text-white ml-2 mt-2 w-[600px]">Sub Bidang Kemitraan Bisnis Konektivitas 
                   dan Infrastruktur</h1>
               </div>
               <img :src="group" alt="Group Image" class="ml-[275px] rounded-lg">
@@ -423,7 +423,7 @@ import { mapperStatus } from "@/utils/helper";
                 </thead>
                 <!-- Baris -->
                 <tbody>
-                  <tr v-for="row in paginatedRows" :key="row.id"
+                  <tr v-for="(row, index) in paginatedRows" :key="row.id"
                     class="bg-white border-b text-sm text-[#333333] h-[54px] data-row">
                     <td class="w-[74px] px-3">{{ row.id }}</td>
                     <td class="w-[268px] px-3">{{ row.name }}</td>
@@ -436,11 +436,37 @@ import { mapperStatus } from "@/utils/helper";
                         class="px-[8px] py-1 text-xs font-medium border-1 rounded-[100px]">{{ row.status }}</span>
                     </td>
                     <td class="w-[54px] px-3">
-                      <div class="w-6 h-6 bg-[#E5E7E9] rounded-lg flex justify-center cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-[2px]" viewBox="0 0 128 512">
-                          <path
-                            d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+                      <div @click="toggleView1(index, row.type)"
+                        class="bg-[#E5E7E9] rounded-lg flex justify-center cursor-pointer">
+                        <svg width="16" height="12" class="mx-2 my-2" viewBox="0 0 16 12" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.00054 1.66634C5.20282 1.66634 2.82717 3.48083 1.98949 5.99905C1.989 6.00052 1.989 6.00234 1.98949 6.00381C2.82821 8.52021 5.20296 10.333 7.99937 10.333C10.7971 10.333 13.1727 8.51852 14.0104 6.0003C14.0109 5.99882 14.0109 5.99701 14.0104 5.99554C13.1717 3.47914 10.797 1.66634 8.00054 1.66634ZM0.724321 5.5782C1.7378 2.53148 4.61156 0.333008 8.00054 0.333008C11.3879 0.333008 14.2606 2.52944 15.2753 5.57394C15.367 5.84883 15.367 6.14622 15.2756 6.42115C14.2621 9.46787 11.3883 11.6663 7.99937 11.6663C4.61197 11.6663 1.7393 9.46991 0.72457 6.42541C0.632951 6.15052 0.632864 5.85314 0.724321 5.5782ZM8 4.66634C7.26362 4.66634 6.66666 5.26329 6.66666 5.99967C6.66666 6.73605 7.26362 7.33301 8 7.33301C8.73638 7.33301 9.33333 6.73605 9.33333 5.99967C9.33333 5.26329 8.73638 4.66634 8 4.66634ZM5.33333 5.99967C5.33333 4.52692 6.52724 3.33301 8 3.33301C9.47276 3.33301 10.6667 4.52691 10.6667 5.99967C10.6667 7.47243 9.47276 8.66634 8 8.66634C6.52724 8.66634 5.33333 7.47243 5.33333 5.99967Z"
+                            fill="#2671D9" />
                         </svg>
+                      </div>
+                      <!-- View -->
+                      <div v-if="activeViewIndex === index" class="absolute -translate-x-[70px] -translate-y-[36px]">
+                        <!-- PKS type -->
+                        <router-link v-if="row.type === 'PKS'" :to="{
+                          path: `/Detailproses/PKS/${row.did}`,
+                          query: { origin: 'dashboard' }
+                        }">
+                          <div
+                            class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
+                          </div>
+                        </router-link>
+                        <!-- MoU type -->
+                        <router-link v-if="row.type === 'MoU' || row.type === 'NDA'" :to="{
+                          path: `/Detailproses/MOU/${row.did}`,
+                          query: { origin: 'dashboard' }
+                        }">
+                          <div
+                            class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
+                          </div>
+                        </router-link>
                       </div>
                     </td>
                   </tr>
@@ -516,7 +542,7 @@ import { mapperStatus } from "@/utils/helper";
 </template>
 
 <script>
-import DatePicker from '@/components/datepicker.vue'
+// import DatePicker from '@/components/datepicker.vue'
 import { ref } from 'vue';
 
 const isFilterOpen = ref(false);
@@ -551,10 +577,10 @@ function filterDropdown() {
   isDate.value = false;
 }
 
-function dateDropdown() {
-  isDate.value = !isDate.value
-  isFilterOpen.value = false;
-}
+// function dateDropdown() {
+//   isDate.value = !isDate.value
+//   isFilterOpen.value = false;
+// }
 
 function filterTipe() {
   isFilterTipe.value = !isFilterTipe.value;
@@ -578,13 +604,14 @@ function toggleFilterStatus() {
 
 // Data
 export default {
-  components: { DatePicker },
+  // components: { DatePicker },
   data() {
     return {
       isDataOpen,
       DataOption: '8',
       currentPage: 1,
       rowsPerPage: 8,
+      activeViewIndex: null,
       filterType: '',
       filterStatus: '',
       FilterOptionStatus: '',
@@ -794,6 +821,13 @@ export default {
   },
 
   methods: {
+    toggleView1(index) {
+      if (this.activeViewIndex === index) {
+        this.activeViewIndex = null;
+      } else {
+        this.activeViewIndex = index;
+      }
+    },
     SortDateEnd() {
       if (this.endDateSortOrder === 'asc') {
         this.dataRows.sort((a, b) => {
@@ -928,6 +962,7 @@ export default {
 			const res = await fetchGet("staff/mounda", null, this.$router);
 			if (res.status == 200) {
 				let cleanData = res.data.map((item) => ({
+            did: item.id,
             name: item.partnershipTitle,
             code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
@@ -952,6 +987,7 @@ export default {
 			const res2 = await fetchGet("staff/pks", null, this.$router);
 			if (res2.status == 200) {
 				let cleanData2 = res2.data.map((item) => ({
+            did: item.id,
             name: item.partnershipTitle,
             code: item.submissionNumber,
             type: "PKS",

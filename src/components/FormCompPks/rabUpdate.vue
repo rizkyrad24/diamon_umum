@@ -297,7 +297,7 @@
               <form
                 class="w-[454px] h-[40px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between items-center">
                 <span class="mr-2">Rp.</span><input v-model="revenueInput" type="text" class="w-[399px] outline-none"
-                  placeholder="Masukan Revenue" id="pelanggan">
+                  placeholder="Masukan Revenue" id="pelanggan" @input="revenueInput = $event.target.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
               </form>
             </div>
           </div>
@@ -306,11 +306,11 @@
             <form
               class="w-[454px] h-[40px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between items-center">
               <span class="mr-2">Rp.</span><input v-model="biayaInput" type="text" class="w-[399px] outline-none"
-                placeholder="Masukan Biaya" id="pelanggan">
+                placeholder="Masukan Biaya" id="pelanggan" @input="biayaInput = $event.target.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
             </form>
           </div>
           <div class="pl-4 mt-6">
-            <label class="text-[#4D5E80] font-medium">Deskripsi Biaya <span class="text-[#FF5656]">*</span></label>
+            <label class="text-[#4D5E80] font-medium">Deskripsi <span class="text-[#FF5656]">*</span></label>
             <form class="w-[925px] h-[90px] px-4 mt-2 border-[1px] rounded-lg text-sm p-1">
               <input v-model="deskInput" type="text" class="w-[900px] outline-none" placeholder="Masukkan Deskripsi"
                 id="pelanggan">
@@ -384,8 +384,8 @@ watch(
       produk: item.product,
       desk: item.costDesc,
       type: item.isPln ? 'PLN' : 'Non PLN',
-      biaya: item.cost,
-      revenue: item.revenue,
+      biaya: item.cost.toString(),
+      revenue: item.revenue.toString(),
       key: item.id
     })) || [];
   },
@@ -523,8 +523,8 @@ const openEdit = (id) => {
     pelangganInput.value = choosenItem.pelanggan;
     produkInput.value = choosenItem.produk;
     PlnOption.value = choosenItem.type;
-    revenueInput.value = choosenItem.revenue;
-    biayaInput.value = choosenItem.biaya;
+    revenueInput.value = choosenItem.revenue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    biayaInput.value = choosenItem.biaya.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     deskInput.value = choosenItem.desk;
     selectedPelanggan.value = pelangganList.value.find(item => item.value == choosenItem.pelanggan);
     selectedProduk.value = produkList.value.find(item => item.value == choosenItem.produk);
@@ -546,8 +546,8 @@ const openOk = () => {
     produk: produkInput.value,
     desk: deskInput.value,
     type: PlnOption.value,
-    biaya: biayaInput.value,
-    revenue: revenueInput.value,
+    biaya: biayaInput.value.replace(/\./g, ''),
+    revenue: revenueInput.value.replace(/\./g, ''),
     key: null
   }]
   cleanAddForm();
@@ -563,8 +563,8 @@ const openEditOk = () => {
     produk: produkInput.value,
     desk: deskInput.value,
     type: PlnOption.value,
-    biaya: biayaInput.value,
-    revenue: revenueInput.value
+    biaya: biayaInput.value.replace(/\./g, ''),
+    revenue: revenueInput.value.replace(/\./g, '')
   });
   cleanAddForm();
   // console.log(pelangganInput.value)

@@ -352,8 +352,9 @@ function moveNext() {
       // console.log('partnershipMethod', partnershipMethod.value)
       // console.log('materialType', materialType.value)
       // console.log('title: ', partnershipTitle.value)
-      // console.log('rabs', rabs.value)
-      console.log('scoopes', scopes.value)
+      console.log('rabs', rabs.value)
+      console.log('delete rabs', deletedRabs.value)
+      // console.log('scoopes', scopes.value)
       console.log('delete scoopes', deletedScopes.value)
       // console.log('background', background.value)
       // console.log('note', note.value)
@@ -424,6 +425,9 @@ async function postPks(successFunction, failFunction) {
   form.append('bisnisType', bisnisType.value)
   let indexRab = 0;
   rabs.value.forEach((element) => {
+    if (element.key) {
+      form.append(`rab[${indexRab}].id`, element.key)
+    }
     form.append(`rab[${indexRab}].customer`, element.pelanggan)
     form.append(`rab[${indexRab}].product`, element.produk)
     form.append(`rab[${indexRab}].isPln`, element.type == "PLN")
@@ -434,7 +438,8 @@ async function postPks(successFunction, failFunction) {
   })
   deletedRabs.value.forEach((element) => {
     form.append(`rab[${indexRab}].id`, element)
-    index++
+    form.append(`rab[${indexRab}].toDeleted`, true)
+    indexRab++
   })
 
   let index = 0;
@@ -447,6 +452,7 @@ async function postPks(successFunction, failFunction) {
   });
   deletedScopes.value.forEach((element) => {
     form.append(`scopesPks[${index}].id`, element)
+    form.append(`scopesPks[${index}].toDeleted`, true)
     index++
   })
   form.append('background', background.value)

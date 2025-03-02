@@ -244,12 +244,6 @@ export const dueDateParsing = (input) => {
     const today = new Date();
     const differenceInMillis = targetDate - today;
     const differenceInDays = Math.ceil(differenceInMillis / (1000 * 60 * 60 * 24));
-    // if (differenceInDays > 0) {
-    //   return `H-${differenceInDays}`
-    // }
-    // if (differenceInDays < 0) {
-    //   return `H+${differenceInDays}`
-    // }
     return differenceInDays
   }
   return input
