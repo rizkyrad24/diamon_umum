@@ -21,18 +21,21 @@
           </button>
           <div v-show="isJenisOpen" class="w-[540px] border-[1px] rounded-b-lg z-10">
             <ul class="text-sm">
-              <li @click="jenisOption({ value: 'JO', label: 'Join Operation' })"
-                :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'JO', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'JO' }"
-                class="cursor-pointer border-b-[1px] px-4 py-2">Join Operation</li>
+              <li @click="jenisOption({ value: 'JV', label: 'Joint Venture' })"
+                :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'JV', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'JV' }"
+                class="cursor-pointer border-b-[1px] px-4 py-2">Joint Venture</li>
+              <li @click="jenisOption({ value: 'K', label: 'Konsorsium' })"
+                :class="{ 'bg-[#2671D9] text-white rounded-b-lg': jenissOption?.value === 'K', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'K' }"
+                class="cursor-pointer px-4 py-2">Konsorsium</li>
               <li @click="jenisOption({ value: 'R', label: 'Resseler' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'R', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'R' }"
                 class="cursor-pointer border-b-[1px] px-4 py-2">Resseler</li>
               <li @click="jenisOption({ value: 'B', label: 'Bundling Layanan' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'B', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'B' }"
                 class="cursor-pointer border-b-[1px] px-4 py-2">Bundling Layanan</li>
-              <li @click="jenisOption({ value: 'JI', label: 'Join Investmen' })"
-                :class="{ 'bg-[#2671D9] text-white rounded-b-lg': jenissOption?.value === 'JI', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'JI' }"
-                class="cursor-pointer px-4 py-2">Join Investmen</li>
+              <li @click="jenisOption({ value: 'M', label: 'Marketer' })"
+                :class="{ 'bg-[#2671D9] text-white rounded-b-lg': jenissOption?.value === 'M', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'M' }"
+                class="cursor-pointer px-4 py-2">Marketer</li>
             </ul>
           </div>
         </div>

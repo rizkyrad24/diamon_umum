@@ -182,8 +182,8 @@ export const getNewKey = (dataRows) => {
 };
 
 export const partnershipTypeParsing = (partnershipType) => {
-  if (partnershipType == "Join Operation") {
-    return {value: 'JO', label: 'Join Operation'}
+  if (partnershipType == "Joint Venture") {
+    return {value: 'JV', label: 'Joint Venture'}
   }
   if (partnershipType == "Reseller") {
     return {value: 'R', label: 'Resseler'}
@@ -191,8 +191,11 @@ export const partnershipTypeParsing = (partnershipType) => {
   if (partnershipType == "Bundling Layanan") {
     return {value: 'B', label: 'Bundling Layanan'}
   }
-  if (partnershipType == "Join Investment") {
-    return {value: 'JI', label: 'Join Investmen'}
+  if (partnershipType == "Konsorsium") {
+    return {value: 'K', label: 'Konsorsium'}
+  }
+  if (partnershipType == "Marketer") {
+    return {value: 'M', label: 'Marketer'}
   }
 }
 
