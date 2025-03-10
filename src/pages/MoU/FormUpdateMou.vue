@@ -372,7 +372,7 @@ async function postMounda(successFunction, failFunction) {
     form.append('note', note.value)
   }
   form.append('partnershipCandidate', partnershipCandidate.value)
-  let sort = 1;
+  let sort = 0;
   if (fileSurat.value || fileSuratId.value) {
     if (fileSurat.value) {
       form.append(`attachmentsMou[${sort}].fileType`, 'Dokumen Surat Menyurat')
