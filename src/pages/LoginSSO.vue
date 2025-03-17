@@ -5,6 +5,8 @@
     <LoadingComponent :isVisible="isLoading" />
     <ModalFailed :isVisible="modalFailed.isVisible" :title="modalFailed.title" :message="modalFailed.message"
       @close="closeModalFailed" />
+    <ModalSuccess :isVisible="modalSuccess.isVisible" :title="modalSuccess.title" :message="modalSuccess.message"
+      @close="modalSuccess.closeFunction" />
     <div class="w-[643px] shadow-lg">
       <img :src="log" alt="">
       <div class="w-[588px] h-[156px] absolute bg-[#191f34b3] rounded-[20px] -translate-y-[500px] ml-[37px]">
@@ -13,7 +15,7 @@
           Monitoring Dashboard)</p>
       </div>
     </div>
-    <div class="w-[720px] h-[1024px] bg-white shadow-lg">
+    <div class="w-[720px] h-[1024px] bg-[#F2E2B1] shadow-lg">
       <div class="w-[480px] h-[496px] mt-[202.5px] ml-[120px]">
         <svg width="252" height="45" class="ml-[114.5px]" viewBox="0 0 252 45" fill="none"
           xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -26,7 +28,7 @@
               xlink:href="data:image/png;base64,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" />
           </defs>
         </svg>
-        <h1 class="text-[40px] font-semibold mt-[48px] ml-[186px] text-[#21252B]">Login</h1>
+        <h1 class="text-[40px] font-semibold mt-[48px] ml-[186px] text-[#21252B]">Login SSO</h1>
         <div class="mt-8">
           <label class="text-base font-semibold text-[#4D5E80]">Username <span class="text-[#FF5656]">*</span></label>
           <div class="mt-2">
@@ -74,9 +76,8 @@
         </div>
         <div class="mt-20">
           <button @click="submit" :disabled="isDisableLogin"
-            :class="isDisableLogin ? 'w-full h-[48px] bg-[#9C9C9C] text-white font-semibold rounded-lg' : 'w-full h-[48px] bg-[#2671D9] text-white font-semibold rounded-lg'">Login</button>
-          <button @click="pushOtherLoginType" class="w-full h-[48px] text-[#2671D9] border-[1px] mt-4 font-semibold rounded-lg">Login dengan
-            SSO</button>
+            :class="isDisableLogin ? 'w-full h-[48px] bg-[#9C9C9C] text-white font-semibold rounded-lg' : 'w-full h-[48px] bg-[#2671D9] text-white font-semibold rounded-lg'">Login dengan SSO</button>
+          <button @click="pushOtherLoginType" class="w-full h-[48px] text-[#2671D9] border-[1px] mt-4 font-semibold rounded-lg">Login Internal</button>
         </div>
       </div>
     </div>
@@ -92,6 +93,7 @@ import { useRouter } from "vue-router";
 import { fetchPostFormPublic } from "@/api/apiFunction";
 import LoadingComponent from '@/components/loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
+import ModalSuccess from "@/components/modalsuccess.vue";
 
 const router = useRouter();
 const username = ref("");
@@ -121,7 +123,7 @@ function togglePasswordVisibility() {
 }
 
 function pushOtherLoginType() {
-  router.push("/sso")
+  router.push("/")
 }
 
 function closeModalFailed() {
@@ -131,13 +133,27 @@ function closeModalFailed() {
     message: ''
   }
 }
+const modalSuccess = ref({
+  isVisible: false,
+  title: '',
+  message: '',
+  closeFunction: () => null
+});
+function closeModalSuccess() {
+  modalSuccess.value = {
+    isVisible: false,
+    title: '',
+    message: '',
+    closeFunction: () => null
+  }
+}
 
 async function submit() {
   isLoading.value = true;
   const payload = new FormData();
   payload.append('username', username.value);
   payload.append('password', password.value);
-  const res = await fetchPostFormPublic('account/login', null, payload, router);
+  const res = await fetchPostFormPublic('account/login-ldap', null, payload, router);
   if (res.status == 200) {
     if (res.data.role == "Staff") {
       saveDataLogin(res.data);
@@ -154,12 +170,20 @@ async function submit() {
         message: 'Role anda tidak terdaftar untuk aplikasi ini'
       }
     }
+  } else if(res.status == 201) {
+    isLoading.value = false;
+    modalSuccess.value = {
+      isVisible: true,
+      title: 'Success',
+      message: res.data.message,
+      closeFunction: closeModalSuccess
+    }
   } else {
     isLoading.value = false;
     modalFailed.value = {
       isVisible: true,
       title: 'Invalid Login',
-      message: res.data
+      message: res.data.message
     }
   }
 }

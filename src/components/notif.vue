@@ -18,10 +18,10 @@
         <div class="w-[656px] max-h-[300px] overflow-y-auto overflow-x-hidden border-[1px] rounded-b-lg p-4">
             <div v-for="(row, index) in notifList" :key="index" class="w-[608px] h-[90px] flex">
                 <div class="w-[170px] border-e-[3px] border-[#2671D9]">
-                    <h1 class="text-[#667085] font-medium">{{ dateParsing(row.dateOfUpdate) }}</h1>
+                    <h1 class="text-[#667085] w-[90px] font-medium">{{ convertDatetime(row.dateOfUpdate) }}</h1>
                     <!-- <h1 class="text-[#667085] font-medium mt-2">10.24</h1> -->
                 </div>
-                <div class="px-7">
+                <div class="px-7 w-[430px]">
                     <h1 class="text-[#2671D9] text-lg font-medium">{{ row.base }} {{ row.partnershipTitle }}</h1>
                     <p class="text-[#333333]">{{ row.content }}</p>
                 </div>
@@ -87,7 +87,7 @@ import { fetchGet } from '@/api/apiFunction';
 import { useRouter } from 'vue-router';
 import LoadingComponent from './loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
-import { dateParsing } from '@/utils/helper';
+import { convertDatetime } from '@/utils/helper';
 
 const router = useRouter();
 

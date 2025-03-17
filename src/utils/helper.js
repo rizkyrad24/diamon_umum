@@ -24,6 +24,8 @@ export function saveDataLogin(dataUser) {
   localStorage.setItem('firstName', dataUser.firstName);
   localStorage.setItem('lastName', dataUser.lastName);
   localStorage.setItem('position', dataUser.role.toLowerCase());
+  localStorage.setItem('title', dataUser.title);
+  localStorage.setItem('department', dataUser.department);
 }
 
 export function clearDataLogin() {
@@ -33,6 +35,8 @@ export function clearDataLogin() {
   localStorage.removeItem('firstName');
   localStorage.removeItem('lastName');
   localStorage.removeItem('position');
+  localStorage.removeItem('title');
+  localStorage.removeItem('department');
 }
 
 export function mapperStatus(positionLevel, status, attachments, isStopClock) {
@@ -161,7 +165,10 @@ export function mapperKeterangan(positionLevel, status, endContract) {
     if (positionLevel == 2) {
       return 'Pengajuan Ditolak Oleh VP'
     }
-    if (positionLevel > 2) {
+    if (positionLevel == 3) {
+      return 'Pengajuan Ditolak Direksi'
+    }
+    if (positionLevel > 3) {
       return 'Pengajuan Ditolak Kemitraan'
     }
     else {
@@ -250,4 +257,30 @@ export const dueDateParsing = (input) => {
     return differenceInDays
   }
   return input
+}
+
+export const convertDatetime = (dateStr) => {
+  // Pecah string berdasarkan pemisah yang ada
+  if (dateStr && dateStr.includes("T")) {
+    try {
+      // Parse string menjadi objek Date
+      let dateObj = new Date(dateStr);
+
+      // Ambil komponen tanggal
+      let day = String(dateObj.getDate()).padStart(2, '0');
+      let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // getMonth() dimulai dari 0
+      let year = dateObj.getFullYear();
+
+      // Ambil komponen waktu
+      let hours = String(dateObj.getHours()).padStart(2, '0');
+      let minutes = String(dateObj.getMinutes()).padStart(2, '0');
+      let seconds = String(dateObj.getSeconds()).padStart(2, '0');
+
+      // Format akhir: "DD-MM-YYYY HH:MM:SS"
+      return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+    } catch (error) {
+        return "Invalid date format"; // Handle error jika format salah
+    }
+  }
+  return dateStr
 }

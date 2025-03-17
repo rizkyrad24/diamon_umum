@@ -5,7 +5,7 @@ import navbar from '../components/navbar.vue';
 import { fetchGet } from '@/api/apiFunction';
 import LoadingComponent from '../components/loading.vue';
 import modalfailed from "@/components/modalfailed.vue";
-import { dateParsing } from '@/utils/helper';
+import { dateParsing, convertDatetime } from '@/utils/helper';
 </script>
 
 <template>
@@ -894,7 +894,7 @@ import { dateParsing } from '@/utils/helper';
                       <tr v-for="(item, index) in dataBerkas?.historyPks" :key="index"
                         class="bg-white border-b text-sm text-[#333333]">
                         <td class="px-3 py-[18px]">{{ index + 1 }}</td>
-                        <td class="px-3">{{ dateParsing(item.dateOfUpdate) }}</td>
+                        <td class="px-3">{{ convertDatetime(item.dateOfUpdate) }}</td>
                         <td class="px-3">{{ item.title }}</td>
                         <td class="px-3">{{ item.status }}</td>
                         <td class="px-3">{{ item.stopClock ? "Pending" : "-" }}</td>
@@ -905,7 +905,7 @@ import { dateParsing } from '@/utils/helper';
                       <tr v-for="(item, index) in dataBerkas?.historyMou" :key="index"
                         class="bg-white border-b text-sm text-[#333333]">
                         <td class="px-3 py-[18px]">{{ index + 1 }}</td>
-                        <td class="px-3">{{ dateParsing(item.dateOfUpdate) }}</td>
+                        <td class="px-3">{{ convertDatetime(item.dateOfUpdate) }}</td>
                         <td class="px-3">{{ item.title }}</td>
                         <td class="px-3">{{ item.status }}</td>
                         <td class="px-3">{{ item.stopClock ? "Pending" : "-" }}</td>

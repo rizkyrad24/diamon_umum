@@ -42,9 +42,8 @@ import { mapperStatus } from "@/utils/helper";
             <div class="ml-[23px] flex">
               <img :src="user" alt="User Image" class="w-[18px] h-[18px] mt-[23px]">
               <div class="mt-[23px]">
-                <h1 class="text-[15px] ml-2 text-white font-medium">{{ jabatan }} KEMITRAAN BISNIS</h1>
-                <h1 class="text-[20px] text-white ml-2 mt-2 w-[600px]">Sub Bidang Kemitraan Bisnis Konektivitas
-                  dan Infrastruktur</h1>
+                <h1 class="text-[15px] ml-2 text-white font-medium">{{ title || jabatan + " KEMITRAAN BISNIS" }}</h1>
+                <h1 class="text-[20px] text-white ml-2 mt-2 w-[600px]">{{department || "Sub Bidang Kemitraan Bisnis Konektivitas dan Infrastruktur"}}</h1>
               </div>
               <img :src="group" alt="Group Image" class="ml-[275px] rounded-lg">
             </div>
@@ -620,6 +619,8 @@ export default {
       filterClickListener: null,
       isLoading: false,
       dataRows: [],
+      title: '',
+      department: '',
       // dataRows: [
       //   { id: 1, name: 'Kerja Sama Reseller Produk IBM', code: '100122', type: 'PKS', startDate: '25/08/2024', endDate: '02/09/2024', status: 'Selesai', statusClass: 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]' },
       //   { id: 2, name: 'Perjanjian Mitra Bisnis IBM', code: '100222', type: 'PKS', startDate: '01/08/2024', endDate: '11/09/2024', status: 'Revisi', statusClass: 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]' },
@@ -1086,6 +1087,8 @@ export default {
     if (role == 'direksi') {
       this.jabatan = "DIREKSI"
     }
+    this.title = localStorage.getItem("title");
+    this.department = localStorage.getItem("department");
   }
 };
 </script>

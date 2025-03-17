@@ -3,6 +3,7 @@ import { clearDataLogin } from "@/utils/helper";
 
 // Login
 import Login from "@/pages/Login.vue";
+import LoginSSO from "@/pages/LoginSSO.vue";
 
 // Admin (Manager, VP, Direksi)
 import Dashboardmanager from "@/pages/Admin/Dashboardmanager.vue";
@@ -28,7 +29,7 @@ import DetailMoU from "../pages/DetailMoU.vue";
 // import ProdukData from "@/pages/MasterData/produk-data.vue";
 
 // MoU
-import MoU from '../pages/MoU/Mou.vue';
+// import MoU from '../pages/MoU/Mou.vue';
 import Ruanglingkup from '../pages/MoU/Ruanglingkup.vue';
 import Lainnya from '../pages/MoU/Lainnya.vue';
 import Mitrabisnis from '../pages/MoU/Mitrabisnis.vue';
@@ -37,7 +38,7 @@ import FormMou from "@/pages/MoU/FormMou.vue";
 import FormUpdateMou from "@/pages/MoU/FormUpdateMou.vue";
 
 // PKS
-import PKS from '../pages/PKS/Pks.vue';
+// import PKS from '../pages/PKS/Pks.vue';
 import Rab from '../pages/PKS/Rab.vue';
 import Pksruanglingkup from '../pages/PKS/Pksruanglingkup.vue';
 import Pkslainnya from '../pages/PKS/Pkslainnya.vue';
@@ -51,6 +52,7 @@ const routes = [
 
     // Login
     { path: '/', name: 'Login', component: Login },
+    { path: '/sso', name: 'LoginSSO', component: LoginSSO },
     
     // Admin (Manager, VP, Direksi)
     { path: '/Dashboardadmin', name: 'Dashboardmanager', component: Dashboardmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },
