@@ -264,7 +264,7 @@ function closeModalDialog() {
 function SendEdit() {
   modalDialog.value = {
     isVisible: true,
-    title: 'Update Pengajuan',
+    title: 'Konfirmasi',
     message: 'Apakan anda yakin dengan data yang anda masukan',
     okFunction: openEdit,
     closeFunction: closeEdit
@@ -280,7 +280,7 @@ function closeEdit() {
 function successEdit() {
   modalSuccess.value = {
     isVisible: true,
-    title: 'Success',
+    title: 'Berhasil',
     message: 'Berhasil mengupdate pengajuan',
     closeFunction: closeSelesaiEdit
   }

@@ -1,9 +1,56 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
+  <ModalFailed :isVisible="modalFailed.isVisible" :title="modalFailed.title" :message="modalFailed.message"
+  @close="closeModalFailed" />
   <div :class="!props.isDisplay ? 'hidden' : ''">
     <h1 class="text-xl font-medium pl-4 py-6">Dasar</h1>
-    <div class="pl-4 w-[1155px] flex justify-between">
+    <div v-if="isAmandement && isNumberEditable" class="pl-4 w-[1155px] flex justify-between">
+      <!-- MOU -->
+      <div>
+        <label class="text-[#4D5E80] font-medium">Cari PKS Yang Akan Dilanjutkan <span class="text-[#B3B3B3] text-xs">(Bantuan)</span></label>
+        <div class="relative w-[540px] mt-2 tipe-container">
+          <SelectSearch
+            :options="lastPksList"
+            placeholder="Pilih PKS..."
+            :initialValue="selectedLastPks"
+            @change="handleChangeSelectedLastPks"
+          />
+        </div>
+      </div>
 
+      <!-- Nomor Mou -->
+      <div class="translate-x-4">
+        <label class="text-[#4D5E80] font-medium">Nomor PKS yang dilanjutkan <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
+        <form action="" class="w-[555px] py-[10px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between">
+          <input @input="changeLastPksNumber($event.target.value)" :value="lastPksNumber" type="text"
+            placeholder="Masukkan Nomor PKS Yang Dilanjutkan" class="w-full outline-none">
+        </form>
+      </div>
+    </div>
+    <div v-if="!isAmandement && isNumberEditable" class="pl-4 w-[1155px] flex justify-between">
+      <!-- MOU -->
+      <div>
+        <label class="text-[#4D5E80] font-medium">Cari Mou Yang Akan Dilanjutkan <span class="text-[#B3B3B3] text-xs">(Bantuan)</span></label>
+        <div class="relative w-[540px] mt-2 tipe-container">
+          <SelectSearch
+            :options="mouList"
+            placeholder="Pilih MOU..."
+            :initialValue="selectedMou"
+            @change="handleChangeSelectedMou"
+          />
+        </div>
+      </div>
+
+      <!-- Nomor Mou -->
+      <div class="translate-x-4">
+        <label class="text-[#4D5E80] font-medium">Nomor MOU yang dilanjutkan <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
+        <form action="" class="w-[555px] py-[10px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between">
+          <input @input="changeMouNumber($event.target.value)" :value="mouNumber" type="text"
+            placeholder="Masukkan Nomor MOU Yang Dilanjutkan" class="w-full outline-none">
+        </form>
+      </div>
+    </div>
+    <div class="pl-4 mt-7 w-[1155px] flex justify-between">
       <!-- Jenis Kemitraan -->
       <div>
         <label class="text-[#4D5E80] font-medium">Jenis Kemitraan <span class="text-[#FF5656]">*</span></label>
@@ -202,7 +249,12 @@
 
 <script setup>
 import { onMounted, ref, watch } from 'vue';
+import SelectSearch from '../SelectSearch.vue';
+import ModalFailed from '../modalfailed.vue';
+import { fetchGet } from '@/api/apiFunction';
 import { partnershipTypeParsing, budgedTypeParsing, methodTypeParsing, materialTypeParsing } from '@/utils/helper';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const props = defineProps({
   isDisplay: {
     type: Boolean,
@@ -212,13 +264,52 @@ const props = defineProps({
     type: [String, Object, Array], // data bisa berupa string, objek, atau array
     default: null, // data opsional dengan default null
   },
+  isAmandement: {
+    type: Boolean,
+    default: false
+  },
+  isNumberEditable: {
+    type: Boolean,
+    default: false
+  }
 });
 const emit = defineEmits([
   'partnershipType', 'createdDate',
   'budgetType', 'budgetNumber',
   'partnershipMethod', 'materialType',
-  'partnershipTitle', 'bisnisType'
+  'partnershipTitle', 'bisnisType', 'mouNumber',
+  'selectedMou', 'lastPksNumber', 'selectedLastPks'
 ])
+
+const modalFailed = ref({
+  isVisible: false,
+  title: '',
+  message: ''
+});
+
+const closeModalFailed = () => {
+  modalFailed.value = {
+    isVisible: false,
+    title: '',
+    message: ''
+  }
+};
+
+const selectedMou = ref(null);
+const mouList = ref([]);
+
+const selectedLastPks = ref(null);
+const lastPksList = ref([]);
+
+function handleChangeSelectedMou(option) {
+  selectedMou.value = option;
+  emit('selectedMou', option.value);
+}
+
+function handleChangeSelectedLastPks(option) {
+  selectedLastPks.value = option;
+  emit('selectedLastPks', option.value);
+}
 
 // Jenis Kemitraan
 const isJenisOpen = ref(false);
@@ -300,6 +391,20 @@ function BisnisTypeOption(option) {
   isBisnisTypeOpen.value = false;
 }
 
+// Mou Number
+const mouNumber = ref('');
+function changeMouNumber(val) {
+  mouNumber.value = val;
+  emit('mouNumber', val);
+}
+
+// Last Pks Number
+const lastPksNumber = ref('');
+function changeLastPksNumber(val) {
+  lastPksNumber.value = val;
+  emit('lastPksNumber', val);
+}
+
 // Judul
 const titleInput = ref('');
 function changeTitle(val) {
@@ -330,6 +435,8 @@ watch(
   (newData) => {
     titleInput.value = newData?.partnershipTitle || "";
     noBudgetInput.value = newData?.budgetNumber || "";
+    mouNumber.value = newData?.mouNdaNumber || newData?.mouNumber || "";
+    lastPksNumber.value = newData?.lastPksNumberInput || "";
     materiallOption.value = newData ? materialTypeParsing(newData.materialType) : "";
     metodeeOption.value = newData ? methodTypeParsing(newData.partnershipMethod) : "";
     tipeeOption.value = newData ? budgedTypeParsing(newData.budgetType) : "";
@@ -348,6 +455,48 @@ watch(
   },
   { immediate: true }
 );
+
+// api
+async function getDataMouListApi() {
+  let url = 'staff/mounda/list-number';
+  let params = null;
+  const res = await fetchGet(url, params, router);
+  if (res.status == 200) {
+    console.log(res.data)
+    const cleanData = res.data.map((item) => ({
+      value: item.mouNdaNumber,
+      label: item.partnershipTitle,
+    }))
+    mouList.value = cleanData;
+  } else {
+    modalFailed.value = {
+      isVisible: true,
+      title: 'Gagal Ambil Data',
+      message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+    }
+  }
+}
+
+// api
+async function getDataLastPksListApi() {
+  let url = 'staff/pks/list-number';
+  let params = null;
+  const res = await fetchGet(url, params, router);
+  if (res.status == 200) {
+    console.log(res.data)
+    const cleanData = res.data.map((item) => ({
+      value: item.pksNumber,
+      label: item.title,
+    }))
+    lastPksList.value = cleanData;
+  } else {
+    modalFailed.value = {
+      isVisible: true,
+      title: 'Gagal Ambil Data',
+      message: res.data.message ? res.data.message : "Silahkan hubungi admin"
+    }
+  }
+}
 
 onMounted(() => {
   filterClickListener.value = (e) => {
@@ -371,5 +520,8 @@ onMounted(() => {
   const empatPuluhHariKedepan = new Date();
   empatPuluhHariKedepan.setDate(sekarang.getDate() + 40);
   changeDate(empatPuluhHariKedepan.toISOString().split("T")[0]);
+
+  getDataMouListApi();
+  getDataLastPksListApi();
 })
 </script>

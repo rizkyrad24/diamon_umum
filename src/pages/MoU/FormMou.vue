@@ -240,7 +240,7 @@ function closeModalDialog() {
 function SendCreate() {
   modalDialog.value = {
     isVisible: true,
-    title: 'Buat Pengajuan Baru',
+    title: 'Konfirmasi',
     message: 'Apakan anda yakin dengan data yang anda masukan',
     okFunction: openCreate,
     closeFunction: closeCreate
@@ -256,7 +256,7 @@ function closeCreate() {
 function successCreate() {
   modalSuccess.value = {
     isVisible: true,
-    title: 'Success',
+    title: 'Berhasil',
     message: 'Berhasil membuat pengajuan baru',
     closeFunction: closeSelesaiCreate
   }

@@ -312,6 +312,7 @@ const props = defineProps({
 const emit = defineEmits([
     'fileKKB', 'fileKKR', 'fileKKF', 'fileKKO', 'fileProposal', 'fileSurat', 'fileLainnya',
     'fileKKBId', 'fileKKRId', 'fileKKFId', 'fileKKOId', 'fileProposalId', 'fileSuratId', 'fileLainnyaId',
+    'deleteId',
 ])
 
 // State for file uploads
@@ -412,8 +413,10 @@ function handleFileUploadKKB(event) {
 function handleDeleteKKB() {
     isUploadedKKB.value = false;
     emit("fileKKB", null);
+    emit('fileKKBId', null);
     if (fileKKBId.value) {
-        emit('fileKKBId', fileKKBId.value);
+        emit('deleteId', fileKKBId.value);
+        fileKKBId.value = null;
     }
 }
 
@@ -435,8 +438,10 @@ function handleFileUploadKKR(event) {
 function handleDeleteKKR() {
     isUploadedKKR.value = false;
     emit("fileKKR", null);
+    emit('fileKKRId', null);
     if (fileKKRId.value) {
-        emit('fileKKRId', fileKKRId.value);
+        emit('deleteId', fileKKRId.value);
+        fileKKRId.value = null;
     }
 }
 
@@ -458,8 +463,10 @@ function handleFileUploadKKF(event) {
 function handleDeleteKKF() {
     isUploadedKKF.value = false;
     emit("fileKKF", null);
+    emit('fileKKFId', null);
     if (fileKKFId.value) {
-        emit('fileKKFId', fileKKFId.value);
+        emit('deleteId', fileKKFId.value);
+        fileKKFId.value = null;
     }
 }
 
@@ -481,8 +488,10 @@ function handleFileUploadKKO(event) {
 function handleDeleteKKO() {
     isUploadedKKO.value = false;
     emit("fileKKO", null);
+    emit('fileKKOId', null);
     if (fileKKOId.value) {
-        emit('fileKKOId', fileKKOId.value);
+        emit('deleteId', fileKKOId.value);
+        fileKKOId.value = null;
     }
 }
 
@@ -504,8 +513,10 @@ function handleFileUploadmitra(event) {
 function handleDeletemitra() {
     isUploadedmitra.value = false;
     emit("fileProposal", null);
+    emit('fileProposalId', null);
     if (filemitraId.value) {
-        emit('fileProposalId', filemitraId.value);
+        emit('deleteId', filemitraId.value);
+        filemitraId.value = null;
     }
 }
 
@@ -527,8 +538,10 @@ function handleFileUploadsurat(event) {
 function handleDeletesurat() {
     isUploadedsurat.value = false;
     emit("fileSurat", null);
+    emit('fileSuratId', null);
     if (filesuratId.value) {
-        emit('fileSuratId', filesuratId.value);
+        emit('deleteId', filesuratId.value);
+        filesuratId.value = null;
     }
 }
 
@@ -550,8 +563,10 @@ function handleFileUploadlainnya(event) {
 function handleDeletelainnya() {
     isUploadedlainnya.value = false;
     emit("fileLainnya", null);
+    emit('fileLainnyaId', null);
     if (filelainnyaId.value) {
-        emit('fileLainnyaId', filelainnyaId.value);
+        emit('deleteId', filelainnyaId.value);
+        filelainnyaId.value = null
     }
 }
 

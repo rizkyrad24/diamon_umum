@@ -828,7 +828,7 @@ export default {
     SendApprov() {
       this.modalDialog = {
         isVisible: true,
-        title: 'Approve Pengajuan',
+        title: 'Konfirmasi',
         message: 'Apakan anda yakin akan approve pengajuan ini?',
         okFunction: this.openApprov,
         closeFunction: this.closeApprov
@@ -844,7 +844,7 @@ export default {
     successApprov() {
       this.modalSuccess = {
         isVisible: true,
-        title: 'Success',
+        title: 'Berhasil',
         message: 'Berhasil approve pengajuan',
         closeFunction: this.closeSelesaiApprov
       }
@@ -864,7 +864,7 @@ export default {
     SendTolak() {
       this.modalDialog = {
         isVisible: true,
-        title: 'Tolak Pengajuan',
+        title: 'Konfirmasi',
         message: 'Apakan anda yakin akan menolak pengajuan ini?',
         okFunction: this.openTolak,
         closeFunction: this.closeTolak
@@ -880,7 +880,7 @@ export default {
     successTolak() {
       this.modalSuccess = {
         isVisible: true,
-        title: 'Success',
+        title: 'Berhasil',
         message: 'Berhasil menolak pengajuan',
         closeFunction: this.closeSelesaiTolak
       }
@@ -900,7 +900,7 @@ export default {
     SendRevisi() {
       this.modalDialog = {
         isVisible: true,
-        title: 'Revisi Pengajuan',
+        title: 'Konfirmasi',
         message: 'Apakan anda yakin akan meminta revisi pengajuan ini?',
         okFunction: this.openRevisi,
         closeFunction: this.closeRevisi
@@ -916,7 +916,7 @@ export default {
     successRevisi() {
       this.modalSuccess = {
         isVisible: true,
-        title: 'Success',
+        title: 'Berhasil',
         message: 'Berhasil meminta revisi pengajuan',
         closeFunction: this.closeSelesaiRevisi
       }
@@ -1030,7 +1030,7 @@ export default {
         this.isLoading = false;
         return this.modalFailed = {
           isVisible: true,
-          title: 'Gagal Ambil Data',
+          title: 'Gagal',
           message: "Posisi anda tidak dapat mengakses halaman ini"
         }
       }
@@ -1083,7 +1083,7 @@ export default {
           this.isLoading = false;
           this.modalFailed = {
             isVisible: true,
-            title: 'Gagal Ambil Data',
+            title: 'Gagal',
             message: res.data.message ? res.data.message : "Silahkan hubungi admin"
           }
         }
@@ -1116,7 +1116,7 @@ export default {
           this.isLoading = false;
           this.modalFailed = {
             isVisible: true,
-            title: 'Gagal Ambil Data',
+            title: 'Gagal',
             message: res.data.message ? res.data.message : "Silahkan hubungi admin"
           }
         }
@@ -1155,7 +1155,7 @@ export default {
         this.isLoading = false;
         return this.modalFailed = {
           isVisible: true,
-          title: 'Gagal Ambil Data',
+          title: 'Gagal',
           message: "Posisi anda tidak dapat mengakses halaman ini"
         }
       }
@@ -1253,7 +1253,7 @@ export default {
         this.isLoading = false;
         return this.modalFailed = {
           isVisible: true,
-          title: 'Gagal Ambil Data',
+          title: 'Gagal',
           message: "Posisi anda tidak dapat mengakses halaman ini"
         }
       }
@@ -1351,7 +1351,7 @@ export default {
         this.isLoading = false;
         return this.modalFailed = {
           isVisible: true,
-          title: 'Gagal Ambil Data',
+          title: 'Gagal',
           message: "Posisi anda tidak dapat mengakses halaman ini"
         }
       }

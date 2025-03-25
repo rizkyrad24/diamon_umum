@@ -750,7 +750,7 @@ export default {
     SendKirimPengajuan() {
       this.modalDialog = {
         isVisible: true,
-        title: 'Kirim Pengajuan',
+        title: 'Konfirmasi',
         message: 'Apakan anda yakin akan mengirim pengajuan ini?',
         okFunction: this.openKirimPengajuan,
         closeFunction: this.closeKirimPengajuan
@@ -766,7 +766,7 @@ export default {
     successKirimPengajuan() {
       this.modalSuccess = {
         isVisible: true,
-        title: 'Success',
+        title: 'Berhasil',
         message: 'Berhasil kirim pengajuan',
         closeFunction: this.closeSelesaiKirimPengajuan
       }
@@ -866,7 +866,7 @@ export default {
           this.isLoading = false;
           this.modalFailed = {
             isVisible: true,
-            title: 'Gagal Ambil Data',
+            title: 'Gagal',
             message: res.data.message ? res.data.message : "Silahkan hubungi admin"
           }
         }
@@ -907,7 +907,7 @@ export default {
           this.isLoading = false;
           this.modalFailed = {
             isVisible: true,
-            title: 'Gagal Ambil Data',
+            title: 'Gagal',
             message: res.data.message ? res.data.message : "Silahkan hubungi admin"
           }
         }

@@ -70,6 +70,7 @@ import { computed } from 'vue';
           <div v-show="isDropdownOpen" class="ml-[48px]" id="submenu">
             <router-link to="/MoU-NDA"><h1  @click="setActive('mou')" :class="{'text-[#2671D9] font-semibold': isMouActive}" class="cursor-pointer text-sm mt-2 hover:text-[#2671D9]">MoU/NDA</h1></router-link>
             <router-link to="/PKS"><h1 @click="setActive('pks')" :class="{'text-[#2671D9] font-semibold': isPksActive}" class="cursor-pointer text-sm mt-3 h-6 hover:text-[#2671D9]">PKS</h1></router-link>
+            <router-link to="/PKS/Amandement"><h1 @click="setActive('amandementPks')" :class="{'text-[#2671D9] font-semibold': isAmandementPksActive}" class="cursor-pointer text-sm mt-3 h-6 hover:text-[#2671D9]">Amandement PKS</h1></router-link>
           </div>
 
           <!-- Draft -->
@@ -116,15 +117,17 @@ import { useRoute } from 'vue-router';
 const route = useRoute();   
 
 const isDropdownOpen = ref(false);
-const isDropdownMasterDataOpen = ref(false);
+// const isDropdownMasterDataOpen = ref(false);
+console.log('route name', route.name)
 
 const isDashboardActive = computed(() => route.name === 'Dashboard');
 const isPksActive = computed(() => ['PKS', 'Rab', 'Pksruanglingkup', 'Pkslainnya', 'Pksmitrabisnis', 'Pkslampiran'].includes(route.name));
+const isAmandementPksActive = computed(() => ['PKSamandement',].includes(route.name))
 const isMouActive = computed(() => ['MoU', 'Ruanglingkup', 'Lainnya', 'Mitrabisnis', 'Lampiran'].includes(route.name));
 const isDraftActive = computed(() => ['Draft', 'Detaildraft'].includes(route.name));
 const isProsesActive = computed(() => ['Proses', 'Detailproses', 'DetailMoU'].includes(route.name));
 const isSelesaiActive = computed(() => route.name === 'Selesai');
-const isBuatActive = computed(() => ['MoU', 'Ruanglingkup', 'Lainnya', 'Mitrabisnis', 'Lampiran', 'PKS', 'Rab', 'Pksruanglingkup', 'Pkslainnya', 'Pksmitrabisnis', 'Pkslampiran'].includes(route.name));
+const isBuatActive = computed(() => ['MoU', 'Ruanglingkup', 'Lainnya', 'Mitrabisnis', 'Lampiran', 'PKS', 'Rab', 'Pksruanglingkup', 'Pkslainnya', 'Pksmitrabisnis', 'Pkslampiran', 'PKSamandement'].includes(route.name));
 const isPelangganActive = computed(() => route.name === 'Pelanggan');
 const isProdukActive = computed(() => route.name === 'Produk');
 const isCandidateActive = computed(() => route.name === 'Candidate');
@@ -133,7 +136,7 @@ const isCandidateActive = computed(() => route.name === 'Candidate');
 watch(
   () => route.name,
   () => {
-    if (isMouActive.value || isPksActive.value) {
+    if (isMouActive.value || isPksActive.value || isAmandementPksActive.value) {
       isDropdownOpen.value = true;
       // isDropdownMasterDataOpen.value = false;
     } else {
@@ -160,6 +163,12 @@ function setActive(tab) {
   } else if (tab === 'pks') {
     isPksActive.value = true;
     isMouActive.value = false;
+    isDropdownOpen.value = true;
+    // isDropdownMasterDataOpen.value = false;
+  } else if (tab === 'amandementPks') {
+    isPksActive.value = false;
+    isMouActive.value = false;
+    isAmandementPksActive.value = true;
     isDropdownOpen.value = true;
     // isDropdownMasterDataOpen.value = false;
   } else if (tab === 'draft') {

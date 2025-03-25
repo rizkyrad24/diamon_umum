@@ -83,6 +83,7 @@ watch(
   () => props.data, 
   (newData) => {
     listData.value = newData?.scopesPks?.map((item, index) => ({...item, key: index})) || [];
+    listDelete.value = newData?.scopesPksDeleted?.map((item, index) => ({...item, key: index})) || [];
   },
   { immediate: true }
 );

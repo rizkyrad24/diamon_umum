@@ -5,25 +5,14 @@
     <div class="flex-grow">
       <Navbar />
       <div class="h-[54px] flex">
-        <router-link to="/Draft">
-          <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Draft</h1>
-        </router-link>
-        <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[19px] ml-1" fill="none"
+        <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Buat</h1>
+        <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[20px] ml-1" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
             d="M11.2071 7.29289C11.5976 7.68342 11.5976 8.31658 11.2071 8.70711L6.20711 13.7071C5.81658 14.0976 5.18342 14.0976 4.79289 13.7071C4.40237 13.3166 4.40237 12.6834 4.79289 12.2929L9.08579 8L4.79289 3.70711C4.40237 3.31658 4.40237 2.68342 4.79289 2.29289C5.18342 1.90237 5.81658 1.90237 6.20711 2.29289L11.2071 7.29289Z"
             fill="#7F7F80" />
         </svg>
-        <router-link :to="linkBack">
-          <h1 class="text-[#2671D9] text-sm mt-3 ml-1">Detail Pengajuan</h1>
-        </router-link>
-        <svg width="16" height="16" viewBox="0 0 16 16" class="mt-[19px] ml-1" fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M11.2071 7.29289C11.5976 7.68342 11.5976 8.31658 11.2071 8.70711L6.20711 13.7071C5.81658 14.0976 5.18342 14.0976 4.79289 13.7071C4.40237 13.3166 4.40237 12.6834 4.79289 12.2929L9.08579 8L4.79289 3.70711C4.40237 3.31658 4.40237 2.68342 4.79289 2.29289C5.18342 1.90237 5.81658 1.90237 6.20711 2.29289L11.2071 7.29289Z"
-            fill="#7F7F80" />
-        </svg>
-        <h1 class="text-sm text-[#7F7F80] mt-3 ml-1">Edit Pengajuan PKS</h1>
+        <h1 class="text-sm text-[#7F7F80] mt-3 ml-1">Amandement PKS</h1>
       </div>
       <div class="h-auto py-3 px-4 bg-slate-100">
         <LoadingComponent :isVisible="isLoading" />
@@ -38,7 +27,7 @@
         <div class="w-[1217px] h-auto bg-white min-h-screen mx-auto">
           <div class="flex pl-4 pt-4">
             <div class="w-[6px] h-7 bg-[#2671D9]"></div>
-            <h1 class="text-xl font-medium ml-[6px]">PKS</h1>
+            <h1 class="text-xl font-medium ml-[6px]">Amandement PKS</h1>
           </div>
           <span class="text-base text-[#9C9C9C] pl-4">Formulir Pengajuan Mitra</span>
 
@@ -152,8 +141,7 @@
             @budgetType="(val) => (budgetType = val)" @budgetNumber="(val) => (budgetNumber = val)"
             @partnershipMethod="(val) => (partnershipMethod = val)" @materialType="(val) => (materialType = val)"
             @partnershipTitle="(val) => (partnershipTitle = val)" @bisnisType="(val) => (bisnisType = val)"
-            :isDisplay="positionForm == 1" :data="dataInitial" :isAmandement="isAmandement" :isNumberEditable="isNumberEditable"
-            @mouNumber="(val) => (mouNumber = val)" @selectedMou="(val) => getDataMouApi(val)" 
+            :isDisplay="positionForm == 1" :data="dataInitial" :isAmandement="true" :isNumberEditable="true"
             @lastPksNumber="(val) => (lastPksNumber = val)" @selectedLastPks="(val) => getDataLastPksApi(val)" />
           <RabUpdate :isDisplay="positionForm == 2" @rabs="(val) => (rabs = val)" :data="dataInitial"
             @deleteRabs="(val) => (deletedRabs = val)" />
@@ -171,7 +159,6 @@
             @fileKKRId="(val) => (fileKKRId = val)" @fileKKFId="(val) => (fileKKFId = val)"
             @fileKKOId="(val) => (fileKKOId = val)" @fileProposalId="(val) => (fileProposalId = val)"
             @fileSuratId="(val) => (fileSuratId = val)" @fileLainnyaId="(val) => (fileLainnyaId = val)"
-            @deleteId="(val) => (deletedAttachments = [...deletedAttachments, val])"
             :data="dataInitial" />
 
           <svg width="1150" class="mt-36 ml-4" height="1" viewBox="0 0 1150 1" fill="none"
@@ -190,7 +177,7 @@
             </div>
             <div v-if="positionForm == 6" class=" mr-11 py-4">
               <button @click="SendEdit" :disabled="isKirimDisable"
-                :class="isKirimDisable ? 'w-[61px] h-12 rounded-lg font-medium text-white text-sm bg-[#9C9C9C]' : 'w-[61px] h-12 rounded-lg font-medium text-white text-sm bg-[#2671D9]'">Update</button>
+                :class="isKirimDisable ? 'w-[97px] h-12 rounded-lg font-medium text-white text-sm bg-[#9C9C9C]' : 'w-[97px] h-12 rounded-lg font-medium text-white text-sm bg-[#2671D9]'">Buat PKS</button>
             </div>
           </div>
         </div>
@@ -213,12 +200,11 @@ import Lainnya from '@/components/FormCompPks/lainnya.vue';
 import MitraBisnis from '@/components/FormCompPks/mitrabisnis.vue';
 import Lampiran from '@/components/FormCompPks/lampiran.vue';
 import LoadingComponent from '@/components/loading.vue';
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { fetchPostForm, fetchGet } from '@/api/apiFunction';
 import { partnershipTypeParsing, budgedTypeParsing, methodTypeParsing, materialTypeParsing } from '@/utils/helper';
 import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
-import { data } from 'autoprefixer';
 const router = useRouter();
 const route = useRoute();
 
@@ -232,9 +218,7 @@ const partnershipMethod = ref('');
 const materialType = ref('');
 const partnershipTitle = ref('');
 const bisnisType = ref('');
-const mouNumber = ref('');
 const lastPksNumber = ref('');
-const isAmandement = ref(false);
 const isNextDisable = ref(true);
 const rabs = ref([]);
 const deletedRabs = ref([]);
@@ -257,15 +241,11 @@ const fileKKOId = ref(null);
 const fileProposalId = ref(null);
 const fileSuratId = ref(null);
 const fileLainnyaId = ref(null);
-const undeletableIdAttachment = ref([]);
-const deletedAttachments = ref([]);
 const isKirimDisable = ref(false);
 const dataInitial = ref(null);
 const isLoading = ref(false);
 const id = ref(null);
 const linkBack = ref("");
-const originStatus = ref("");
-const originPositionLevel = ref(null);
 
 const modalFailed = ref({
   isVisible: false,
@@ -312,8 +292,6 @@ function closeModalDialog() {
   }
 }
 
-const isNumberEditable = computed(() => originStatus.value == 'Draft' && originPositionLevel.value == 0)
-
 // Popup Edit
 function SendEdit() {
   modalDialog.value = {
@@ -335,7 +313,7 @@ function successEdit() {
   modalSuccess.value = {
     isVisible: true,
     title: 'Berhasil',
-    message: 'Berhasil mengupdate pengajuan',
+    message: 'Berhasil membuat pengajuan',
     closeFunction: closeSelesaiEdit
   }
 }
@@ -369,20 +347,17 @@ function movePrevious() {
   isNextDisable.value = false;
 }
 
-async function getDataApi(id) {
+async function getDataLastPksApi(lastPksNumberInput) {
   isLoading.value = true;
-  const res = await fetchGet(`staff/pks/draft/${id}`, null, router);
+  const params = {lastPksNumber: lastPksNumberInput}
+  const res = await fetchGet('staff/pks/by-number', params, router);
   if (res.status == 200) {
     partnershipTitle.value = res.data.partnershipTitle;
     createdDate.value = res.data.expectedDate;
     background.value = res.data.background;
     note.value = res.data.note;
     partnershipCandidate.value = res.data.partnershipCandidate;
-    mouNumber.value = res.data.mouNumber;
-    lastPksNumber.value = res.data.lastPKSNumber;
-    if (res.data.lastPKSNumber) {
-      isAmandement.value = true;
-    }
+    lastPksNumber.value = res.data.pksNumber;
     scopes.value = res.data.scopesMou;
     partnershipType.value = partnershipTypeParsing(res.data.partnershipType).value;
     budgetType.value = budgedTypeParsing(res.data.budgetType).value;
@@ -396,139 +371,29 @@ async function getDataApi(id) {
       type: item.isPln? "PLN": "Non PLN",
       revenue: item.revenue,
       biaya: item.cost,
-      desk: item.costDesc,
-      key: item.id
+      desk: item.costDesc
     }));
-    // rabs.value = res.data.rab;
     scopes.value = res.data.scopesPks;
-    originStatus.value = res.data.status;
-    originPositionLevel.value = res.data.positionLevel;
-    dataInitial.value = {
-      ...res.data, 
-      'lastPksNumberInput': res.data.lastPKSNumber,
-    };
-    console.log(res.data, 'data di induk')
-    isLoading.value = false;
-  } else {
-    isLoading.value = false;
-    alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
-  }
-}
-
-async function getDataMouApi(mouNumberInput) {
-  isLoading.value = true;
-  const params = {mouNumber: mouNumberInput}
-  const res = await fetchGet('staff/mounda/by-number', params, router);
-  if (res.status == 200) {
-    partnershipTitle.value = res.data.partnershipTitle;
-    background.value = res.data.background;
-    note.value = res.data.note;
-    partnershipCandidate.value = res.data.partnershipCandidate;
-    bisnisType.value = res.data.bisnisType;
-    deletedScopes.value = scopes.value.filter(item => item.id).map(item => item.id);
-    scopes.value = res.data.scopesMou.map(item => ({...item, id: null}));
-    mouNumber.value = res.data.mouNdaNumber;
-    // dataInitial.value = {...res.data, scopesPks: res.data.scopesMou};
-    dataInitial.value = {
-      ...dataInitial.value, 
-      scopesPks: scopes.value,
-      scopesPksDeleted: deletedScopes.value,
-      partnershipTitle: res.data.partnershipTitle,
-      bisnisType: res.data.bisnisType,
-      mouNumber: res.data.mouNdaNumber,
-      background: res.data.background,
-      note: res.data.note,
-      partnershipCandidate: res.data.partnershipCandidate
-    };
-    console.log(res.data, 'data di induk')
-    isLoading.value = false;
-  } else {
-    isLoading.value = false;
-    alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
-  }
-}
-
-async function getDataLastPksApi(lastPksNumberInput) {
-  isLoading.value = true;
-  console.log('rabs', rabs.value)
-  const params = {lastPksNumber: lastPksNumberInput}
-  const res = await fetchGet('staff/pks/by-number', params, router);
-  if (res.status == 200) {
-    partnershipTitle.value = res.data.partnershipTitle;
-    createdDate.value = res.data.expectedDate;
-    background.value = res.data.background;
-    note.value = res.data.note;
-    partnershipCandidate.value = res.data.partnershipCandidate;
-    lastPksNumber.value = res.data.pksNumber;
-    partnershipType.value = partnershipTypeParsing(res.data.partnershipType).value;
-    budgetType.value = budgedTypeParsing(res.data.budgetType).value;
-    budgetNumber.value = res.data.budgetNumber;
-    partnershipMethod.value = methodTypeParsing(res.data.partnershipMethod).value;
-    materialType.value = materialTypeParsing(res.data.materialType).value;
-    bisnisType.value = res.data.bisnisType;
-    deletedRabs.value = rabs.value.filter(item => item.key).map(item => item.key)
-    rabs.value = res.data.rab.map(item => ({
-      pelanggan: item.customer,
-      produk: item.product,
-      type: item.isPln? "PLN": "Non PLN",
-      revenue: item.revenue,
-      biaya: item.cost,
-      desk: item.costDesc,
-      key: null
-    }));
-    deletedScopes.value = scopes.value.filter(item => item.id).map(item => item.id);
-    scopes.value = res.data.scopesPks.map(item => ({...item, id: null}));
-    if (fileKKOId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileKKOId.value]
-    }
-    if (fileKKFId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileKKFId.value]
-    }
-    if (fileKKBId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileKKBId.value]
-    }
-    if (fileKKRId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileKKRId.value]
-    }
-    if (fileProposalId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileProposalId.value]
-    }
-    if (fileSuratId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileSuratId.value]
-    }
-    if (fileLainnyaId.value) {
-      deletedAttachments.value = [...deletedAttachments.value, fileLainnyaId.value]
-    }
     res.data.attachmentsPks.forEach((item) => {
       if (item.fileType == 'KKO') {
         fileKKOId.value = item.id
-        undeletableIdAttachment.value = [...undeletableIdAttachment.value, item.id]
       }
       if (item.fileType == 'KKF') {
         fileKKFId.value = item.id
-        undeletableIdAttachment.value = [...undeletableIdAttachment.value, item.id]
       }
       if (item.fileType == 'KKR') {
         fileKKRId.value = item.id
-        undeletableIdAttachment.value = [...undeletableIdAttachment.value, item.id]
       }
       if (item.fileType == 'KKB') {
         fileKKBId.value = item.id
-        undeletableIdAttachment.value = [...undeletableIdAttachment.value, item.id]
       }
     })
-    deletedAttachments.value = dataInitial.value.attachmentsPks.filter(item => item.id && ['KKO','KKF','KKR','KKB'].includes(item.fileType))
-      .map(item => item.id);
-    
     dataInitial.value = {
       ...res.data, 
       'lastPksNumberInput': res.data.pksNumber, 
-      attachmentsPks: res.data.attachmentsPks.filter(item => !["Proposal Mitra","Dokumen Surat Menyurat","Dokumen Lainnya"].includes(item.fileType)),
-      scopesPks: scopes.value,
-      scopesPksDeleted: deletedScopes.value,
+      attachmentsPks: res.data.attachmentsPks.filter(item => !["Proposal Mitra","Dokumen Surat Menyurat","Dokumen Lainnya"].includes(item.fileType) )
     };
     console.log(res.data, 'data di induk')
-    console.log('delete RAB', deletedRabs.value)
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -539,21 +404,19 @@ async function getDataLastPksApi(lastPksNumberInput) {
 async function postPks(successFunction, failFunction) {
   isLoading.value = true;
   const form = new FormData()
-  // form.append('userId', '1')
   form.append('partnershipType', partnershipType.value)
   form.append('expectedDate', createdDate.value)
   form.append('budgetType', budgetType.value)
   form.append('budgetNumber', budgetNumber.value)
-  console.log(budgetNumber.value, 'ada tidak')
   form.append('partnershipMethod', partnershipMethod.value)
   form.append('materialType', materialType.value)
   form.append('partnershipTitle', partnershipTitle.value)
   form.append('bisnisType', bisnisType.value)
   let indexRab = 0;
   rabs.value.forEach((element) => {
-    if (element.key) {
-      form.append(`rab[${indexRab}].id`, element.key)
-    }
+    // if (element.key) {
+    //   form.append(`rab[${indexRab}].id`, element.key)
+    // }
     form.append(`rab[${indexRab}].customer`, element.pelanggan)
     form.append(`rab[${indexRab}].product`, element.produk)
     form.append(`rab[${indexRab}].isPln`, element.type == "PLN")
@@ -562,121 +425,110 @@ async function postPks(successFunction, failFunction) {
     form.append(`rab[${indexRab}].costDesc`, element.desk)
     indexRab++
   })
-  deletedRabs.value.forEach((element) => {
-    form.append(`rab[${indexRab}].id`, element)
-    form.append(`rab[${indexRab}].toDeleted`, true)
-    indexRab++
-  })
+  // deletedRabs.value.forEach((element) => {
+  //   form.append(`rab[${indexRab}].id`, element)
+  //   form.append(`rab[${indexRab}].toDeleted`, true)
+  //   indexRab++
+  // })
 
   let index = 0;
   scopes.value.forEach((element) => {
-    if (element.id) {
-      form.append(`scopesPks[${index}].id`, element.id)
-    }
+    // if (element.id) {
+    //   form.append(`scopesPks[${index}].id`, element.id)
+    // }
     form.append(`scopesPks[${index}].scopeName`, element.scopeName)
     index++
   });
-  deletedScopes.value.forEach((element) => {
-    form.append(`scopesPks[${index}].id`, element)
-    form.append(`scopesPks[${index}].toDeleted`, true)
-    index++
-  })
+  // deletedScopes.value.forEach((element) => {
+  //   form.append(`scopesPks[${index}].id`, element)
+  //   form.append(`scopesPks[${index}].toDeleted`, true)
+  //   index++
+  // })
   form.append('background', background.value)
   if (note.value) {
     form.append('note', note.value)
   }
   form.append('partnershipCandidate', partnershipCandidate.value)
-  if (mouNumber.value) {
-    form.append('mouNumber', mouNumber.value)
-  }
-  if (lastPksNumber.value) {
-    form.append('lastPKSNumber', lastPksNumber.value)
-  }
+  form.append('lastPKSNumber', lastPksNumber.value)
 
   let sort = 0;
   if (fileKKO.value || fileKKOId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'KKO')
     if (fileKKO.value) {
       form.append(`attachmentsPks[${sort}].file`, fileKKO.value)
     }
     if (fileKKOId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileKKOId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'KKO')
     sort++
   }
   if (fileKKF.value || fileKKFId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'KKF')
     if (fileKKF.value) {
       form.append(`attachmentsPks[${sort}].file`, fileKKF.value)
     }
     if (fileKKFId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileKKFId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'KKF')
     sort++
   }
   if (fileKKR.value || fileKKRId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'KKR')
     if (fileKKR.value) {
       form.append(`attachmentsPks[${sort}].file`, fileKKR.value)
     }
     if (fileKKRId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileKKRId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'KKR')
     sort++
   }
   if (fileKKB.value || fileKKBId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'KKB')
     if (fileKKB.value) {
       form.append(`attachmentsPks[${sort}].file`, fileKKB.value)
     }
     if (fileKKBId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileKKBId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'KKB')
     sort++
   }
   if (fileSurat.value || fileSuratId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'Dokumen Surat Menyurat')
     if (fileSurat.value) {
       form.append(`attachmentsPks[${sort}].file`, fileSurat.value)
     }
     if (fileSuratId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileSuratId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'Dokumen Surat Menyurat')
     sort++
   }
   if (fileProposal.value || fileProposalId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'Proposal Mitra')
     if (fileProposal.value) {
       form.append(`attachmentsPks[${sort}].file`, fileProposal.value)
     }
     if (fileProposalId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileProposalId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'Proposal Mitra')
     sort++
   }
   if (fileLainnya.value || fileLainnyaId.value) {
-    form.append(`attachmentsPks[${sort}].fileType`, 'Dokumen Lainnya')
     if (fileLainnya.value) {
       form.append(`attachmentsPks[${sort}].file`, fileLainnya.value)
     }
     if (fileLainnyaId.value) {
       form.append(`attachmentsPks[${sort}].id`, fileLainnyaId.value)
     }
+    form.append(`attachmentsPks[${sort}].fileType`, 'Dokumen Lainnya')
     sort++
   }
-  deletedAttachments.value.forEach(item => {
-    if (!undeletableIdAttachment.value.includes(item)){
-      form.append(`attachmentsPks[${sort}].id`, item)
-      sort++
-    }
-  })
   // Display the values
   for (var pair of form.entries()) {
     console.log(pair[0] + ', ' + pair[1]);
   }
   // isLoading.value = false;
-  const res = await fetchPostForm(`staff/pks/draft/${id.value}/`, null, form, router);
-  if (res.status == 200) {
+  const res = await fetchPostForm('staff/pks/create', null, form, router);
+  if (res.status == 201) {
     isLoading.value = false;
     successFunction();
   } else {
@@ -703,7 +555,6 @@ watch(
 
 onMounted(() => {
   if (route.params.id) {
-    getDataApi(route.params.id);
     id.value = route.params.id;
     linkBack.value = `/Detaildraft/PKS/${route.params.id}`
   }

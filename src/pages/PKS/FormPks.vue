@@ -141,12 +141,17 @@
             @budgetType="(val) => (budgetType = val)" @budgetNumber="(val) => (budgetNumber = val)"
             @partnershipMethod="(val) => (partnershipMethod = val)" @materialType="(val) => (materialType = val)"
             @partnershipTitle="(val) => (partnershipTitle = val)" @bisnisType="(val) => (bisnisType = val)"
-            :isDisplay="positionForm == 1" />
+            @mouNumber="(val) => (mouNumber = val)" @selectedMou="(val) => getDataApi(val)"
+            :isDisplay="positionForm == 1" :isNumberEditable="true" :data="dataInitial" />
           <Rab :isDisplay="positionForm == 2" @rabs="(val) => (rabs = val)" />
-          <RuangLingkup :isDisplay="positionForm == 3" @isPos3Filled="(val) => (isNextDisable = !val)" />
+          <!-- <RuangLingkup :isDisplay="positionForm == 3" @isPos3Filled="(val) => (isNextDisable = !val)" /> -->
+          <RuangLingkupUpdate :isDisplay="positionForm == 3"
+            @mainList="(val) => (scopes = val.map(({ key, ...rest }) => rest))"
+            @listDeleted="(val) => (deletedScopes = val.filter(item => item != null))" :data="dataInitial" />
           <Lainnya :isDisplay="positionForm == 4" @background="(val) => (background = val)"
-            @note="(val) => (note = val)" />
-          <MitraBisnis :isDisplay="positionForm == 5" @partnershipCandidate="(val) => (partnershipCandidate = val)" />
+            @note="(val) => (note = val)" :data="dataInitial" />
+          <MitraBisnis :isDisplay="positionForm == 5" @partnershipCandidate="(val) => (partnershipCandidate = val)" 
+          :data="dataInitial" />
           <Lampiran :isDisplay="positionForm == 6" @fileKKB="(val) => (fileKKB = val)"
             @fileKKR="(val) => (fileKKR = val)" @fileKKF="(val) => (fileKKF = val)" @fileKKO="(val) => (fileKKO = val)"
             @fileProposal="(val) => (fileProposal = val)" @fileSurat="(val) => (fileSurat = val)"
@@ -187,12 +192,13 @@ import ModalDialog from '@/components/modaldialog.vue';
 import LoadingComponent from '@/components/loading.vue';
 import Dasar from '@/components/FormCompPks/dasar.vue';
 import Rab from '@/components/FormCompPks/rab.vue';
-import RuangLingkup from '@/components/FormCompPks/ruanglingkup.vue';
+// import RuangLingkup from '@/components/FormCompPks/ruanglingkup.vue';
+import RuangLingkupUpdate from '@/components/FormCompMou/ruanglingkupupdate.vue';
 import Lainnya from '@/components/FormCompPks/lainnya.vue';
 import MitraBisnis from '@/components/FormCompPks/mitrabisnis.vue';
 import Lampiran from '@/components/FormCompPks/lampiran.vue';
 import { onMounted, ref, watch } from 'vue';
-import { fetchPostForm } from '@/api/apiFunction';
+import { fetchPostForm, fetchGet } from '@/api/apiFunction';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -209,9 +215,11 @@ const bisnisType = ref('');
 const isNextDisable = ref(true);
 const rabs = ref([]);
 const scopes = ref([]);
+const deletedScopes = ref([]);
 const background = ref('');
 const note = ref('');
 const partnershipCandidate = ref('');
+const mouNumber = ref('');
 const fileKKB = ref(null);
 const fileKKR = ref(null);
 const fileKKF = ref(null);
@@ -220,6 +228,7 @@ const fileProposal = ref(null);
 const fileSurat = ref(null);
 const fileLainnya = ref(null);
 const isKirimDisable = ref(false);
+const dataInitial = ref(null);
 const id = ref(null);
 const isLoading = ref(false);
 
@@ -272,7 +281,7 @@ function closeModalDialog() {
 function SendCreate() {
   modalDialog.value = {
     isVisible: true,
-    title: 'Buat Pengajuan Baru',
+    title: 'Konfirmasi',
     message: 'Apakan anda yakin dengan data yang anda masukan',
     okFunction: openCreate,
     closeFunction: closeCreate
@@ -288,7 +297,7 @@ function closeCreate() {
 function successCreate() {
   modalSuccess.value = {
     isVisible: true,
-    title: 'Success',
+    title: 'Berhasil',
     message: 'Berhasil membuat pengajuan baru',
     closeFunction: closeSelesaiCreate
   }
@@ -307,38 +316,16 @@ function closeSelesaiCreate() {
 
 function moveNext() {
   if (positionForm.value < 6) {
-    if (positionForm.value == 3) {
-      getInputValuesPos3()
-    }
+    // if (positionForm.value == 3) {
+    //   getInputValuesPos3()
+    // }
     if (!isNextDisable.value) {
       positionForm.value++;
-      // console.log('partnershipType: ', partnershipType.value)
-      // console.log('createdDate', createdDate.value)
-      // console.log('budgetType', budgetType.value)
-      // console.log('budgetNumber', budgetNumber.value)
-      // console.log('partnershipMethod', partnershipMethod.value)
-      // console.log('materialType', materialType.value)
-      // console.log('title: ', partnershipTitle.value)
-      // console.log('rabs', rabs.value)
-      // console.log('scoopes', scopes.value)
-      // console.log('background', background.value)
-      // console.log('note', note.value)
-      // console.log('candidate', partnershipCandidate.value)
-      // isNextDisable.value = true
     }
-    // if (positionForm.value == 2 && rabs.value.length > 0) {
-    //     isNextDisable.value = false
-    // }
-    // if (positionForm.value == 3 && scopes.value.length > 0) {
-    //     isNextDisable.value = false
-    // }
-    // if (positionForm.value == 4 && background.value != '') {
-    //     isNextDisable.value = false
-    // }
-    // if (positionForm.value == 5 && partnershipCandidate.value != '') {
-    //     isNextDisable.value = false
-    // }
   }
+  scopes.value.forEach((element, index) => {
+    console.log(`scopesPks[${index}].scopeName`, element.scopeName)
+  });
 }
 
 function movePrevious() {
@@ -346,12 +333,36 @@ function movePrevious() {
     positionForm.value--
   }
   isNextDisable.value = false;
+  scopes.value.forEach((element, index) => {
+    console.log(`scopesPks[${index}].scopeName`, element.scopeName)
+  });
+}
+
+async function getDataApi(mouNumberInput) {
+  isLoading.value = true;
+  const params = {mouNumber: mouNumberInput}
+  const res = await fetchGet('staff/mounda/by-number', params, router);
+  if (res.status == 200) {
+    partnershipTitle.value = res.data.partnershipTitle;
+    background.value = res.data.background;
+    note.value = res.data.note;
+    partnershipCandidate.value = res.data.partnershipCandidate;
+    bisnisType.value = res.data.bisnisType;
+    scopes.value = res.data.scopesMou;
+    mouNumber.value = res.data.mouNdaNumber;
+    dataInitial.value = {...res.data, scopesPks: res.data.scopesMou};
+    console.log(res.data, 'data di induk')
+    isLoading.value = false;
+  } else {
+    isLoading.value = false;
+    alert(res.data.message ? res.data.message : "Silahkan hubungi admin")
+  }
 }
 
 async function postPks(successFunction, failFunction) {
   isLoading.value = true;
   const form = new FormData()
-  // form.append('userId', id.value)
+  form.append('mouNumber', mouNumber.value)
   form.append('partnershipType', partnershipType.value)
   form.append('expectedDate', createdDate.value)
   form.append('budgetType', budgetType.value)
@@ -368,8 +379,11 @@ async function postPks(successFunction, failFunction) {
     form.append(`rab[${index}].cost`, element.biaya)
     form.append(`rab[${index}].costDesc`, element.desk)
   })
+  // scopes.value.forEach((element, index) => {
+  //   form.append(`scopesPks[${index}].scopeName`, element)
+  // });
   scopes.value.forEach((element, index) => {
-    form.append(`scopesPks[${index}].scopeName`, element)
+    form.append(`scopesPks[${index}].scopeName`, element.scopeName)
   });
   form.append('background', background.value)
   if (note.value) {
@@ -443,82 +457,10 @@ watch(
   { immediate: true } // Trigger immediately on initialization
 );
 
-// watch(
-//   [background],
-//   ([newBackground]) => {
-//     isNextDisable.value =
-//       !(newBackground.trim() !== '');
-//   },
-//   { immediate: true } // Trigger immediately on initialization
-// );
-
-// watch(
-//   [partnershipCandidate],
-//   ([newPartnershipCandidate]) => {
-//     isNextDisable.value =
-//       !(newPartnershipCandidate.trim() !== '');
-//   },
-//   { immediate: true } // Trigger immediately on initialization
-// );
-
-// watch(
-//   [fileKKB, fileKKF, fileKKO, fileKKR],
-//   ([newFileKKB, newFileKKF, newFileKKO, newFileKKR]) => {
-//     isKirimDisable.value =
-//       !(
-//         newFileKKB !== null && 
-//         newFileKKF !== null && 
-//         newFileKKO !== null &&
-//         newFileKKR !== null
-//       );
-//   },
-//   { immediate: true } // Trigger immediately on initialization
-// );
-
-// watch(
-//   () => rabs.value.length,
-//   (newLength) => {
-//     if (newLength > 0) {
-//       isNextDisable.value = false;
-//     }
-//   },
-//   { immediate: true }
-// );
-
-function getInputValuesPos3() {
-  const inputs = document.querySelectorAll('.input-pos-3');
-  const values = Array.from(inputs).map(input => input.value);
-  scopes.value = Array.from(values);
-}
-
-// function openSend() {
-//   if (!isKirimDisable.value) {
-//     isSendOpen.value = true;
-//     isOkOpen.value = false;
-//     console.log('partnershipType: ', partnershipType.value)
-//     console.log('createdDate', createdDate.value)
-//     console.log('budgetType', budgetType.value)
-//     console.log('budgetNumber', budgetNumber.value)
-//     console.log('partnershipMethod', partnershipMethod.value)
-//     console.log('materialType', materialType.value)
-//     console.log('title: ', partnershipTitle.value)
-//     console.log('rabs', rabs.value)
-//     console.log('scoopes', scopes.value)
-//     console.log('background', background.value)
-//     console.log('note', note.value)
-//     console.log('candidate', partnershipCandidate.value)
-//     console.log('fileKKB', fileKKB.value)
-//     console.log('fileKKR', fileKKR.value)
-//     console.log('fileKKF', fileKKF.value)
-//     console.log('fileKKO', fileKKO.value)
-//     console.log('file proposal', fileProposal.value)
-//     console.log('file surat', fileSurat.value)
-//     console.log('file lainnya', fileLainnya.value)
-//     // isKirimDisable.value = true
-//   }
-//   // if (positionForm.value == 5 && fileSurat) {
-//   //   isKirimDisable.value = false
-//   // } 
+// function getInputValuesPos3() {
+//   const inputs = document.querySelectorAll('.input-pos-3');
+//   const values = Array.from(inputs).map(input => input.value);
+//   scopes.value = Array.from(values);
 // }
 
 onMounted(() => {

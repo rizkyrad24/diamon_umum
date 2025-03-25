@@ -46,6 +46,7 @@ import Pksmitrabisnis from '../pages/PKS/Pksmitrabisnis.vue';
 import Pkslampiran from '../pages/PKS/Pkslampiran.vue';
 import FormPks from "@/pages/PKS/FormPks.vue";
 import FormUpdatePks from "@/pages/PKS/FormUpdatePks.vue";
+import FormAmandemenPks from "@/pages/PKS/FormAmandemenPks.vue";
 
 
 const routes = [
@@ -95,6 +96,7 @@ const routes = [
     { path: '/Pksmitrabisnis', name: 'Pksmitrabisnis', component: Pksmitrabisnis, meta: { requiresAuth: true, role: ['staff'] } },
     { path: '/Pkslampiran', name: 'Pkslampiran', component: Pkslampiran, meta: { requiresAuth: true, role: ['staff'] } },
     { path: '/PKS/:id', name: 'PKSupdate', component: FormUpdatePks, meta: { requiresAuth: true, role: ['staff'] } },
+    { path: '/PKS/Amandement', name: 'PKSamandement', component: FormAmandemenPks, meta: { requiresAuth: true, role: ['staff'] } },
   ];
 const router = Router();
 
