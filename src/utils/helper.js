@@ -142,6 +142,12 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
   if (status == 'Approved' && positionLevel == 10) {
     return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
+  if (positionLevel == 10) {
+    return ['Waiting Apv Direksi Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (status == 'Approved' && positionLevel == 11) {
+    return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
 }
 
 export function mapperKeterangan(positionLevel, status, endContract) {
