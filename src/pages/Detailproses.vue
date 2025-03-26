@@ -917,7 +917,6 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
-
                 </div>
                 <!-- <div v-if="base == 'PKS'" class="m-6 grid-cols-3 gap-6">
                   <div v-if="base == 'PKS'">
@@ -2647,13 +2646,13 @@ export default {
     },
     isProgressFinish() {
       if (this.base == 'PKS') {
-        if (this.fileNameKemitraan7) {
+        if (this.fileNameKemitraan11) {
           return true
         } else {
           return false
         }
       } else {
-        if (this.fileNameKemitraan3) {
+        if (this.fileNameKemitraan7) {
           return true
         } else {
           return false
@@ -2770,7 +2769,7 @@ export default {
               this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
             }
 
-            if (item.fileType == 'Draft MOU/PKS') {
+            if (item.fileType == 'Draft PKS') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
               this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
@@ -2780,7 +2779,7 @@ export default {
               this.fileSizeKemitraan8 = item.fileSize;
               this.linkDownloadKemitraan8 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
             }
-            if (item.fileType == 'Review Lega') {
+            if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan9 = item.fileName;
               this.fileSizeKemitraan9 = item.fileSize;
               this.linkDownloadKemitraan9 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
@@ -2852,7 +2851,7 @@ export default {
               this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
             }
 
-            if (item.fileType == 'Draft MOU/PKS') {
+            if (item.fileType == 'Draft MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
               this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
@@ -2862,7 +2861,7 @@ export default {
               this.fileSizeKemitraan4 = item.fileSize;
               this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
             }
-            if (item.fileType == 'Review Lega') {
+            if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
               this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
