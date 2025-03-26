@@ -1610,7 +1610,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
-                      <span v-else class="text-[#333333] text-xs">Draf Dokumen MoU/NDA</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen Draf MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
                       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
