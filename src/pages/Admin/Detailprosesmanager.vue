@@ -157,6 +157,14 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
               <div v-if="dropdownInformasi" class="px-6 mt-6">
                 <div class="flex mt-6">
                   <div class="ml-6">
+                    <div v-if="dataBerkas?.mouNumber" class="w-[541px] mb-6 flex text-[#333333]">
+                      <h1 class="w-[150px]">MoU Sebelumnya</h1>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.mouNumber || '-' }}</span>
+                    </div>
+                    <div v-if="dataBerkas?.lastPKSNumber" class="w-[541px] mb-6 flex text-[#333333]">
+                      <h1 class="w-[150px]">PKS Sebelumnya</h1>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.lastPKSNumber || '-' }}</span>
+                    </div>
                     <div class="w-[541px] flex text-[#333333]">
                       <h1 class="w-[150px]">No. Permintaan</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.submissionNumber || '-' }}</span>
@@ -2764,94 +2772,94 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
-              this.linkDownloadKKO = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKKO = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
-              this.linkDownloadKKF = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKKF = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
-              this.linkDownloadKKR = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKKR = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
-              this.linkDownloadKKB = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKKB = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Evaluasi') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Negosiasi') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'BAK Pemilihan Mitra') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Pesanan') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'Draft PKS') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan8 = item.fileName;
               this.fileSizeKemitraan8 = item.fileSize;
-              this.linkDownloadKemitraan8 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan8 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan9 = item.fileName;
               this.fileSizeKemitraan9 = item.fileSize;
-              this.linkDownloadKemitraan9 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan9 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan10 = item.fileName;
               this.fileSizeKemitraan10 = item.fileSize;
-              this.linkDownloadKemitraan10 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan10 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'PKS') {
               this.fileNameKemitraan11 = item.fileName;
               this.fileSizeKemitraan11 = item.fileSize;
-              this.linkDownloadKemitraan11 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan11 = `${baseURL}/download/file/${item.id}`;
             }
           })
           this.isLoading = false;
@@ -2874,54 +2882,54 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'Draft MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
           })
           this.isLoading = false;
@@ -2944,129 +2952,129 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
-              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKO = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
-              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKF = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
-              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKR = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
-              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKB = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Evaluasi') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Negosiasi') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'BAK Pemilihan Mitra') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Pesanan') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'Draft PKS') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan8 = item.fileName;
               this.fileSizeKemitraan8 = item.fileSize;
-              this.linkDownloadKemitraan8 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan8 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan9 = item.fileName;
               this.fileSizeKemitraan9 = item.fileSize;
-              this.linkDownloadKemitraan9 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan9 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan10 = item.fileName;
               this.fileSizeKemitraan10 = item.fileSize;
-              this.linkDownloadKemitraan10 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan10 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'PKS') {
               this.fileNameKemitraan11 = item.fileName;
               this.fileSizeKemitraan11 = item.fileSize;
-              this.linkDownloadKemitraan11 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan11 = `${baseURL}/download/file/${item.id}`;
             }
             // if (item.fileType == 'Surat Penawaran') {
             //   this.fileNameKemitraan1 = item.fileName;
             //   this.fileSizeKemitraan1 = item.fileSize;
-            //   this.linkDownloadKemitraan1 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Proposal') {
             //   this.fileNameKemitraan2 = item.fileName;
             //   this.fileSizeKemitraan2 = item.fileSize;
-            //   this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Evaluasi') {
             //   this.fileNameKemitraan3 = item.fileName;
             //   this.fileSizeKemitraan3 = item.fileSize;
-            //   this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Negosiasi') {
             //   this.fileNameKemitraan4 = item.fileName;
             //   this.fileSizeKemitraan4 = item.fileSize;
-            //   this.linkDownloadKemitraan4 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'BAK Pemilihan Mitra') {
             //   this.fileNameKemitraan5 = item.fileName;
             //   this.fileSizeKemitraan5 = item.fileSize;
-            //   this.linkDownloadKemitraan5 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Surat Pesanan') {
             //   this.fileNameKemitraan6 = item.fileName;
             //   this.fileSizeKemitraan6 = item.fileSize;
-            //   this.linkDownloadKemitraan6 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'PKS') {
             //   this.fileNameKemitraan7 = item.fileName;
             //   this.fileSizeKemitraan7 = item.fileSize;
-            //   this.linkDownloadKemitraan7 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             // }
           })
           this.isLoading = false;
@@ -3089,69 +3097,69 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'Draft MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
             // if (item.fileType == 'Surat Penawaran') {
             //   this.fileNameKemitraan1 = item.fileName;
             //   this.fileSizeKemitraan1 = item.fileSize;
-            //   this.linkDownloadKemitraan1 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Proposal') {
             //   this.fileNameKemitraan2 = item.fileName;
             //   this.fileSizeKemitraan2 = item.fileSize;
-            //   this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'MoU/NDA') {
             //   this.fileNameKemitraan3 = item.fileName;
             //   this.fileSizeKemitraan3 = item.fileSize;
-            //   this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             // }
           })
           this.isLoading = false;
@@ -3174,129 +3182,129 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
-              this.linkDownloadKKO = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKO = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
-              this.linkDownloadKKF = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKF = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
-              this.linkDownloadKKR = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKR = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
-              this.linkDownloadKKB = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadKKB = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Evaluasi') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Negosiasi') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'BAK Pemilihan Mitra') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Pesanan') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'Draft PKS') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan8 = item.fileName;
               this.fileSizeKemitraan8 = item.fileSize;
-              this.linkDownloadKemitraan8 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan8 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan9 = item.fileName;
               this.fileSizeKemitraan9 = item.fileSize;
-              this.linkDownloadKemitraan9 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan9 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan10 = item.fileName;
               this.fileSizeKemitraan10 = item.fileSize;
-              this.linkDownloadKemitraan10 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan10 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'PKS') {
               this.fileNameKemitraan11 = item.fileName;
               this.fileSizeKemitraan11 = item.fileSize;
-              this.linkDownloadKemitraan11 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan11 = `${baseURL}/download/file/${item.id}`;
             }
             // if (item.fileType == 'Surat Penawaran') {
             //   this.fileNameKemitraan1 = item.fileName;
             //   this.fileSizeKemitraan1 = item.fileSize;
-            //   this.linkDownloadKemitraan1 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Proposal') {
             //   this.fileNameKemitraan2 = item.fileName;
             //   this.fileSizeKemitraan2 = item.fileSize;
-            //   this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Evaluasi') {
             //   this.fileNameKemitraan3 = item.fileName;
             //   this.fileSizeKemitraan3 = item.fileSize;
-            //   this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Negosiasi') {
             //   this.fileNameKemitraan4 = item.fileName;
             //   this.fileSizeKemitraan4 = item.fileSize;
-            //   this.linkDownloadKemitraan4 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'BAK Pemilihan Mitra') {
             //   this.fileNameKemitraan5 = item.fileName;
             //   this.fileSizeKemitraan5 = item.fileSize;
-            //   this.linkDownloadKemitraan5 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Surat Pesanan') {
             //   this.fileNameKemitraan6 = item.fileName;
             //   this.fileSizeKemitraan6 = item.fileSize;
-            //   this.linkDownloadKemitraan6 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'PKS') {
             //   this.fileNameKemitraan7 = item.fileName;
             //   this.fileSizeKemitraan7 = item.fileSize;
-            //   this.linkDownloadKemitraan7 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             // }
           })
           this.isLoading = false;
@@ -3319,69 +3327,69 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'Draft MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
             }
 
             if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL.replace('/api', "")}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
             // if (item.fileType == 'Surat Penawaran') {
             //   this.fileNameKemitraan1 = item.fileName;
             //   this.fileSizeKemitraan1 = item.fileSize;
-            //   this.linkDownloadKemitraan1 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'Proposal') {
             //   this.fileNameKemitraan2 = item.fileName;
             //   this.fileSizeKemitraan2 = item.fileSize;
-            //   this.linkDownloadKemitraan2 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
             // }
             // if (item.fileType == 'MoU/NDA') {
             //   this.fileNameKemitraan3 = item.fileName;
             //   this.fileSizeKemitraan3 = item.fileSize;
-            //   this.linkDownloadKemitraan3 = `${baseURL.replace('/api',"")}/download/file/${item.id}`;
+            //   this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
             // }
           })
           this.isLoading = false;
