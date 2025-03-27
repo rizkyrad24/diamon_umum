@@ -1146,7 +1146,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
         <div>
           <!-- Alur -->
           <div v-if="isOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white rounded-lg shadow-lg w-[1040.84px] h-[84%] overflow-scroll">
+            <div class="bg-white rounded-lg shadow-lg w-auto h-[84%] overflow-scroll">
               <div class="flex ml-[20px] mt-[20px]">
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
                 <h1 class="text-xl font-medium ml-[6px]">Progres Kemitraan </h1>
