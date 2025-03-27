@@ -49,6 +49,11 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     file5: null,
     file6: null,
     file7: null,
+    file7A: null,
+    file8: null,
+    file9: null,
+    file10: null,
+    file11: null
   }
   attachments.forEach(item => {
     if (item.fileType == 'Surat Penawaran') {
@@ -60,7 +65,7 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     if (item.fileType == 'Evaluasi') {
       fileKemitraan['file3'] = item.fileName
     }
-    if (item.fileType == 'MoU/NDA') {
+    if (item.fileType == 'Draft MoU/NDA') {
       fileKemitraan['file3A'] = item.fileName
     }
     if (item.fileType == 'Negosiasi') {
@@ -72,8 +77,23 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     if (item.fileType == 'Surat Pesanan') {
       fileKemitraan['file6'] = item.fileName
     }
-    if (item.fileType == 'PKS') {
+    if (item.fileType == 'Draft PKS') {
       fileKemitraan['file7'] = item.fileName
+    }
+    if (item.fileType == 'MoU/NDA') {
+      fileKemitraan['file7A'] = item.fileName
+    }
+    if (item.fileType == 'Review User') {
+      fileKemitraan['file8'] = item.fileName
+    }
+    if (item.fileType == 'Review Legal') {
+      fileKemitraan['file9'] = item.fileName
+    }
+    if (item.fileType == 'Review Mitra') {
+      fileKemitraan['file10'] = item.fileName
+    }
+    if (item.fileType == 'PKS') {
+      fileKemitraan['file11'] = item.fileName
     }
   })
   if (isStopClock) {
@@ -106,8 +126,23 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
   if (positionLevel == 6) {
     return ['Masuk Ke Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
-  if (positionLevel == 7 && fileKemitraan.file7) {
+  if (positionLevel == 7 && fileKemitraan.file11) {
     return ['PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file10) {
+    return ['Review Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file9) {
+    return ['Review Legal', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file8) {
+    return ['Review User', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file7A) {
+    return ['MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
+  if (positionLevel == 7 && fileKemitraan.file7) {
+    return ['Draft PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 7 && fileKemitraan.file6) {
     return ['Surat Pesanan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
@@ -119,7 +154,7 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     return ['Negosiasi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 7 && fileKemitraan.file3A) {
-    return ['MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Draft MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 7 && fileKemitraan.file3) {
     return ['Evaluasi', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']

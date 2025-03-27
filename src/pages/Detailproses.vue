@@ -797,7 +797,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   </div>
 
                   <div>
-                    <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'MoU/NDA' : 'Draf PKS' }}</label>
+                    <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'MoU/NDA' : 'Draft PKS' }}</label>
                     <a :href="linkDownloadKemitraan7"
                       v-if="fileNameKemitraan7"
                       class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
@@ -886,7 +886,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   </div>
                   <div v-if="base == 'PKS'">
                     <label class="text-[#4D5E80] font-semibold">Review Mitra</label>
-                    <a :href="linkDownloadKemitraan10" v-if="fileNameKemitraan6"
+                    <a :href="linkDownloadKemitraan10" v-if="fileNameKemitraan10"
                       class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -1494,11 +1494,11 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                       <span v-if="base == 'PKS'"
                         class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draf MoU/NDA</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draft MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
-                      <span v-else class="text-[#333333] text-xs">Dokumen Draf MoU/NDA</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen Draft MoU/NDA</span>
                       <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_d_685_22194)">
@@ -1560,11 +1560,11 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                       <span v-if="base == 'PKS'"
                         class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draf MoU/NDA</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draft MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
-                      <span v-else class="text-[#333333] text-xs">Dokumen Draf MoU/NDA</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen Draft MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
                       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1665,7 +1665,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                       <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Surat
                         Pesanan</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">review Mitra</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Review Mitra</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">Surat Pesanan</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1699,7 +1699,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                       <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">BAK
                         Pemilihan Mitra</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">review Legal</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Review Legal</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">BAK Pemilihan Mitra</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1875,7 +1875,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Negosiasi</span>
-                      <span v-else class="text-[#333333] text-xs">Draf Review User</span>
+                      <span v-else class="text-[#333333] text-xs">Draft Review User</span>
                       <!-- <span class="text-[#333333] text-xs">Dokumen Review User</span> -->
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
@@ -1906,13 +1906,13 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   <a :href="linkDownloadKemitraan7" v-if="fileNameKemitraan7"
                     class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
-                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draf
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draft
                         PKS</span>
                       <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">Surat Penawaran tes</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draf PKS</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draft PKS</span>
                       <span v-else class="text-[#333333] text-xs">Dokumen Mou/NDA </span>
                       <!-- <span class="text-[#333333] text-xs">Dokumen Surat Penawaran</span> -->
                       <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
@@ -1974,13 +1974,13 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   </a>
                   <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
-                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draf
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draft
                         PKS</span>
                       <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">Surat Penawaran tes</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draf PKS</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draft PKS</span>
                       <span v-else class="text-[#333333] text-xs">Dokumen MoU/NDA</span>
                       <!-- <span class="text-[#333333] text-xs">Dokumen Surat Penawaran</span> -->
                     </div>
