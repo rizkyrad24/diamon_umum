@@ -5,7 +5,7 @@
   <div :class="!props.isDisplay ? 'hidden' : ''">
     <h1 class="text-xl font-medium pl-4 py-6">Dasar</h1>
     <div v-if="isAmandement && isNumberEditable" class="pl-4 w-[1155px] flex justify-between">
-      <!-- MOU -->
+      <!-- Last PKS -->
       <div>
         <label class="text-[#4D5E80] font-medium">Cari PKS Yang Akan Dilanjutkan <span class="text-[#B3B3B3] text-xs">(Bantuan)</span></label>
         <div class="relative w-[540px] mt-2 tipe-container">
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <!-- Nomor Mou -->
+      <!-- Nomor Last PKS -->
       <div class="translate-x-4">
         <label class="text-[#4D5E80] font-medium">Nomor PKS yang dilanjutkan <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
         <form action="" class="w-[555px] py-[10px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between">
