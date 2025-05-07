@@ -54,6 +54,7 @@ export default {
   emits: ["change"],
   setup(props, { emit }) {
     const searchTerm = ref("");
+    const choosenOption = ref("");
     const isDropdownOpen = ref(false);
     const filterClickListener = ref(null);
 
@@ -84,6 +85,7 @@ export default {
         if (newValue !== null) {
           console.log("Initial value is not null:", newValue);
           searchTerm.value = newValue.label; // Optionally update search term
+          choosenOption.value = newValue.label;
         }
       },
       { immediate: true } // Trigger immediately on component mount
@@ -94,6 +96,7 @@ export default {
         if (!e.target.closest('.searchable-select')
         ) {
           isDropdownOpen.value = false;
+          searchTerm.value = choosenOption.value
         }
       }
       document.addEventListener('click', filterClickListener.value);

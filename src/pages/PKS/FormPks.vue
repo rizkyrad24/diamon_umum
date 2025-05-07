@@ -155,7 +155,7 @@
           <Lampiran :isDisplay="positionForm == 6" @fileKKB="(val) => (fileKKB = val)"
             @fileKKR="(val) => (fileKKR = val)" @fileKKF="(val) => (fileKKF = val)" @fileKKO="(val) => (fileKKO = val)"
             @fileProposal="(val) => (fileProposal = val)" @fileSurat="(val) => (fileSurat = val)"
-            @fileLainnya="(val) => (fileLainnya = val)" />
+            @fileLainnya="(val) => (fileLainnya = val)" :onFileSizeOver="onFileSizeOver"/>
 
           <svg width="1150" class="mt-36 ml-4" height="1" viewBox="0 0 1150 1" fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -274,6 +274,14 @@ function closeModalDialog() {
     message: '',
     okFunction: () => null,
     closeFunction: () => null
+  }
+}
+
+function onFileSizeOver(message) {
+  modalFailed.value = {
+    isVisible: true,
+    title: 'File Terlalu Besar',
+    message: message
   }
 }
 

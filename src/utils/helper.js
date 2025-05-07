@@ -129,6 +129,9 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
   if (positionLevel == 7 && fileKemitraan.file11) {
     return ['PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
+  if (positionLevel == 7 && fileKemitraan.file7A) {
+    return ['MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+  }
   if (positionLevel == 7 && fileKemitraan.file10) {
     return ['Review Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
@@ -137,9 +140,6 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
   }
   if (positionLevel == 7 && fileKemitraan.file8) {
     return ['Review User', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
-  }
-  if (positionLevel == 7 && fileKemitraan.file7A) {
-    return ['MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 7 && fileKemitraan.file7) {
     return ['Draft PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
@@ -166,7 +166,7 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     return ['Surat Penawaran', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
   }
   if (positionLevel == 7) {
-    return ['DiProses Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Diproses Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 8) {
     return ['Waiting Apv Manager Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']

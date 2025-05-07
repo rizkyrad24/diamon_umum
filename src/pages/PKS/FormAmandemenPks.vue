@@ -159,7 +159,7 @@
             @fileKKRId="(val) => (fileKKRId = val)" @fileKKFId="(val) => (fileKKFId = val)"
             @fileKKOId="(val) => (fileKKOId = val)" @fileProposalId="(val) => (fileProposalId = val)"
             @fileSuratId="(val) => (fileSuratId = val)" @fileLainnyaId="(val) => (fileLainnyaId = val)"
-            :data="dataInitial" />
+            :data="dataInitial" :onFileSizeOver="onFileSizeOver"/>
 
           <svg width="1150" class="mt-36 ml-4" height="1" viewBox="0 0 1150 1" fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -289,6 +289,14 @@ function closeModalDialog() {
     message: '',
     okFunction: () => null,
     closeFunction: () => null
+  }
+}
+
+function onFileSizeOver(message) {
+  modalFailed.value = {
+    isVisible: true,
+    title: 'File Terlalu Besar',
+    message: message
   }
 }
 
