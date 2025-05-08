@@ -5,7 +5,7 @@ import Sidemanager from '@/components/sidemanager.vue';
 import LoadingComponent from '@/components/loading.vue';
 import modalfailed from "@/components/modalfailed.vue";
 import { fetchGet } from '@/api/apiFunction';
-import { dateParsing, convertDatetime } from '@/utils/helper';
+import { dateParsing, convertDatetime, dueDateParsing } from '@/utils/helper';
 </script>
 
 <template>
@@ -45,7 +45,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
                 <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan {{ dataBerkas?.base || 'PKS' }}</h1>
               </div>
-              <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber }}</span>
+              <!-- <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber }}</span> -->
+              <span class="text-base text-[#9C9C9C] pl-4">( Status: {{ progressKemitraan || '-' }} )</span>
             </div>
             <div class="w-[209px] border-[1px] border-[#E5E7E9] rounded-xl">
               <div :class="{ 'bg-[#FFB200]': !isProgressFinish, 'bg-[#0ea976]': isProgressFinish }" class="w-auto h-[29px] rounded-t-xl text-[10px] text-[#333333] px-4 py-[7px]">Progres
@@ -228,6 +229,10 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
+                    <div v-if="dataBerkas.isStopClock" class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Lama Stopclock</h1>
+                      <span class="text-[#7F7F80]">{{ dueDateParsing(dataBerkas?.stopClockDate)*(-1) }} Hari</span>
+                    </div>
                   </div>
                   <div>
                     <div class="w-[541px] flex text-[#333333]">
@@ -237,6 +242,10 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tanggal Target Selesai</h1>
                       <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.expectedDate) }}</span>
+                    </div>
+                    <div v-if="dataBerkas.isStopClock" class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Mulai Stopclock</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.stopClockDate) }}</span>
                     </div>
                   </div>
                 </div>
@@ -2575,6 +2584,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
 
 <script>
 import { baseURL } from '@/api/apiManager';
+import { mapperStatus } from '@/utils/helper';
 export default {
   data() {
     return {
@@ -2653,6 +2663,7 @@ export default {
       fileSizeKemitraan11: null,
       linkDownloadKemitraan11: "",
       origin: null,
+      progressKemitraan: null,
 
       isLoading: false,
       modalFailed: {
@@ -2862,6 +2873,7 @@ export default {
               this.linkDownloadKemitraan11 = `${baseURL}/download/file/${item.id}`;
             }
           })
+          this.progressKemitraan = mapperStatus(res.data.positionLevel, res.data.status, res.data.attachmentsPks, res.data.isStopClock)[0]
           this.isLoading = false;
           console.log(res.data)
         } else {
@@ -2932,6 +2944,7 @@ export default {
               this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
             }
           })
+          this.progressKemitraan = mapperStatus(res.data.positionLevel, res.data.status, res.data.attachmentsMou, res.data.isStopClock)[0]
           this.isLoading = false;
           console.log(res.data)
         } else {

@@ -864,7 +864,8 @@ export default {
             res.data.partnershipTitle && res.data.partnershipMethod &&
             res.data.scopesPks.length > 0 && res.data.rab.length > 0 &&
             res.data.partnershipType && res.data.budgetType &&
-            res.data.budgetNumber && res.data.materialType && res.data.partnershipCandidate
+            res.data.budgetNumber && res.data.materialType && res.data.partnershipCandidate &&
+            res.data.background
           ) {
             this.disableKirim = false;
           }
@@ -905,7 +906,8 @@ export default {
           })
           if (
             res.data.partnershipTitle &&
-            res.data.partnershipCandidate && res.data.scopesMou.length > 0
+            res.data.partnershipCandidate && res.data.scopesMou.length > 0 &&
+            res.data.background
           ) {
             this.disableKirim = false;
           }
