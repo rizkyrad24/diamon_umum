@@ -74,9 +74,9 @@
               <li @click="jenisOption({ value: 'K', label: 'Konsorsium' })"
                 :class="{ 'bg-[#2671D9] text-white rounded-b-lg': jenissOption?.value === 'K', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'K' }"
                 class="cursor-pointer px-4 py-2">Konsorsium</li>
-              <li @click="jenisOption({ value: 'R', label: 'Resseler' })"
+              <li @click="jenisOption({ value: 'R', label: 'Reseller' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'R', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'R' }"
-                class="cursor-pointer border-b-[1px] px-4 py-2">Resseler</li>
+                class="cursor-pointer border-b-[1px] px-4 py-2">Reseller</li>
               <li @click="jenisOption({ value: 'B', label: 'Bundling Layanan' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'B', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'B' }"
                 class="cursor-pointer border-b-[1px] px-4 py-2">Bundling Layanan</li>

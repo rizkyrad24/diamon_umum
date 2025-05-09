@@ -13,7 +13,7 @@ import group from '@/assets/img/Group.png';
 import LoadingComponent from '@/components/loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
-import { mapperStatus } from "@/utils/helper";
+import { mapperStatus, dateParsing } from "@/utils/helper";
 </script>
 
 <template>
@@ -367,7 +367,7 @@ import { mapperStatus } from "@/utils/helper";
                     </th>
                     <th class="w-[87px] px-3">
                       <div class="flex justify-between">Tipe
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortTipe" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -406,7 +406,7 @@ import { mapperStatus } from "@/utils/helper";
                     </th>
                     <th class="w-[150px] px-3">
                       <div class="flex justify-between">Status
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortStatus" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -428,8 +428,8 @@ import { mapperStatus } from "@/utils/helper";
                     <td class="w-[268px] px-3">{{ row.name }}</td>
                     <td class="w-[122px] px-3">{{ row.code }}</td>
                     <td class="w-[87px] px-3">{{ row.type }}</td>
-                    <td class="w-[172px] px-3">{{ row.startDate }}</td>
-                    <td class="w-[172px] px-3">{{ row.endDate }}</td>
+                    <td class="w-[172px] px-3">{{ row.startDate? dateParsing(row.startDate): "-" }}</td>
+                    <td class="w-[172px] px-3">{{ row.endDate? dateParsing(row.endDate): "-" }}</td>
                     <td class="w-[97px] px-3">
                       <span :class="row.statusClass"
                         class="px-[8px] py-1 text-xs font-medium border-1 rounded-[100px]">{{ row.status }}</span>
@@ -832,16 +832,16 @@ export default {
     SortDateEnd() {
       if (this.endDateSortOrder === 'asc') {
         this.dataRows.sort((a, b) => {
-          const endDateA = new Date(a.endDate.split('/').reverse().join('-'));
-          const endDateB = new Date(b.endDate.split('/').reverse().join('-'));
-          return endDateA - endDateB;
+          const endDateA = a.endDate ? new Date(a.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          const endDateB = b.endDate ? new Date(b.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          return endDateA - endDateB;  // Ascending order
         });
         this.endDateSortOrder = 'desc';
       } else {
         this.dataRows.sort((a, b) => {
-          const endDateA = new Date(a.endDate.split('/').reverse().join('-'));
-          const endDateB = new Date(b.endDate.split('/').reverse().join('-'));
-          return endDateB - endDateA;
+          const endDateA = a.endDate ? new Date(a.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          const endDateB = b.endDate ? new Date(b.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          return endDateB - endDateA;  // Descending order
         });
         this.endDateSortOrder = 'asc';
       }
@@ -908,6 +908,24 @@ export default {
         this.dataRows.sort((a, b) => a.name.localeCompare(b.name));
       } else {
         this.dataRows.sort((a, b) => b.name.localeCompare(a.name));
+      }
+    },
+    SortTipe() {
+      if (this.sortTipe === 'asc') {
+        this.dataRows.sort((a, b) => b.type.localeCompare(a.type));
+        this.sortTipe = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.type.localeCompare(b.type));
+        this.sortTipe = 'asc';
+      }
+    },
+    SortStatus() {
+      if (this.sortStatus === 'asc') {
+        this.dataRows.sort((a, b) => b.status.localeCompare(a.status));
+        this.sortStatus = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.status.localeCompare(b.status));
+        this.sortStatus = 'asc';
       }
     },
     updateSelectedDay(date) {
