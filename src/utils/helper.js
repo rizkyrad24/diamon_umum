@@ -97,88 +97,94 @@ export function mapperStatus(positionLevel, status, attachments, isStopClock) {
     }
   })
   if (isStopClock) {
-    return ['Stopclock', 'bg-[#FFE5E6] text-[#FF8000] border-[#FFD6AD]']
+    return ['Stopclock', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (status == 'Ditolak') {
-    return ['Ditolak', 'bg-[#FFE5E6] text-[#FF5656] border-[#FD8A8A]']
+    return ['Ditolak', 'bg-[#FFE5E6] text-[#ff5656] border-[#ff5656]']
   }
-  if ('Revisi'.includes(status)) {
-    return ['Revisi', 'bg-[#FFE5E6] text-[#FF8000] border-[#FFD6AD]']
+  if (status == 'Revisi') {
+    return ['Revisi', 'bg-[#fff6e1] text-[#ffa229] border-[#ffa229]']
+  }
+  if (status == 'Revisi Minor') {
+    return ['Revisi Minor', 'bg-[#fff6e1] text-[#ffa229] border-[#ffa229]']
+  }
+  if (status == 'Revisi Mayor') {
+    return ['Revisi Mayor', 'bg-[#fff6e1] text-[#ffa229] border-[#ffa229]']
   }
   if (positionLevel == 0) {
     return ['Draft', 'bg-[#FFF3E6] text-[#FF8000] border-[#FFD6AD]']
   }
   if (positionLevel == 1) {
-    return ['Waiting Apv Manager', 'bg-[#FFF6E1] text-[#FFB200] border-[#FFD064]']
+    return ['Waiting Apv Manager', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 2) {
-    return ['Waiting Apv VP', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv VP', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 3) {
-    return ['Waiting Apv Direksi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv Direksi', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 4) {
-    return ['Masuk Kemitraan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Masuk Kemitraan', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 5) {
-    return ['Masuk Ke Manager Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Masuk Ke Manager Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 6) {
-    return ['Masuk Ke Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Masuk Ke Staff Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file11) {
-    return ['PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['PKS', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file7A) {
-    return ['MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['MoU/NDA', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file10) {
-    return ['Review Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Review Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file9) {
-    return ['Review Legal', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Review Legal', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file8) {
-    return ['Review User', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Review User', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file7) {
-    return ['Draft PKS', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Draft PKS', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file6) {
-    return ['Surat Pesanan', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Surat Pesanan', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file5) {
-    return ['BAK Pemilihan Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['BAK Pemilihan Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file4) {
-    return ['Negosiasi', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Negosiasi', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file3A) {
-    return ['Draft MoU/NDA', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Draft MoU/NDA', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file3) {
-    return ['Evaluasi', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+    return ['Evaluasi', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file2) {
-    return ['Proposal', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+    return ['Proposal', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7 && fileKemitraan.file1) {
-    return ['Surat Penawaran', 'bg-[#E7F1FD] text-[#4791F2] border-[#91BEF7]']
+    return ['Surat Penawaran', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 7) {
-    return ['Diproses Staff Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Diproses Staff Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 8) {
-    return ['Waiting Apv Manager Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv Manager Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (positionLevel == 9) {
-    return ['Waiting Apv VP Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv VP Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (status == 'Approved' && positionLevel == 10) {
     return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
   }
   if (positionLevel == 10) {
-    return ['Waiting Apv Direksi Mitra', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']
+    return ['Waiting Apv Direksi Mitra', 'bg-[#8c62ff33] text-[#8c62ff] border-[#8c62ff]']
   }
   if (status == 'Approved' && positionLevel == 11) {
     return ['Selesai', 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]']

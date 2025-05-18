@@ -505,7 +505,7 @@ import { mapperStatus, dateParsing } from "@/utils/helper";
                   </ul>
                 </div>
               </div>
-              <p class="text-sm text-[#333333] mt-1 ml-3">dari <span class="font-semibold text-sm">{{ dataRows.length
+              <p class="text-sm text-[#333333] mt-1 ml-3">dari <span class="font-semibold text-sm">{{ searchQuery? searchedRows.length: filteredRows.length
                   }}</span> Data</p>
             </div>
             <div class="pagination-controls">
@@ -612,6 +612,7 @@ export default {
       activeViewIndex: null,
       filterType: '',
       filterStatus: '',
+      filterHeader: '',
       FilterOptionStatus: '',
       searchQuery: '',
       selectedDay: '',
@@ -689,67 +690,67 @@ export default {
       return filtered.length
     },
     totalDiproses() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10)
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status))
       return filtered.length
     },
     totalDiprosesMOU() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status) && item.type == 'MoU')
       return filtered.length
     },
     totalDiprosesNDA() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status) && item.type == 'NDA')
       return filtered.length
     },
     totalDiprosesPKS() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status) && item.type == 'PKS')
       return filtered.length
     },
     totalDirevisi() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10)
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status))
       return filtered.length
     },
     totalDirevisiMOU() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.type == 'MoU')
       return filtered.length
     },
     totalDirevisiNDA() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.type == 'NDA')
       return filtered.length
     },
     totalDirevisiPKS() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.type == 'PKS')
       return filtered.length
     },
     totalDitolak() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10)
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status))
       return filtered.length
     },
     totalDitolakMOU() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.type == 'MoU')
       return filtered.length
     },
     totalDitolakNDA() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.type == 'NDA')
       return filtered.length
     },
     totalDitolakPKS() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.type == 'PKS')
       return filtered.length
     },
     totalSelesai() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10)
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel >= 10)
       return filtered.length
     },
     totalSelesaiMOU() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel == 10 && item.type == 'MoU')
       return filtered.length
     },
     totalSelesaiNDA() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel == 10 && item.type == 'NDA')
       return filtered.length
     },
     totalSelesaiPKS() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel == 11 && item.type == 'PKS')
       return filtered.length
     },
     searchedRows() {
@@ -774,7 +775,8 @@ export default {
         const typeMatch = this.filterType === '' || row.type === this.filterType;
         const statusMatch = filterStatus.value === '' || row.status === filterStatus.value;
         const dateMatch = this.selectedDay === '' || row.startDate.split('/')[0] === this.selectedDay.toString().padStart(2, '0');
-        return typeMatch && statusMatch && dateMatch;
+        const headerMatch = this.filterHeader === '' || this.filterHeader.includes(row.status)
+        return typeMatch && statusMatch && dateMatch && headerMatch;
       });
       return filtered;
     },
@@ -786,7 +788,12 @@ export default {
       }
     },
     totalPages() {
-      return Math.ceil(this.dataRows.length / this.rowsPerPage);
+      if (this.searchQuery) {
+        return Math.ceil(this.searchedRows.length / this.rowsPerPage);
+      } else {
+        return Math.ceil(this.filteredRows.length / this.rowsPerPage);
+      }
+      // return Math.ceil(this.dataRows.length / this.rowsPerPage);
     },
     paginatedRows() {
       const start = (this.currentPage - 1) * this.rowsPerPage;
@@ -947,6 +954,11 @@ export default {
     },
     updateFilterStatus(status) {
       filterStatus.value = status;
+    },
+    updateFilterHeader(header) {
+      if (header == "Total Permintaan") {
+        this.filterHeader = "";
+      }
     },
     toggleDataDropdown() {
       this.isDataOpen = !this.isDataOpen;
