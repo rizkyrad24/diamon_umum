@@ -193,6 +193,12 @@ import { dateParsing } from "@/utils/helper";
                         dataBerkas?.user
                       }}</span>
                     </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.bidang
+                      }}</span>
+                    </div>
                   </div>
                   <div>
                     <div class="w-[541px] flex text-[#333333]">
@@ -205,6 +211,18 @@ import { dateParsing } from "@/utils/helper";
                       <h1 class="w-[150px]">Tanggal Target Selesai</h1>
                       <span class="text-[#7F7F80]">{{
                         dateParsing(dataBerkas?.expectedDate)
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Sub Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.subBidang
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Direktorat</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.direktorat
                       }}</span>
                     </div>
                   </div>

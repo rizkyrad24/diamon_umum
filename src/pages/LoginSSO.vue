@@ -157,10 +157,13 @@ async function submit() {
   payload.append('password', password.value);
   const res = await fetchPostFormPublic('account/login-ldap', null, payload, router);
   if (res.status == 200) {
-    if (res.data.role == "Staff") {
+    if (res.data.role == "Staff" || res.data.role2 == "Staff") {
       saveDataLogin(res.data);
       router.push('/Dashboard')
-    } else if (res.data.role == "Manager" || res.data.role == "VP" || res.data.role == "Direksi") {
+    } else if (
+      res.data.role == "Manager" || res.data.role == "VP" || res.data.role == "Direksi" ||
+      res.data.role2 == "Manager" || res.data.role2 == "VP" || res.data.role2 == "Direksi"
+    ) {
       saveDataLogin(res.data);
       isLoading.value = false;
       router.push('/Dashboardadmin')

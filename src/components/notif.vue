@@ -99,6 +99,9 @@ const modalFailed = ref({
   message: ''
 });
 
+const role = ref("");
+console.log('role', role);
+
 function closeModalFailed() {
   modalFailed.value = {
     isVisible: false,
@@ -110,7 +113,7 @@ function closeModalFailed() {
 // api
 async function getDataApi() {
     isLoading.value = true;
-    const res = await fetchGet("history", null, router);
+    const res = await fetchGet(`history/byrole/${role.value}`, null, router);
     if (res.status == 200) {
         console.log(res.data)
         notifList.value = res.data;
@@ -126,6 +129,7 @@ async function getDataApi() {
 }
 
 onMounted(() => {
+    role.value = (localStorage.getItem('position') || '').toLowerCase();
     getDataApi();
 })
 </script>

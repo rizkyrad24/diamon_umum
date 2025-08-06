@@ -226,6 +226,12 @@ import { dateParsing, convertDatetime, dueDateParsing } from '@/utils/helper';
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.bidang
+                      }}</span>
+                    </div>
                     <div v-if="dataBerkas.isStopClock" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Lama Stopclock</h1>
                       <span class="text-[#7F7F80]">{{ dueDateParsing(dataBerkas?.stopClockDate)*(-1) }} Hari</span>
@@ -241,6 +247,18 @@ import { dateParsing, convertDatetime, dueDateParsing } from '@/utils/helper';
                       <span class="text-[#7F7F80]">{{
                         dateParsing(dataBerkas?.expectedDate)
                         }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Sub Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.subBidang
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Direktorat</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.direktorat
+                      }}</span>
                     </div>
                     <div v-if="dataBerkas.isStopClock" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tanggal Mulai Stopclock</h1>

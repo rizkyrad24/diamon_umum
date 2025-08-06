@@ -23,7 +23,11 @@ export function saveDataLogin(dataUser) {
   localStorage.setItem('username', dataUser.username);
   localStorage.setItem('firstName', dataUser.firstName);
   localStorage.setItem('lastName', dataUser.lastName);
-  localStorage.setItem('position', dataUser.role.toLowerCase());
+  if (['Staff','Manager','VP','Direksi'].includes(dataUser.role)) {
+    localStorage.setItem('position', dataUser.role.toLowerCase());
+  } else {
+    localStorage.setItem('position', dataUser.role2.toLowerCase());
+  }
   localStorage.setItem('title', dataUser.title);
   localStorage.setItem('department', dataUser.department);
 }
