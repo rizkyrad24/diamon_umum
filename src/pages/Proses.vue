@@ -699,7 +699,6 @@ export default {
       this.isDataOpen = !this.isDataOpen;
     },
     goToPage(page) {
-      console.log('Attempting to go to page:', page);
       if (page >= 1 && page <= this.filteredTotalPages) {
         this.currentPage = page;
       }
@@ -713,8 +712,6 @@ export default {
       const newRowsPerPage = Number(option);
       this.DataOption = option;
       this.rowsPerPage = newRowsPerPage;
-      console.log('Data Option:', this.DataOption);
-      console.log('Rows per Page:', this.rowsPerPage);
       const totalPages = Math.ceil(this.dataRows.length / this.rowsPerPage);
       if (this.currentPage > totalPages) {
         this.currentPage = totalPages;
@@ -739,7 +736,6 @@ export default {
             progres: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
             progresClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
           }))
-				console.log(res.data)
 				boxResult = boxResult.concat(cleanData)
 			} else {
 				this.isLoading = false;
@@ -765,7 +761,6 @@ export default {
           }))
 				boxResult = boxResult.concat(cleanData2)
 				boxResult = boxResult.map((item, index) => ({ id: index + 1, ...item }))
-				console.log(res2.data)
 			} else {
 				this.isLoading = false;
         modalFailed.value = {

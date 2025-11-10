@@ -83,7 +83,6 @@ export default {
       () => props.initialValue,
       (newValue) => {
         if (newValue !== null) {
-          console.log("Initial value is not null:", newValue);
           searchTerm.value = newValue.label; // Optionally update search term
           choosenOption.value = newValue.label;
         }

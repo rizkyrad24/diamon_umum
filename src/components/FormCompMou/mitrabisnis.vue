@@ -59,7 +59,6 @@ async function getDataCandidateApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.name,
       label: item.name,

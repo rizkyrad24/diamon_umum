@@ -363,9 +363,6 @@ function moveNext() {
   if (positionForm.value < 6) {
     if (!isNextDisable.value) {
       positionForm.value++;
-      console.log('rabs', rabs.value)
-      console.log('delete rabs', deletedRabs.value)
-      console.log('delete scoopes', deletedScopes.value)
     }
   }
 }
@@ -415,7 +412,6 @@ async function getDataApi(id) {
       ...res.data, 
       'lastPksNumberInput': res.data.lastPKSNumber,
     };
-    console.log(res.data, 'data di induk')
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -448,7 +444,6 @@ async function getDataMouApi(mouNumberInput) {
       note: res.data.note,
       partnershipCandidate: res.data.partnershipCandidate
     };
-    console.log(res.data, 'data di induk')
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -458,7 +453,6 @@ async function getDataMouApi(mouNumberInput) {
 
 async function getDataLastPksApi(lastPksNumberInput) {
   isLoading.value = true;
-  console.log('rabs', rabs.value)
   const params = {lastPksNumber: lastPksNumberInput}
   const res = await fetchGet('staff/pks/by-number', params, router);
   if (res.status == 200) {
@@ -535,8 +529,6 @@ async function getDataLastPksApi(lastPksNumberInput) {
       scopesPks: scopes.value,
       scopesPksDeleted: deletedScopes.value,
     };
-    console.log(res.data, 'data di induk')
-    console.log('delete RAB', deletedRabs.value)
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -552,7 +544,6 @@ async function postPks(successFunction, failFunction) {
   form.append('expectedDate', createdDate.value)
   form.append('budgetType', budgetType.value)
   form.append('budgetNumber', budgetNumber.value)
-  console.log(budgetNumber.value, 'ada tidak')
   form.append('partnershipMethod', partnershipMethod.value)
   form.append('materialType', materialType.value)
   form.append('partnershipTitle', partnershipTitle.value)
@@ -679,9 +670,9 @@ async function postPks(successFunction, failFunction) {
     }
   })
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   // isLoading.value = false;
   const res = await fetchPostForm(`staff/pks/draft/${id.value}/`, null, form, router);
   if (res.status == 200) {
@@ -690,7 +681,6 @@ async function postPks(successFunction, failFunction) {
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 

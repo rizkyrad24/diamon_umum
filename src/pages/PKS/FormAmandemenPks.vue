@@ -341,9 +341,6 @@ function moveNext() {
   if (positionForm.value < 6) {
     if (!isNextDisable.value) {
       positionForm.value++;
-      console.log('rabs', rabs.value)
-      console.log('delete rabs', deletedRabs.value)
-      console.log('delete scoopes', deletedScopes.value)
     }
   }
 }
@@ -401,7 +398,6 @@ async function getDataLastPksApi(lastPksNumberInput) {
       'lastPksNumberInput': res.data.pksNumber, 
       attachmentsPks: res.data.attachmentsPks.filter(item => !["Proposal Mitra","Dokumen Surat Menyurat","Dokumen Lainnya"].includes(item.fileType) )
     };
-    console.log(res.data, 'data di induk')
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -531,9 +527,9 @@ async function postPks(successFunction, failFunction) {
     sort++
   }
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   // isLoading.value = false;
   const res = await fetchPostForm('staff/pks/create', null, form, router);
   if (res.status == 201) {
@@ -542,7 +538,6 @@ async function postPks(successFunction, failFunction) {
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 

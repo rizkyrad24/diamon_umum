@@ -700,7 +700,6 @@ export default {
       this.isDataOpen = !this.isDataOpen;
     },
     goToPage(page) {
-      console.log('Attempting to go to page:', page);
       if (page >= 1 && page <= this.filteredTotalPages) {
         this.currentPage = page;
       }
@@ -714,8 +713,6 @@ export default {
       const newRowsPerPage = Number(option);
       this.DataOption = option;
       this.rowsPerPage = newRowsPerPage;
-      console.log('Data Option:', this.DataOption);
-      console.log('Rows per Page:', this.rowsPerPage);
       const totalPages = Math.ceil(this.dataRows.length / this.rowsPerPage);
       if (this.currentPage > totalPages) {
         this.currentPage = totalPages;
@@ -748,7 +745,6 @@ export default {
       }
       const res = await fetchGet(url, params, this.$router);
       if (res.status == 200) {
-        console.log(res.data);
         const cleanData = res.data.map((item) => {
           return {
             did: item.id,
@@ -812,7 +808,6 @@ export default {
           id: index + 1,
           ...item,
         }));
-        console.log(res2.data);
       } else {
         this.isLoading = false;
         modalFailed.value = {

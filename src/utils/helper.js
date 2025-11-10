@@ -299,7 +299,6 @@ export const dateParsing = (input) => {
 }
 
 export const dueDateParsing = (input) => {
-  console.log(input)
   if (input) {
     const targetDate = new Date(input);
     const today = new Date();

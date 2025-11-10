@@ -462,7 +462,6 @@ async function getDataMouListApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.mouNdaNumber,
       label: item.partnershipTitle,
@@ -483,7 +482,6 @@ async function getDataLastPksListApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.pksNumber,
       label: item.title,

@@ -331,9 +331,9 @@ function moveNext() {
       positionForm.value++;
     }
   }
-  scopes.value.forEach((element, index) => {
-    console.log(`scopesPks[${index}].scopeName`, element.scopeName)
-  });
+  // scopes.value.forEach((element, index) => {
+  //   console.log(`scopesPks[${index}].scopeName`, element.scopeName)
+  // });
 }
 
 function movePrevious() {
@@ -341,9 +341,9 @@ function movePrevious() {
     positionForm.value--
   }
   isNextDisable.value = false;
-  scopes.value.forEach((element, index) => {
-    console.log(`scopesPks[${index}].scopeName`, element.scopeName)
-  });
+  // scopes.value.forEach((element, index) => {
+  //   console.log(`scopesPks[${index}].scopeName`, element.scopeName)
+  // });
 }
 
 async function getDataApi(mouNumberInput) {
@@ -359,7 +359,6 @@ async function getDataApi(mouNumberInput) {
     scopes.value = res.data.scopesMou;
     mouNumber.value = res.data.mouNdaNumber;
     dataInitial.value = {...res.data, scopesPks: res.data.scopesMou};
-    console.log(res.data, 'data di induk')
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -436,9 +435,9 @@ async function postPks(successFunction, failFunction) {
     sort++
   }
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   const res = await fetchPostForm("staff/pks/create", null, form, router);
   if (res.status == 201) {
     isLoading.value = false;
@@ -446,7 +445,6 @@ async function postPks(successFunction, failFunction) {
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 

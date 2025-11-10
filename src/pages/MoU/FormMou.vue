@@ -290,13 +290,6 @@ function moveNext() {
     }
     if (!isNextDisable.value) {
       positionForm.value++;
-      // console.log('base: ', base.value)
-      // console.log('title: ', partnershipTitle.value)
-      // console.log('createdDate', createdDate.value)
-      // console.log('scoopes', scopes.value)
-      // console.log('background', background.value)
-      // console.log('note', note.value)
-      // console.log('candidate', partnershipCandidate.value)
       // isNextDisable.value = true
     }
     // if (positionForm.value == 2 && scopes.value.length > 0) {
@@ -344,9 +337,9 @@ async function postMounda(successFunction, failFunction) {
     sort++
   }
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   const res = await fetchPostForm("staff/mounda/create", null, form, router);
   if (res.status == 201) {
     isLoading.value = false;
@@ -354,7 +347,6 @@ async function postMounda(successFunction, failFunction) {
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 
@@ -401,7 +393,6 @@ function getInputValuesPos2() {
   const inputs = document.querySelectorAll('.input-pos-2');
   const values = Array.from(inputs).map(input => input.value);
   scopes.value = Array.from(values);
-  console.log(inputs)
 }
 
 function movePrevious() {

@@ -410,7 +410,6 @@ const toggleDataDropdown = () => {
 };
 
 const goToPage = (page) => {
-  console.log('Attempting to go to page:', page);
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
   }
@@ -426,8 +425,6 @@ const selectDataOption = (option) => {
   const newRowsPerPage = Number(option);
   dataOption.value = option;
   rowsPerPage.value = newRowsPerPage;
-  console.log('Data Option:', dataOption.value);
-  console.log('Rows per Page:', rowsPerPage.value);
 
   const total = Math.ceil(dataRows.value.length / rowsPerPage.value);
   if (currentPage.value > total) {
@@ -460,7 +457,6 @@ const editDataById = (id, newData) => {
   if (index !== -1) {
     // Merge existing object with new data
     dataRows.value[index] = { ...dataRows.value[index], ...newData };
-    console.log(`Data with ID ${id} has been updated.`, dataRows.value[index]);
     emit("rabs", dataRows.value)
     isSimpanDisable.value = true;
   } else {
@@ -540,12 +536,6 @@ const openEditOk = () => {
     revenue: revenueInput.value.replace(/\./g, '')
   });
   cleanAddForm();
-  // console.log(pelangganInput.value)
-  // console.log(produkInput.value)
-  // console.log(PlnOption.value)
-  // console.log(revenueInput.value)
-  // console.log(biayaInput.value)
-  // console.log(deskInput.value)
   isOkOpen.value = true;
   isOpen.value = false;
 };
@@ -605,7 +595,6 @@ async function getDataPelangganApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.name,
       label: item.name,
@@ -625,7 +614,6 @@ async function getDataProdukApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.productName,
       label: item.productName,

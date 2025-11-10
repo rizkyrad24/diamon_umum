@@ -310,14 +310,6 @@ function moveNext() {
   if (positionForm.value < 5) {
     if (!isNextDisable.value) {
       positionForm.value++;
-      // console.log('base: ', base.value)
-      // console.log('title: ', partnershipTitle.value)
-      // console.log('createdDate', createdDate.value)
-      // console.log('scoopes', scopes.value)
-      // console.log('Deletedscoopes', deletedScopes.value)
-      // console.log('background', background.value)
-      // console.log('note', note.value)
-      // console.log('candidate', partnershipCandidate.value)
       // if (positionForm.value == 3) {
       //  isNextDisable.value = true
       // }
@@ -347,8 +339,7 @@ async function getDataApi(id) {
     partnershipCandidate.value = res.data.partnershipCandidate;
     scopes.value = res.data.scopesMou;
     dataInitial.value = res.data;
-    linkBack.value = `/Detaildraft/${res.data.base}/${id}`
-    console.log(res.data, 'data di induk')
+    linkBack.value = `/Detaildraft/${res.data.base}/${id}`;
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -413,18 +404,16 @@ async function postMounda(successFunction, failFunction) {
     sort++
   }
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   const res = await fetchPostForm(`staff/mounda/draft/${id.value}`, null, form, router);
-  console.log(res.data)
   if (res.status == 200) {
     isLoading.value = false;
     successFunction();
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 
@@ -440,60 +429,12 @@ watch(
   { immediate: true } // Trigger immediately on initialization
 );
 
-// watch(
-//   [background],
-//   ([newBackground]) => {
-//     isNextDisable.value =
-//       !(newBackground.trim() !== '');
-//   },
-//   { immediate: true } // Trigger immediately on initialization
-// );
-
-// watch(
-//   [partnershipCandidate],
-//   ([newPartnershipCandidate]) => {
-//     isNextDisable.value =
-//       !(newPartnershipCandidate.trim() !== '');
-//   },
-//   { immediate: true } // Trigger immediately on initialization
-// );
-
-// watch(
-//   [fileSurat],
-//   ([newFileSurat]) => {
-//     isKirimDisable.value =
-//       !(newFileSurat !== null);
-//   },
-//   { immediate: true } // Trigger immediately on initialization
-// );
-
 function movePrevious() {
   if (positionForm.value > 1) {
     positionForm.value--
   }
   isNextDisable.value = false;
 }
-
-// function openSend() {
-//   if (!isKirimDisable.value) {
-//     isSendOpen.value = true;
-//     isOkOpen.value = false;
-//     console.log('base: ', base.value)
-//     console.log('title: ', partnershipTitle.value)
-//     console.log('expectedDate', createdDate.value)
-//     console.log('scoopes', scopes.value)
-//     console.log('background', background.value)
-//     console.log('note', note.value)
-//     console.log('candidate', partnershipCandidate.value)
-//     console.log('file proposal', fileProposal.value)
-//     console.log('file surat', fileSurat.value)
-//     console.log('file lainnya', fileLainnya.value)
-//     isKirimDisable.value = true
-//   }
-//   if (positionForm.value == 5 && fileSurat) {
-//     isKirimDisable.value = false
-//   }
-// }
 
 onMounted(() => {
   if (route.params.id) {

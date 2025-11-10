@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="w-[720px] h-full bg-[#F2E2B1]">
-        <div class="w-[480px] h-[496px] mt-[0px] ml-[120px]">
+        <div class="w-[480px] mt-[0px] ml-[120px]">
           <svg width="252" height="45" class="ml-[114.5px]" viewBox="0 0 252 45" fill="none"
             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <rect x="0.5" y="0.5" width="251" height="44" fill="url(#pattern0_2285_24014)" />
@@ -76,9 +76,13 @@
             </div>
           </div>
           <div class="mt-20">
+            <AlphaNumCaptcha ref="captchaRef" :length="5" :expires-in-ms="120000" @expired="answer=''" />
+            <input v-model="answer" placeholder="Masukkan kode" class="mt-3 border rounded px-2 py-1" />
+          </div>
+          <div class="mt-4">
             <button @click="submit" :disabled="isDisableLogin"
               :class="isDisableLogin ? 'w-full h-[48px] bg-[#9C9C9C] text-white font-semibold rounded-lg' : 'w-full h-[48px] bg-[#2671D9] text-white font-semibold rounded-lg'">Login dengan SSO</button>
-            <button @click="pushOtherLoginType" class="w-full h-[48px] text-[#2671D9] border-[1px] mt-4 font-semibold rounded-lg">Login Internal</button>
+            <!-- <button @click="pushOtherLoginType" class="w-full h-[48px] text-[#2671D9] border-[1px] mt-4 font-semibold rounded-lg">Login Internal</button> -->
           </div>
         </div>
       </div>
@@ -96,6 +100,7 @@ import { fetchPostFormPublic } from "@/api/apiFunction";
 import LoadingComponent from '@/components/loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
 import ModalSuccess from "@/components/modalsuccess.vue";
+import AlphaNumCaptcha from "@/components/AlphaNumCaptcha.vue";
 
 const router = useRouter();
 const username = ref("");
@@ -108,6 +113,9 @@ const modalFailed = ref({
   title: '',
   message: ''
 });
+
+const answer = ref('');
+const captchaRef = ref(null);
 
 watch(
   [username, password],
@@ -124,9 +132,9 @@ function togglePasswordVisibility() {
   isPasswordVisible.value = !isPasswordVisible.value;
 }
 
-function pushOtherLoginType() {
-  router.push("/")
-}
+// function pushOtherLoginType() {
+//   router.push("/")
+// }
 
 function closeModalFailed() {
   modalFailed.value = {
@@ -151,6 +159,10 @@ function closeModalSuccess() {
 }
 
 async function submit() {
+  if (!captchaRef.value.validate(answer.value)) {
+    captchaRef.value.refresh()
+    return
+  }
   isLoading.value = true;
   const payload = new FormData();
   payload.append('username', username.value);
@@ -169,6 +181,7 @@ async function submit() {
       router.push('/Dashboardadmin')
     } else {
       isLoading.value = false;
+      captchaRef.value.refresh()
       modalFailed.value = {
         isVisible: true,
         title: 'Gagal',
@@ -185,6 +198,7 @@ async function submit() {
     }
   } else {
     isLoading.value = false;
+    captchaRef.value.refresh()
     modalFailed.value = {
       isVisible: true,
       title: 'Invalid Login',
@@ -192,23 +206,6 @@ async function submit() {
     }
   }
 }
-
-// async function loginSSO() {
-//   isLoading.value = true;
-//   const res = await fetchGetPublic('account/sso/umum', null, router);
-//   if (res.status == 200) {
-//     console.log(res.data)
-//     isLoading.value = false;
-//     window.location = res.data.data.uri;
-//   } else {
-//     isLoading.value = false;
-//     modalFailed.value = {
-//       isVisible: true,
-//       title: 'Invalid Login SSO',
-//       message: res.data
-//     }
-//   }
-// }
 
 </script>
 
