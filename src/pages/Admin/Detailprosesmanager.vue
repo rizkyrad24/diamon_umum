@@ -878,7 +878,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   </div>
                   <div v-if="base == 'PKS'">
                     <label class="text-[#4D5E80] font-semibold">Review Mitra</label>
-                    <a :href="linkDownloadKemitraan10" v-if="fileNameKemitraan6"
+                    <a :href="linkDownloadKemitraan10" v-if="fileNameKemitraan10"
                       class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
