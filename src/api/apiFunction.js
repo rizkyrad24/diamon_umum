@@ -219,3 +219,29 @@ export const fetchDelete = async (endpoint, params, router) => {
         return error.response
     }
 }
+
+export const downloadFile = async (endpoint, fileName, router) => {
+    const token = localStorage.getItem('access');
+    if (!token) {
+        clearDataLogin();
+        router.push("/");
+    }
+    try {
+        const result = await ApiManager(`/download/file/${endpoint}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        responseType: "blob"
+        })
+        const blob = new Blob([result.data]);
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName; // nama file hasil download
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    } catch (error) {
+        console.error("Gagal download file:", error);
+    }
+}

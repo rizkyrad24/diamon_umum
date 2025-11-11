@@ -12,7 +12,7 @@ import group from '../assets/img/Group.png'
 import LoadingComponent from '@/components/loading.vue';
 import ModalFailed from '@/components/modalfailed.vue';
 import { fetchGet } from "@/api/apiFunction";
-import { mapperStatus } from "@/utils/helper";
+import { mapperStatus, dateParsing } from "@/utils/helper";
 </script>
 
 <template>
@@ -367,7 +367,7 @@ import { mapperStatus } from "@/utils/helper";
                     </th>
                     <th class="w-[87px] px-3">
                       <div class="flex justify-between">Tipe
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortTipe" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -406,7 +406,7 @@ import { mapperStatus } from "@/utils/helper";
                     </th>
                     <th class="w-[200px] px-3">
                       <div class="flex justify-between">Status
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortStatus" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -428,8 +428,8 @@ import { mapperStatus } from "@/utils/helper";
                     <td class="w-[268px] px-3">{{ row.name }}</td>
                     <td class="w-[122px] px-3">{{ row.code }}</td>
                     <td class="w-[87px] px-3">{{ row.type }}</td>
-                    <td class="w-[172px] px-3">{{ row.startDate }}</td>
-                    <td class="w-[172px] px-3">{{ row.endDate }}</td>
+                    <td class="w-[172px] px-3">{{ row.startDate? dateParsing(row.startDate): "-" }}</td>
+                    <td class="w-[172px] px-3">{{ row.endDate? dateParsing(row.endDate): "-" }}</td>
                     <td class="w-[97px] px-3">
                       <span :class="row.statusClass"
                         class="px-[8px] py-1 text-xs font-medium border-1 rounded-[100px]">{{ row.status }}</span>
@@ -505,7 +505,7 @@ import { mapperStatus } from "@/utils/helper";
                   </ul>
                 </div>
               </div>
-              <p class="text-sm text-[#333333] mt-1 ml-3">dari <span class="font-semibold text-sm">{{ dataRows.length
+              <p class="text-sm text-[#333333] mt-1 ml-3">dari <span class="font-semibold text-sm">{{ searchQuery? searchedRows.length: filteredRows.length
                   }}</span> Data</p>
             </div>
             <div class="pagination-controls">
@@ -689,67 +689,67 @@ export default {
       return filtered.length
     },
     totalDiproses() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10)
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status))
       return filtered.length
     },
     totalDiprosesMOU() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status) && item.type == 'MoU')
       return filtered.length
     },
     totalDiprosesNDA() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status) && item.type == 'NDA')
       return filtered.length
     },
     totalDiprosesPKS() {
-      const filtered = this.dataRows.filter(item => !['Revisi','Revisi Minor','Revisi Mayor','Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Selesai','Pengajuan','Pengajuan StopClock','Pengajuan StartClock', 'Pengajuan Ditolak', 'Pengajuan Ditolak Lv2'].includes(item.status) && item.type == 'PKS')
       return filtered.length
     },
     totalDirevisi() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10)
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status))
       return filtered.length
     },
     totalDirevisiMOU() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.type == 'MoU')
       return filtered.length
     },
     totalDirevisiNDA() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.type == 'NDA')
       return filtered.length
     },
     totalDirevisiPKS() {
-      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Revisi','Revisi Minor','Revisi Mayor'].includes(item.status) && item.type == 'PKS')
       return filtered.length
     },
     totalDitolak() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10)
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status))
       return filtered.length
     },
     totalDitolakMOU() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.type == 'MoU')
       return filtered.length
     },
     totalDitolakNDA() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.type == 'NDA')
       return filtered.length
     },
     totalDitolakPKS() {
-      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.positionLevel < 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Ditolak'].includes(item.status) && item.type == 'PKS')
       return filtered.length
     },
     totalSelesai() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10)
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel >= 10)
       return filtered.length
     },
     totalSelesaiMOU() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'MoU')
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel == 10 && item.type == 'MoU')
       return filtered.length
     },
     totalSelesaiNDA() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'NDA')
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel == 10 && item.type == 'NDA')
       return filtered.length
     },
     totalSelesaiPKS() {
-      const filtered = this.dataRows.filter(item => item.positionLevel == 10 && item.type == 'PKS')
+      const filtered = this.dataRows.filter(item => ['Approved'].includes(item.status) && item.positionLevel == 11 && item.type == 'PKS')
       return filtered.length
     },
     searchedRows() {
@@ -786,7 +786,12 @@ export default {
       }
     },
     totalPages() {
-      return Math.ceil(this.dataRows.length / this.rowsPerPage);
+      if (this.searchQuery) {
+        return Math.ceil(this.searchedRows.length / this.rowsPerPage);
+      } else {
+        return Math.ceil(this.filteredRows.length / this.rowsPerPage);
+      }
+      // return Math.ceil(this.dataRows.length / this.rowsPerPage);
     },
     paginatedRows() {
       const start = (this.currentPage - 1) * this.rowsPerPage;
@@ -832,16 +837,16 @@ export default {
     SortDateEnd() {
       if (this.endDateSortOrder === 'asc') {
         this.dataRows.sort((a, b) => {
-          const endDateA = new Date(a.endDate.split('/').reverse().join('-'));
-          const endDateB = new Date(b.endDate.split('/').reverse().join('-'));
-          return endDateA - endDateB;
+          const endDateA = a.endDate ? new Date(a.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          const endDateB = b.endDate ? new Date(b.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          return endDateA - endDateB;  // Ascending order
         });
         this.endDateSortOrder = 'desc';
       } else {
         this.dataRows.sort((a, b) => {
-          const endDateA = new Date(a.endDate.split('/').reverse().join('-'));
-          const endDateB = new Date(b.endDate.split('/').reverse().join('-'));
-          return endDateB - endDateA;
+          const endDateA = a.endDate ? new Date(a.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          const endDateB = b.endDate ? new Date(b.endDate.split('/').reverse().join('-')) : new Date(0); // Jika kosong, anggap sebagai tanggal awal
+          return endDateB - endDateA;  // Descending order
         });
         this.endDateSortOrder = 'asc';
       }
@@ -910,6 +915,24 @@ export default {
         this.dataRows.sort((a, b) => b.name.localeCompare(a.name));
       }
     },
+    SortTipe() {
+      if (this.sortTipe === 'asc') {
+        this.dataRows.sort((a, b) => b.type.localeCompare(a.type));
+        this.sortTipe = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.type.localeCompare(b.type));
+        this.sortTipe = 'asc';
+      }
+    },
+    SortStatus() {
+      if (this.sortStatus === 'asc') {
+        this.dataRows.sort((a, b) => b.status.localeCompare(a.status));
+        this.sortStatus = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.status.localeCompare(b.status));
+        this.sortStatus = 'asc';
+      }
+    },
     updateSelectedDay(date) {
       this.selectedDay = date;
       isDate.value = false;
@@ -934,7 +957,6 @@ export default {
       this.isDataOpen = !this.isDataOpen;
     },
     goToPage(page) {
-      console.log('Attempting to go to page:', page);
       if (page >= 1 && page <= this.filteredTotalPages) {
         this.currentPage = page;
       }
@@ -948,8 +970,6 @@ export default {
       const newRowsPerPage = Number(option);
       this.DataOption = option;
       this.rowsPerPage = newRowsPerPage;
-      console.log('Data Option:', this.DataOption);
-      console.log('Rows per Page:', this.rowsPerPage);
       const totalPages = Math.ceil(this.dataRows.length / this.rowsPerPage);
       if (this.currentPage > totalPages) {
         this.currentPage = totalPages;
@@ -974,7 +994,6 @@ export default {
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
           }))
-				console.log(res.data)
         cleanData = cleanData.filter(item => item.positionLevel > 0);
 				boxResult = boxResult.concat(cleanData)
 			} else {
@@ -1002,7 +1021,6 @@ export default {
         cleanData2 = cleanData2.filter(item => item.positionLevel > 0);
 				boxResult = boxResult.concat(cleanData2)
 				boxResult = boxResult.map((item, index) => ({ id: index + 1, ...item }))
-				console.log(res2.data)
 			} else {
 				this.isLoading = false;
         modalFailed.value = {

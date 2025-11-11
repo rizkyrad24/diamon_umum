@@ -8,7 +8,7 @@ import LoadingComponent from '@/components/loading.vue';
 import ModalSuccess from "@/components/modalsuccess.vue";
 import ModalFailed from "@/components/modalfailed.vue";
 import ModalDialog from '@/components/modaldialog.vue';
-import { fetchGet, fetchPostForm } from '@/api/apiFunction';
+import { fetchGet, fetchPostForm, downloadFile } from '@/api/apiFunction';
 import { dateParsing } from '@/utils/helper';
 </script>
 
@@ -138,6 +138,12 @@ import { dateParsing } from '@/utils/helper';
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.bidang
+                      }}</span>
+                    </div>
                   </div>
                   <div>
                     <div class="w-[541px] flex text-[#333333]">
@@ -147,6 +153,18 @@ import { dateParsing } from '@/utils/helper';
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Tanggal Target Selesai</h1>
                       <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.expectedDate) }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Sub Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.subBidang
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Direktorat</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.direktorat
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -254,8 +272,8 @@ import { dateParsing } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[231px] px-3">
-                          <div class="flex justify-between">Aksi
+                        <th class="w-[150px] px-3">
+                          <div class="flex justify-between">Produk
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -267,7 +285,7 @@ import { dateParsing } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[231px] px-3">
+                        <th class="w-[270px] px-3">
                           <div class="flex justify-between">Deskripsi
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -280,7 +298,7 @@ import { dateParsing } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[300px] px-3">
+                        <th class="w-[150px] px-3">
                           <div class="flex justify-between">Pelanggan
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -293,8 +311,36 @@ import { dateParsing } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[200px] px-3">
+                        <th class="w-[130px] px-3">
                           <div class="flex justify-between">PLN/Non PLN
+                            <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
+                                fill="#93B8EC" />
+                              <path
+                                d="M4.21369 3.14482C4.41312 2.95238 4.73647 2.95238 4.9359 3.14482L8.00001 6.10158C8.19945 6.29403 8.19945 6.60605 8.00001 6.79849C7.80058 6.99094 7.47723 6.99094 7.27779 6.79849L5.08548 4.68299V12.3635C5.08548 12.6357 4.85684 12.8563 4.57479 12.8563C4.29275 12.8563 4.06411 12.6357 4.06411 12.3635V4.68299L1.87179 6.79849C1.67236 6.99094 1.34901 6.99094 1.14958 6.79849C0.950141 6.60605 0.950141 6.29403 1.14958 6.10158L4.21369 3.14482Z"
+                                fill="#93B8EC" />
+                            </svg>
+                          </div>
+                        </th>
+                        <th class="w-[150px] px-3">
+                          <div class="flex justify-between">
+                            Biaya
+                            <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
+                                fill="#93B8EC" />
+                              <path
+                                d="M4.21369 3.14482C4.41312 2.95238 4.73647 2.95238 4.9359 3.14482L8.00001 6.10158C8.19945 6.29403 8.19945 6.60605 8.00001 6.79849C7.80058 6.99094 7.47723 6.99094 7.27779 6.79849L5.08548 4.68299V12.3635C5.08548 12.6357 4.85684 12.8563 4.57479 12.8563C4.29275 12.8563 4.06411 12.6357 4.06411 12.3635V4.68299L1.87179 6.79849C1.67236 6.99094 1.34901 6.99094 1.14958 6.79849C0.950141 6.60605 0.950141 6.29403 1.14958 6.10158L4.21369 3.14482Z"
+                                fill="#93B8EC" />
+                            </svg>
+                          </div>
+                        </th>
+                        <th class="w-[150px] px-3">
+                          <div class="flex justify-between">
+                            Revenue
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -317,6 +363,8 @@ import { dateParsing } from '@/utils/helper';
                         <td class="px-3">{{ item.costDesc }}</td>
                         <td class="px-3">{{ item.customer }}</td>
                         <td class="px-3">{{ item.isPln ? "PLN" : "Non PLN" }}</td>
+                        <td class="px-3">{{ Number(item.cost).toLocaleString('id-ID') }}</td>
+                        <td class="px-3">{{ Number(item.revenue).toLocaleString('id-ID') }}</td>
                       </tr>
                       <!-- tambahkan baris tabel lainnya disini -->
                     </tbody>
@@ -347,7 +395,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKB <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKB" v-if="fileNameKKB" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKB, fileNameKKB, router)" v-if="fileNameKKB" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -359,7 +407,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKB }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKB }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -367,7 +415,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKR <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKR" v-if="fileNameKKR" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKR, fileNameKKR, router)" v-if="fileNameKKR" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -379,7 +427,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKR }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKR }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -387,7 +435,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKF <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKF" v-if="fileNameKKF" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKF, fileNameKKF, router)" v-if="fileNameKKF" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -399,7 +447,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKF }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKF }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -409,7 +457,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKO <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKO" v-if="fileNameKKO" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKO, fileNameKKO, router)" v-if="fileNameKKO" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -421,7 +469,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKO }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKO }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -429,7 +477,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadmitra" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadmitra, fileNamemitra, router)" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -441,7 +489,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -449,7 +497,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Surat Menyurat
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadsurat, fileNamesurat, router)" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -461,7 +509,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -470,7 +518,7 @@ import { dateParsing } from '@/utils/helper';
                   <div class="px-6 mt-6 mb-4">
                     <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                       <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                    <a :href="linkDownloadlainnya" v-if="fileNamelainnya" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadlainnya, fileNamelainnya, router)" v-if="fileNamelainnya" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -482,7 +530,7 @@ import { dateParsing } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                     </div>
@@ -493,7 +541,7 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadmitra" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadmitra, fileNamemitra, router)" v-if="fileNamemitra" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -505,7 +553,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -515,7 +563,7 @@ import { dateParsing } from '@/utils/helper';
                         Dokumen Surat Menyurat
                         <span class="text-[#FF5656] text-xs">*</span>
                       </label>
-                      <a :href="linkDownloadsurat" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadsurat, fileNamesurat, router)" v-if="fileNamesurat" class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -527,7 +575,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -535,8 +583,8 @@ import { dateParsing } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadlainnya" v-if="fileNamelainnya"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadlainnya, fileNamelainnya, router)" v-if="fileNamelainnya"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -548,7 +596,7 @@ import { dateParsing } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -737,6 +785,7 @@ import { dateParsing } from '@/utils/helper';
 
 <script>
 import { baseURL } from "@/api/apiManager";
+import router from '@/router';
 export default {
   data() {
     return {
@@ -1052,41 +1101,40 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
-              this.linkDownloadKKO = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadKKO = item.fileUrl
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
-              this.linkDownloadKKF = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadKKF = item.fileUrl
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
-              this.linkDownloadKKR = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadKKR = item.fileUrl
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
-              this.linkDownloadKKB = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadKKB = item.fileUrl
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadsurat = item.fileUrl
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadmitra = item.fileUrl
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadlainnya = item.fileUrl
             }
           })
           this.isLoading = false;
-          console.log(res.data)
         } else {
           this.isLoading = false;
           this.modalFailed = {
@@ -1105,21 +1153,20 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadsurat = item.fileUrl
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadmitra = item.fileUrl
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`
+              this.linkDownloadlainnya = item.fileUrl
             }
           })
           this.isLoading = false;
-          console.log(res.data)
         } else {
           this.isLoading = false;
           this.modalFailed = {
@@ -1135,7 +1182,6 @@ export default {
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
       payload.append('responseText', this.responseText);
-      console.log(payload)
       const positionLevel = localStorage.getItem('position')
       let url = null;
       if (positionLevel == "manager") {
@@ -1173,67 +1219,16 @@ export default {
         // this.isSelesaiSetuju = true;
         this.isLoading = false;
         successFunction();
-        console.log(res.data)
       } else {
         this.isLoading = false;
         failFunction();
       }
-      // if (this.base == "PKS" && position == 'manager') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendSetuju = false;
-      //     // this.isSelesaiSetuju = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "MOU" && position == 'manager') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendSetuju = false;
-      //     // this.isSelesaiSetuju = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "PKS" && position == 'vp') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendSetuju = false;
-      //     // this.isSelesaiSetuju = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "MOU" && position == 'vp') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendSetuju = false;
-      //     // this.isSelesaiSetuju = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // }
     },
     async postRevisi(successFunction, failFunction) {
       this.isLoading = true;
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
       payload.append('responseText', this.responseText);
-      console.log(payload)
       const positionLevel = localStorage.getItem('position')
       let url = null;
       if (positionLevel == "manager") {
@@ -1271,67 +1266,16 @@ export default {
         // this.isSelesaiRevisi = true;
         this.isLoading = false;
         successFunction();
-        console.log(res.data)
       } else {
         this.isLoading = false;
         failFunction();
       }
-      // if (this.base == "PKS" && position == 'manager') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendRevisi = false;
-      //     // this.isSelesaiRevisi = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "MOU" && position == 'manager') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendRevisi = false;
-      //     // this.isSelesaiRevisi = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "PKS" && position == 'vp') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendRevisi = false;
-      //     // this.isSelesaiRevisi = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "MOU" && position == 'vp') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendRevisi = false;
-      //     // this.isSelesaiRevisi = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // }
     },
     async postTolak(successFunction, failFunction) {
       this.isLoading = true;
       const payload = new FormData();
       payload.append('approvalNote', this.approvalNote);
       payload.append('responseText', this.responseText);
-      console.log(payload)
       const positionLevel = localStorage.getItem('position')
       let url = null;
       if (positionLevel == "manager") {
@@ -1369,61 +1313,11 @@ export default {
         // this.isSelesaiTolak = true;
         this.isLoading = false;
         successFunction();
-        console.log(res.data)
       } else {
         this.isLoading = false;
         failFunction();
       }
-      // if (this.base == "PKS" && position == 'manager') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendTolak = false;
-      //     // this.isSelesaiTolak = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "MOU" && position == 'manager') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendTolak = false;
-      //     // this.isSelesaiTolak = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "PKS" && position == 'vp') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendTolak = false;
-      //     // this.isSelesaiTolak = true;
-      //     this.isLoading= false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // } else if (this.base == "MOU" && position == 'vp') {
-      //   const res = await fetchPostForm(, null, payload, this.$router);
-      //   if (res.status == 200) {
-      //     // this.isSendTolak = false;
-      //     // this.isSelesaiTolak = true;
-      //     this.isLoading = false;
-      //     successFunction();
-      //     console.log(res.data)
-      //   } else {
-      //     this.isLoading = false;
-      //     failFunction();
-      //   }
-      // }
-    }
+    },
   },
   mounted() {
     if (this.$route.params.id && this.$route.params.base) {

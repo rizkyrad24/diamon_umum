@@ -63,7 +63,6 @@ function addLingkup () {
     scopeName: '',
     key: getNewKey(listData.value)
   }];
-  console.log(listData.value)
 }
 
 function deleteLingkup (key) {

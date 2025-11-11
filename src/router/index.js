@@ -54,6 +54,7 @@ const routes = [
     // Login
     { path: '/', name: 'Login', component: Login },
     { path: '/sso', name: 'LoginSSO', component: LoginSSO },
+    // { path: '/', name: 'LoginSSO', component: LoginSSO },
     
     // Admin (Manager, VP, Direksi)
     { path: '/Dashboardadmin', name: 'Dashboardmanager', component: Dashboardmanager, meta: { requiresAuth: true, role: ['manager', 'vp', 'direksi'] } },

@@ -2,10 +2,10 @@
 <script setup>
 import sidebar from '../components/sidebar.vue';
 import navbar from '../components/navbar.vue';
-import { fetchGet } from '@/api/apiFunction';
+import { fetchGet, downloadFile } from '@/api/apiFunction';
 import LoadingComponent from '../components/loading.vue';
 import modalfailed from "@/components/modalfailed.vue";
-import { dateParsing, convertDatetime } from '@/utils/helper';
+import { dateParsing, convertDatetime, dueDateParsing } from '@/utils/helper';
 </script>
 
 <template>
@@ -16,6 +16,9 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
       <div class="h-[54px] flex">
         <router-link v-if="origin == 'dashboard'" to="/Dashboard">
           <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Dashboard</h1>
+        </router-link>
+        <router-link v-if="origin == 'selesai'" to="/Selesai">
+          <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Selesai</h1>
         </router-link>
         <router-link v-else to="/Proses">
           <h1 class="text-[#2671D9] text-sm ml-6 mt-3">Proses</h1>
@@ -41,11 +44,12 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                 <div class="w-[6px] h-7 bg-[#2671D9]"></div>
                 <h1 class="text-xl font-medium ml-[6px]">Detail Pengajuan {{ base }}</h1>
               </div>
-              <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber || '-' }}</span>
+              <!-- <span class="text-base text-[#9C9C9C] pl-4">{{ dataBerkas?.submissionNumber || '-' }}</span> -->
+              <span class="text-base text-[#9C9C9C] pl-4">( Status: {{ progressKemitraan || '-' }} )</span>
             </div>
             <div class="w-[209px] border-[1px] border-[#E5E7E9] rounded-xl">
               <div :class="{ 'bg-[#FFB200]': !isProgressFinish, 'bg-[#0ea976]': isProgressFinish }"
-                class="w-auto h-[29px] rounded-t-xl text-[10px] text-[#333333] px-4 py-[7px]">Progres
+                class="w-auto h-[29px] rounded-t-xl text-[10px] text-[#333333] px-4 py-[7px]">Proses
                 Kemitraan</div>
               <div :class="{ 'text-[#FFB200]': !isProgressFinish, 'text-[#0ea976]': isProgressFinish }"
                 class="font-bold flex px-4">
@@ -225,6 +229,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                       <h1 class="w-[150px]">Dibuat Oleh</h1>
                       <span class="text-[#7F7F80]">{{ dataBerkas?.user }}</span>
                     </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.bidang
+                      }}</span>
+                    </div>
+                    <div v-if="dataBerkas.isStopClock" class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Lama Stopclock</h1>
+                      <span class="text-[#7F7F80]">{{ dueDateParsing(dataBerkas?.stopClockDate)*(-1) }} Hari</span>
+                    </div>
                   </div>
                   <div>
                     <div class="w-[541px] flex text-[#333333]">
@@ -236,6 +250,22 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                       <span class="text-[#7F7F80]">{{
                         dateParsing(dataBerkas?.expectedDate)
                         }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Sub Bidang</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.subBidang
+                      }}</span>
+                    </div>
+                    <div class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Direktorat</h1>
+                      <span class="text-[#7F7F80]">{{
+                        dataBerkas?.direktorat
+                      }}</span>
+                    </div>
+                    <div v-if="dataBerkas.isStopClock" class="w-[541px] flex mt-6 text-[#333333]">
+                      <h1 class="w-[150px]">Tanggal Mulai Stopclock</h1>
+                      <span class="text-[#7F7F80]">{{ dateParsing(dataBerkas?.stopClockDate) }}</span>
                     </div>
                   </div>
                 </div>
@@ -343,8 +373,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[231px] px-3">
-                          <div class="flex justify-between">Aksi
+                        <th class="w-[150px] px-3">
+                          <div class="flex justify-between">Produk
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -356,7 +386,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[231px] px-3">
+                        <th class="w-[270px] px-3">
                           <div class="flex justify-between">Deskripsi
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -369,7 +399,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[300px] px-3">
+                        <th class="w-[150px] px-3">
                           <div class="flex justify-between">Pelanggan
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -382,8 +412,36 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                             </svg>
                           </div>
                         </th>
-                        <th class="w-[200px] px-3">
+                        <th class="w-[130px] px-3">
                           <div class="flex justify-between">PLN/Non PLN
+                            <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
+                                fill="#93B8EC" />
+                              <path
+                                d="M4.21369 3.14482C4.41312 2.95238 4.73647 2.95238 4.9359 3.14482L8.00001 6.10158C8.19945 6.29403 8.19945 6.60605 8.00001 6.79849C7.80058 6.99094 7.47723 6.99094 7.27779 6.79849L5.08548 4.68299V12.3635C5.08548 12.6357 4.85684 12.8563 4.57479 12.8563C4.29275 12.8563 4.06411 12.6357 4.06411 12.3635V4.68299L1.87179 6.79849C1.67236 6.99094 1.34901 6.99094 1.14958 6.79849C0.950141 6.60605 0.950141 6.29403 1.14958 6.10158L4.21369 3.14482Z"
+                                fill="#93B8EC" />
+                            </svg>
+                          </div>
+                        </th>
+                        <th class="w-[150px] px-3">
+                          <div class="flex justify-between">
+                            Biaya
+                            <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
+                                fill="#93B8EC" />
+                              <path
+                                d="M4.21369 3.14482C4.41312 2.95238 4.73647 2.95238 4.9359 3.14482L8.00001 6.10158C8.19945 6.29403 8.19945 6.60605 8.00001 6.79849C7.80058 6.99094 7.47723 6.99094 7.27779 6.79849L5.08548 4.68299V12.3635C5.08548 12.6357 4.85684 12.8563 4.57479 12.8563C4.29275 12.8563 4.06411 12.6357 4.06411 12.3635V4.68299L1.87179 6.79849C1.67236 6.99094 1.34901 6.99094 1.14958 6.79849C0.950141 6.60605 0.950141 6.29403 1.14958 6.10158L4.21369 3.14482Z"
+                                fill="#93B8EC" />
+                            </svg>
+                          </div>
+                        </th>
+                        <th class="w-[150px] px-3">
+                          <div class="flex justify-between">
+                            Revenue
                             <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                               xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -406,6 +464,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <td class="px-3">{{ item.costDesc }}</td>
                         <td class="px-3">{{ item.customer }}</td>
                         <td class="px-3">{{ item.isPln ? "PLN" : "Non PLN" }}</td>
+                        <td class="px-3">{{ Number(item.cost).toLocaleString('id-ID') }}</td>
+                        <td class="px-3">{{ Number(item.revenue).toLocaleString('id-ID') }}</td>
                       </tr>
                       <!-- tambahkan baris tabel lainnya disini -->
                     </tbody>
@@ -433,8 +493,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKB <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKB" v-if="fileNameKKB"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKB, fileNameKKB, router)" v-if="fileNameKKB"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -446,7 +506,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKB }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKB }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -454,8 +514,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKR <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKR" v-if="fileNameKKR"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKR, fileNameKKR, router)" v-if="fileNameKKR"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -467,7 +527,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKR }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKR }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -475,8 +535,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKF <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKF" v-if="fileNameKKF"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKF, fileNameKKF, router)" v-if="fileNameKKF"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -488,7 +548,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKF }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKF }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -498,8 +558,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">KKO <span
                           class="text-[#FF5656] text-xs">*</span></label>
-                      <a :href="linkDownloadKKO" v-if="fileNameKKO"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadKKO, fileNameKKO, router)" v-if="fileNameKKO"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -511,7 +571,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNameKKO }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizeKKO }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -519,8 +579,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadmitra" v-if="fileNamemitra"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadmitra, fileNamemitra, router)" v-if="fileNamemitra"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -532,7 +592,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -540,8 +600,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Surat Menyurat
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadsurat" v-if="fileNamesurat"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadsurat, fileNamesurat, router)" v-if="fileNamesurat"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -553,7 +613,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -562,8 +622,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   <div class="px-6 mt-6 mb-4">
                     <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                       <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                    <a :href="linkDownloadlainnya" v-if="fileNamelainnya"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadlainnya, fileNamelainnya, router)" v-if="fileNamelainnya"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -575,7 +635,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                     </div>
@@ -586,8 +646,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Proposal Mitra
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadmitra" v-if="fileNamemitra"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadmitra, fileNamemitra, router)" v-if="fileNamemitra"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -599,7 +659,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamemitra }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizemitra }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -609,8 +669,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         Dokumen Surat Menyurat
                         <span class="text-[#FF5656] text-xs">*</span>
                       </label>
-                      <a :href="linkDownloadsurat" v-if="fileNamesurat"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadsurat, fileNamesurat, router)" v-if="fileNamesurat"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -622,7 +682,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamesurat }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizesurat }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -630,8 +690,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <div>
                       <label class="text-[#4D5E80] font-semibold">Dokumen Lainnya
                         <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
-                      <a :href="linkDownloadlainnya" v-if="fileNamelainnya"
-                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      <div @click="downloadFile(linkDownloadlainnya, fileNamelainnya, router)" v-if="fileNamelainnya"
+                        class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                         <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -643,7 +703,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <span class="text-[#333333] text-sm font-semibold">{{ fileNamelainnya }}</span>
                           <p class="text-[#9E9E9E] text-xs">{{ fileSizelainnya }}</p>
                         </div>
-                      </a>
+                      </div>
                       <div v-else class="w-[333px] h-auto">
                         <span class="text-[#9E9E9E] text-sm font-semibold">File belum diupload</span>
                       </div>
@@ -669,8 +729,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                 <div class="grid m-6 grid-cols-3 justify-between gap-6">
                   <div>
                     <label class="text-[#4D5E80] font-semibold">Surat Penawaran</label>
-                    <a :href="linkDownloadKemitraan1" v-if="fileNameKemitraan1"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan1, fileNameKemitraan1, router)" v-if="fileNameKemitraan1"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -682,15 +742,15 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan1 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan1 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                   <div>
                     <label class="text-[#4D5E80] font-semibold">Proposal</label>
-                    <a :href="linkDownloadKemitraan2" v-if="fileNameKemitraan2"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan2, fileNameKemitraan2, router)" v-if="fileNameKemitraan2"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -702,15 +762,15 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan2 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan2 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                   <div>
                     <label class="text-[#4D5E80] font-semibold"> {{ base === 'MOU' ? 'Draft MOU/NDA' : 'Evaluasi' }}</label>
-                    <a :href="linkDownloadKemitraan3" v-if="fileNameKemitraan3"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan3, fileNameKemitraan3, router)" v-if="fileNameKemitraan3"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -722,7 +782,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan3 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan3 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
@@ -731,9 +791,9 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   <!-- kode baru  -->
                   <div>
                     <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'Review User' : 'Negosiasi' }}</label>
-                    <a :href="linkDownloadKemitraan4"
+                    <div @click="downloadFile(linkDownloadKemitraan4, fileNameKemitraan4, router)"
                       v-if="fileNameKemitraan4"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -746,16 +806,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan4 }}
                         </p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                   <div>
                     <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'Review Legal' : 'BAK Pemilihan Mitra' }}</label>
-                    <a :href="linkDownloadKemitraan5"
+                    <div @click="downloadFile(linkDownloadKemitraan5, fileNameKemitraan5, router)"
                       v-if="fileNameKemitraan5"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -768,16 +828,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan5 }}
                         </p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                   <div>
                     <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'Review Mitra' : 'Surat Pesanan' }}</label>
-                    <a :href="linkDownloadKemitraan6"
+                    <div @click="downloadFile(linkDownloadKemitraan6, fileNameKemitraan6, router)"
                       v-if="fileNameKemitraan6"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -790,17 +850,17 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan6 }}
                         </p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
 
                   <div>
-                    <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'MoU/NDA' : 'Draf PKS' }}</label>
-                    <a :href="linkDownloadKemitraan7"
+                    <label class="text-[#4D5E80] font-semibold">{{ base === 'MOU' ? 'MoU/NDA' : 'Draft PKS' }}</label>
+                    <div @click="downloadFile(linkDownloadKemitraan7, fileNameKemitraan7, router)"
                       v-if="fileNameKemitraan7"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -813,41 +873,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan7 }}
                         </p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
 
-                  <!-- <div>
-                    <label v-if="base == 'PKS'" class="text-[#4D5E80] font-semibold">Evaluasi</label>
-                    <label v-else class="text-[#4D5E80] font-semibold">MoU/NDA</label>
-                    <a :href="base !== 'PKS' ? linkDownloadKemitraan7 : linkDownloadKemitraan3"
-                      v-if="fileNameKemitraan7 || fileNameKemitraan3"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
-                      <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
-                        <path
-                          d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
-                          fill="#2671D9" />
-                      </svg>
-                      <div class="py-2 w-[200px] flex-grow truncate me-4">
-                        <span class="text-[#333333] text-sm font-semibold">{{ base !== 'PKS' ? fileNameKemitraan7 :
-                          fileNameKemitraan3 }}</span>
-                        <p class="text-[#9E9E9E] text-xs">{{ base !== 'PKS' ? fileSizeKemitraan7 : fileSizeKemitraan3 }}
-                        </p>
-                      </div>
-                    </a>
-                    <div v-else class="w-[333px] h-auto">
-                      <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
-                    </div>
-                  </div> -->
-
                   <div v-if="base == 'PKS'">
                     <label class="text-[#4D5E80] font-semibold">Review User</label>
-                    <a :href="linkDownloadKemitraan8" v-if="fileNameKemitraan8"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan8, fileNameKemitraan8, router)" v-if="fileNameKemitraan8"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -859,15 +894,15 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan8 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan8 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                   <div v-if="base == 'PKS'">
                     <label class="text-[#4D5E80] font-semibold">Review Legal</label>
-                    <a :href="linkDownloadKemitraan9" v-if="fileNameKemitraan9"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan9, fileNameKemitraan9, router)" v-if="fileNameKemitraan9"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -879,15 +914,15 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan9 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan9 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                   <div v-if="base == 'PKS'">
                     <label class="text-[#4D5E80] font-semibold">Review Mitra</label>
-                    <a :href="linkDownloadKemitraan10" v-if="fileNameKemitraan6"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan10, fileNameKemitraan10, router)" v-if="fileNameKemitraan10"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -899,7 +934,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan10 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan10 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
@@ -907,8 +942,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
 
                   <div v-if="base == 'PKS'">
                     <label class="text-[#4D5E80] font-semibold">PKS</label>
-                    <a :href="linkDownloadKemitraan11" v-if="fileNameKemitraan11"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
+                    <div @click="downloadFile(linkDownloadKemitraan11, fileNameKemitraan11, router)" v-if="fileNameKemitraan11"
+                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center cursor-pointer">
                       <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
@@ -920,96 +955,12 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan11 }}</span>
                         <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan11 }}</p>
                       </div>
-                    </a>
+                    </div>
                     <div v-else class="w-[333px] h-auto">
                       <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
                     </div>
                   </div>
                 </div>
-                <!-- <div v-if="base == 'PKS'" class="m-6 grid-cols-3 gap-6">
-                  <div v-if="base == 'PKS'">
-                    <label class="text-[#4D5E80] font-semibold">Negosiasi</label>
-                    <a :href="linkDownloadKemitraan4" v-if="fileNameKemitraan4"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
-                      <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
-                        <path
-                          d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
-                          fill="#2671D9" />
-                      </svg>
-                      <div class="py-2 w-[200px] flex-grow truncate me-4">
-                        <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan4 }}</span>
-                        <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan4 }}</p>
-                      </div>
-                    </a>
-                    <div v-else class="w-[333px] h-auto">
-                      <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
-                    </div>
-                  </div>
-                  <div v-if="base == 'PKS'">
-                    <label class="text-[#4D5E80] font-semibold">BAK Pemilihan Mitra</label>
-                    <a :href="linkDownloadKemitraan5" v-if="fileNameKemitraan5"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
-                      <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
-                        <path
-                          d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
-                          fill="#2671D9" />
-                      </svg>
-                      <div class="py-2 w-[200px] flex-grow truncate me-4">
-                        <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan5 }}</span>
-                        <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan5 }}</p>
-                      </div>
-                    </a>
-                    <div v-else class="w-[333px] h-auto">
-                      <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
-                    </div>
-                  </div>
-                  <div v-if="base == 'PKS'">
-                    <label class="text-[#4D5E80] font-semibold">Surat Pesanan</label>
-                    <a :href="linkDownloadKemitraan6" v-if="fileNameKemitraan6"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
-                      <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
-                        <path
-                          d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
-                          fill="#2671D9" />
-                      </svg>
-                      <div class="py-2 w-[200px] flex-grow truncate me-4">
-                        <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan6 }}</span>
-                        <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan6 }}</p>
-                      </div>
-                    </a>
-                    <div v-else class="w-[333px] h-auto">
-                      <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <div v-if="base == 'PKS'" class="px-6 mt-6 mb-4 flex justify-between">
-                  <div v-if="base == 'PKS'">
-                    <label class="text-[#4D5E80] font-semibold">PKS</label>
-                    <a :href="linkDownloadKemitraan11" v-if="fileNameKemitraan11"
-                      class="w-[333px] h-auto border-[1px] flex rounded-lg mt-2 items-center">
-                      <svg width="45" height="46" class="mx-4 my-2" viewBox="0 0 45 46" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22.5" cy="23" r="22.5" fill="#E9F1FB" />
-                        <path
-                          d="M30 20.1312C29.9902 20.0451 29.9714 19.9603 29.9437 19.8781V19.7937C29.8987 19.6974 29.8385 19.6087 29.7656 19.5313L24.1406 13.9062C24.0631 13.8333 23.9745 13.7732 23.8781 13.7281H23.7937C23.6985 13.6735 23.5933 13.6384 23.4844 13.625H17.8125C17.0666 13.625 16.3512 13.9213 15.8238 14.4488C15.2963 14.9762 15 15.6916 15 16.4375V29.5625C15 30.3084 15.2963 31.0238 15.8238 31.5512C16.3512 32.0787 17.0666 32.375 17.8125 32.375H27.1875C27.9334 32.375 28.6488 32.0787 29.1762 31.5512C29.7037 31.0238 30 30.3084 30 29.5625V20.1875V20.1312ZM24.375 16.8219L26.8031 19.25H25.3125C25.0639 19.25 24.8254 19.1512 24.6496 18.9754C24.4738 18.7996 24.375 18.5611 24.375 18.3125V16.8219ZM28.125 29.5625C28.125 29.8111 28.0262 30.0496 27.8504 30.2254C27.6746 30.4012 27.4361 30.5 27.1875 30.5H17.8125C17.5639 30.5 17.3254 30.4012 17.1496 30.2254C16.9738 30.0496 16.875 29.8111 16.875 29.5625V16.4375C16.875 16.1889 16.9738 15.9504 17.1496 15.7746C17.3254 15.5988 17.5639 15.5 17.8125 15.5H22.5V18.3125C22.5 19.0584 22.7963 19.7738 23.3238 20.3012C23.8512 20.8287 24.5666 21.125 25.3125 21.125H28.125V29.5625Z"
-                          fill="#2671D9" />
-                      </svg>
-                      <div class="py-2 w-[200px] flex-grow truncate me-4">
-                        <span class="text-[#333333] text-sm font-semibold">{{ fileNameKemitraan11 }}</span>
-                        <p class="text-[#9E9E9E] text-xs">{{ fileSizeKemitraan11 }}</p>
-                      </div>
-                    </a>
-                    <div v-else class="w-[333px] h-auto">
-                      <span class="text-[#9E9E9E] text-sm font-semibold">File belum ada</span>
-                    </div>
-                  </div>
-                </div> -->
               </div>
             </div>
 
@@ -1207,8 +1158,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                                     </div> -->
 
                   <!-- Berhasil -->
-                  <a :href="linkDownloadKemitraan1" v-if="fileNameKemitraan1"
-                    class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan1, fileNameKemitraan1, router)" v-if="fileNameKemitraan1"
+                    class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">Surat Penawaran</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1269,8 +1220,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan1 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">Surat Penawaran</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1348,8 +1299,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                                     </div> -->
 
                   <!-- Berhasil -->
-                  <a :href="linkDownloadKemitraan2" v-if="fileNameKemitraan2"
-                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan2, fileNameKemitraan2, router)" v-if="fileNameKemitraan2"
+                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">Proposal</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1410,8 +1361,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan2 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">Proposal</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1489,16 +1440,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                                     </div> -->
 
                   <!-- Berhasil -->
-                  <a :href="linkDownloadKemitraan3" v-if="fileNameKemitraan3"
-                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan3, fileNameKemitraan3, router)" v-if="fileNameKemitraan3"
+                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                       <span v-if="base == 'PKS'"
                         class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draf MoU/NDA</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draft MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
-                      <span v-else class="text-[#333333] text-xs">Dokumen Draf MoU/NDA</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen Draft MoU/NDA</span>
                       <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_d_685_22194)">
@@ -1555,16 +1506,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan3 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                       <span v-if="base == 'PKS'"
                         class="text-white font-semibold ml-4 absolute translate-y-2">Evaluasi</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draf MoU/NDA</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Draft MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Evaluasi</span>
-                      <span v-else class="text-[#333333] text-xs">Dokumen Draf MoU/NDA</span>
+                      <span v-else class="text-[#333333] text-xs">Dokumen Draft MoU/NDA</span>
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
                       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1592,8 +1543,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
 
                 <!-- baru -->
                 <div class="flex w-auto h-[130px] mt-[18px] relative">
-                  <a :href="linkDownloadKemitraan6" v-if="fileNameKemitraan6"
-                    class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan6, fileNameKemitraan6, router)" v-if="fileNameKemitraan6"
+                    class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                       <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Surat
                         Pesanan </span>
@@ -1660,12 +1611,12 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan6 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                       <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Surat
                         Pesanan</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">review Mitra</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Review Mitra</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">Surat Pesanan</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1694,12 +1645,12 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                       stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
 
-                  <a :href="linkDownloadKemitraan5" v-if="fileNameKemitraan5"
-                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan5, fileNameKemitraan5, router)" v-if="fileNameKemitraan5"
+                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                       <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">BAK
                         Pemilihan Mitra</span>
-                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">review Legal</span>
+                      <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">Review Legal</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">BAK Pemilihan Mitra</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -1762,8 +1713,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan5 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                       <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">BAK
                         Pemilihan Mitra</span>
@@ -1797,8 +1748,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                   </svg>
 
                   <!-- Berhasil -->
-                  <a :href="linkDownloadKemitraan4" v-if="fileNameKemitraan4"
-                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan4, fileNameKemitraan4, router)" v-if="fileNameKemitraan4"
+                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                       <span v-if="base == 'PKS'"
                         class="text-white font-semibold ml-4 absolute translate-y-2">Negosiasi</span>
@@ -1865,8 +1816,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan4 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                       <span v-if="base == 'PKS'"
                         class="text-white font-semibold ml-4 absolute translate-y-2">Negosiasi</span>
@@ -1875,7 +1826,7 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
                       <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Negosiasi</span>
-                      <span v-else class="text-[#333333] text-xs">Draf Review User</span>
+                      <span v-else class="text-[#333333] text-xs">Draft Review User</span>
                       <!-- <span class="text-[#333333] text-xs">Dokumen Review User</span> -->
                     </div>
                     <div class="w-[265px] h-auto flex ml-3 py-[10px]">
@@ -1903,16 +1854,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                 </div>
 
                 <div class="flex w-auto h-[130px] mt-[18px] relative">
-                  <a :href="linkDownloadKemitraan7" v-if="fileNameKemitraan7"
-                    class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan7, fileNameKemitraan7, router)" v-if="fileNameKemitraan7"
+                    class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
-                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draf
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draft
                         PKS</span>
                       <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">Surat Penawaran tes</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draf PKS</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draft PKS</span>
                       <span v-else class="text-[#333333] text-xs">Dokumen Mou/NDA </span>
                       <!-- <span class="text-[#333333] text-xs">Dokumen Surat Penawaran</span> -->
                       <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
@@ -1971,16 +1922,16 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan7 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
-                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draf
+                      <span v-if="base == 'PKS'" class="text-white font-semibold ml-4 absolute translate-y-2">Draft
                         PKS</span>
                       <span v-else class="text-white font-semibold ml-4 absolute translate-y-2">MoU/NDA</span>
                       <!-- <span class="text-white font-semibold ml-4 absolute translate-y-2">Surat Penawaran tes</span> -->
                     </div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draf PKS</span>
+                      <span v-if="base == 'PKS'" class="text-[#333333] text-xs">Dokumen Draft PKS</span>
                       <span v-else class="text-[#333333] text-xs">Dokumen MoU/NDA</span>
                       <!-- <span class="text-[#333333] text-xs">Dokumen Surat Penawaran</span> -->
                     </div>
@@ -2007,8 +1958,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                       <path d="M1 14H30.64" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <a :href="linkDownloadKemitraan8" v-if="fileNameKemitraan8"
-                      class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                    <div @click="downloadFile(linkDownloadKemitraan8, fileNameKemitraan8, router)" v-if="fileNameKemitraan8"
+                      class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                       <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
                           class="text-white font-semibold ml-4 absolute translate-y-2">Review User</span></div>
                       <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -2069,8 +2020,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan8 }}</p>
                         </div>
                       </div>
-                    </a>
-                    <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                    </div>
+                    <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                       <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
                           class="text-white font-semibold ml-4 absolute translate-y-2">Review User</span></div>
                       <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -2097,8 +2048,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
 
-                    <a :href="linkDownloadKemitraan9" v-if="fileNameKemitraan9"
-                      class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                    <div @click="downloadFile(linkDownloadKemitraan9, fileNameKemitraan9, router)" v-if="fileNameKemitraan9"
+                      class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                       <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg">
                         <span class="text-white font-semibold ml-4 absolute translate-y-2">Review Legal</span>
                       </div>
@@ -2160,8 +2111,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                           <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan9 }}</p>
                         </div>
                       </div>
-                    </a>
-                    <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                    </div>
+                    <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                       <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg">
                         <span class="text-white font-semibold ml-4 absolute translate-y-2">Review Legal</span>
                       </div>
@@ -2194,8 +2145,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                 </div>
                 
                 <div v-if="base == 'PKS'" class="flex w-auto h-[130px] mt-[18px] justify-end relative">
-                  <a :href="linkDownloadKemitraan11" v-if="fileNameKemitraan11"
-                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan11, fileNameKemitraan11, router)" v-if="fileNameKemitraan11"
+                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">PKS</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -2256,8 +2207,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan11 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">PKS</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -2282,8 +2233,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     <path d="M31.9204 14.9209H2.28041" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
                       stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-                  <a :href="linkDownloadKemitraan10" v-if="fileNameKemitraan10"
-                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  <div @click="downloadFile(linkDownloadKemitraan10, fileNameKemitraan10, router)" v-if="fileNameKemitraan10"
+                    class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">Review Mitra</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -2344,8 +2295,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                         <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan10 }}</p>
                       </div>
                     </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg">
+                  </div>
+                  <div v-else class="w-[289px] h-auto border-[1px] ml-[18px] rounded-t-lg rounded-b-lg cursor-pointer">
                     <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
                         class="text-white font-semibold ml-4 absolute translate-y-2">Review Mitra</span></div>
                     <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
@@ -2364,151 +2315,6 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
                     </div>
                   </div>
                 </div>
-
-                <!-- <div v-if="base == 'PKS'" class="flex justify-center w-[289px] mt-[18px]">
-                  <svg width="28" height="33" viewBox="0 0 28 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21.1221 24.75L14.3405 31.8317L7.55898 24.75" stroke="#292D32" stroke-width="1.5"
-                      stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M14.3408 1L14.3408 30.64" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
-                      stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </div> -->
-
-                <!-- PKS -->
-                <!-- Progres -->
-                <!-- <div class="w-[289px] mt-[18px] h-[130px] border-[1px] rounded-t-lg rounded-b-lg">
-                                        <div class="w-auto h-[40px] bg-[#E0E0E0] rounded-t-lg"><span class="font-semibold ml-4 absolute translate-y-2">PKS</span></div>
-                                            <span class="text-[#7F7F80] text-xs ml-3">Dokumen PKS</span>
-                                            <div class="ml-3 mt-3">
-                                                <button class="w-[73px] h-[25px] bg-[#E0E0E0] rounded-lg flex py-2">
-                                                    <svg width="10" height="9" class="ml-[14.12px]" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_2261_4135)">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.79378 2.13053C3.93803 2.13053 3.2443 2.82426 3.2443 3.68001C3.2443 3.77881 3.2535 3.87512 3.271 3.96824C3.30473 4.14782 3.20033 4.32463 3.02679 4.38182C2.51744 4.54968 2.15055 5.02951 2.15055 5.59407C2.15055 6.29881 2.72186 6.87012 3.42659 6.87012H7.52816C8.08188 6.87012 8.53076 6.42124 8.53076 5.86751C8.53076 5.43975 8.26271 5.07368 7.88416 4.92985C7.69935 4.85963 7.60418 4.65491 7.66962 4.46836C7.69596 4.39326 7.71045 4.31216 7.71045 4.22689C7.71045 3.82418 7.38399 3.49772 6.98128 3.49772C6.90208 3.49772 6.82651 3.51022 6.75603 3.53308C6.66084 3.56395 6.55714 3.55433 6.46925 3.50649C6.38136 3.45864 6.31699 3.37677 6.29125 3.28007C6.11496 2.61791 5.51082 2.13053 4.79378 2.13053ZM2.51514 3.68001C2.51514 2.42155 3.53532 1.40137 4.79378 1.40137C5.72976 1.40137 6.53326 1.96543 6.8841 2.77176C6.91625 2.76963 6.94866 2.76855 6.98128 2.76855C7.7867 2.76855 8.43962 3.42147 8.43962 4.22689C8.43962 4.28171 8.43657 4.33591 8.43064 4.3893C8.92769 4.69338 9.25993 5.24132 9.25993 5.86751C9.25993 6.82394 8.48459 7.59928 7.52816 7.59928H3.42659C2.31915 7.59928 1.42139 6.70152 1.42139 5.59407C1.42139 4.81305 1.86772 4.13701 2.51856 3.80588C2.51629 3.76418 2.51514 3.72222 2.51514 3.68001ZM5.08286 3.42221C5.22524 3.27983 5.45608 3.27983 5.59846 3.42221L6.69221 4.51596C6.83459 4.65834 6.83459 4.88918 6.69221 5.03156C6.54983 5.17394 6.31899 5.17394 6.17661 5.03156L5.70524 4.56019L5.70524 6.14095C5.70524 6.3423 5.54201 6.50553 5.34066 6.50553C5.1393 6.50553 4.97607 6.3423 4.97607 6.14095L4.97607 4.56019L4.50471 5.03156C4.36233 5.17394 4.13149 5.17394 3.98911 5.03156C3.84673 4.88918 3.84673 4.65834 3.98911 4.51596L5.08286 3.42221Z" fill="#7F7F80"/>
-                                                        </g>
-                                                        <defs>
-                                                        <clipPath id="clip0_2261_4135">
-                                                        <rect width="8.75" height="8.75" fill="white" transform="translate(0.96582 0.125)"/>
-                                                        </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                    <span class="text-[#7F7F80] text-[8.75px] font-semibold -translate-y-[2px] ml-[2.63px]">Upload</span>
-                                                </button>
-                                            </div>
-                                    </div> -->
-
-                <!-- Upload -->
-                <!-- <div class="w-[289px] mt-[18px] h-[130px] border-[1px] rounded-t-lg rounded-b-lg">
-                                        <div class="w-auto h-[40px] bg-[#FFB200] rounded-t-lg"><span class="text-white font-semibold ml-4 absolute translate-y-2">PKS</span></div>
-                                            <span class="text-[#333333] text-xs ml-3">Dokumen PKS</span>
-                                            <div class="ml-3 mt-3">
-                                                <button class="w-[73px] h-[25px] bg-[#2671D9] rounded-lg flex py-2">
-                                                    <svg width="9" height="7" class="ml-[14.12px]" viewBox="0 0 9 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.87337 1.13053C3.01762 1.13053 2.32389 1.82426 2.32389 2.68001C2.32389 2.77881 2.33309 2.87512 2.35059 2.96824C2.38432 3.14782 2.27992 3.32463 2.10638 3.38182C1.59703 3.54968 1.23014 4.02951 1.23014 4.59407C1.23014 5.29881 1.80145 5.87012 2.50618 5.87012H6.60775C7.16147 5.87012 7.61035 5.42124 7.61035 4.86751C7.61035 4.43975 7.3423 4.07368 6.96375 3.92985C6.77894 3.85963 6.68377 3.65491 6.74921 3.46836C6.77555 3.39326 6.79004 3.31216 6.79004 3.22689C6.79004 2.82418 6.46358 2.49772 6.06087 2.49772C5.98167 2.49772 5.9061 2.51022 5.83562 2.53308C5.74043 2.56395 5.63673 2.55433 5.54884 2.50649C5.46095 2.45864 5.39658 2.37677 5.37084 2.28007C5.19455 1.61791 4.59041 1.13053 3.87337 1.13053ZM1.59473 2.68001C1.59473 1.42155 2.61491 0.401367 3.87337 0.401367C4.80935 0.401367 5.61285 0.965434 5.96369 1.77176C5.99584 1.76963 6.02825 1.76855 6.06087 1.76855C6.86629 1.76855 7.51921 2.42147 7.51921 3.22689C7.51921 3.28171 7.51616 3.33591 7.51023 3.3893C8.00728 3.69338 8.33952 4.24132 8.33952 4.86751C8.33952 5.82394 7.56418 6.59928 6.60775 6.59928H2.50618C1.39874 6.59928 0.500977 5.70152 0.500977 4.59407C0.500977 3.81305 0.947312 3.13701 1.59815 2.80588C1.59588 2.76418 1.59473 2.72222 1.59473 2.68001ZM4.16245 2.42221C4.30483 2.27983 4.53567 2.27983 4.67805 2.42221L5.7718 3.51596C5.91418 3.65834 5.91418 3.88918 5.7718 4.03156C5.62942 4.17394 5.39858 4.17394 5.2562 4.03156L4.78483 3.56019L4.78483 5.14095C4.78483 5.3423 4.6216 5.50553 4.42025 5.50553C4.21889 5.50553 4.05566 5.3423 4.05566 5.14095L4.05566 3.56019L3.5843 4.03156C3.44192 4.17394 3.21108 4.17394 3.0687 4.03156C2.92632 3.88918 2.92632 3.65834 3.0687 3.51596L4.16245 2.42221Z" fill="white"/>
-                                                    </svg>
-                                                    <span class="text-white text-[8.75px] font-semibold -translate-y-[3px] ml-[2.63px]">Upload</span>
-                                                </button>
-                                            </div>
-                                    </div> -->
-
-                <!-- Tenggat -->
-                <!-- <div class="w-[289px] mt-[18px] h-[130px] border-[1px] rounded-t-lg rounded-b-lg">
-                                        <div class="w-auto h-[40px] bg-[#FF5656] rounded-t-lg"><span class="text-white font-semibold ml-4 absolute translate-y-2">PKS</span></div>
-                                            <span class="text-[#333333] text-xs ml-3">Dokumen PKS</span>
-                                            <div class="ml-3 -translate-y-2"><span class="text-[8px] text-[#FF5656]">Progress kemitraan melewati tenggat waktu yang telah ditentukan. </span></div>
-                                            <div class="ml-3">
-                                                <button class="w-[73px] h-[25px] bg-[#2671D9] rounded-lg flex py-2">
-                                                    <svg width="9" height="7" class="ml-[14.12px]" viewBox="0 0 9 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.87337 1.13053C3.01762 1.13053 2.32389 1.82426 2.32389 2.68001C2.32389 2.77881 2.33309 2.87512 2.35059 2.96824C2.38432 3.14782 2.27992 3.32463 2.10638 3.38182C1.59703 3.54968 1.23014 4.02951 1.23014 4.59407C1.23014 5.29881 1.80145 5.87012 2.50618 5.87012H6.60775C7.16147 5.87012 7.61035 5.42124 7.61035 4.86751C7.61035 4.43975 7.3423 4.07368 6.96375 3.92985C6.77894 3.85963 6.68377 3.65491 6.74921 3.46836C6.77555 3.39326 6.79004 3.31216 6.79004 3.22689C6.79004 2.82418 6.46358 2.49772 6.06087 2.49772C5.98167 2.49772 5.9061 2.51022 5.83562 2.53308C5.74043 2.56395 5.63673 2.55433 5.54884 2.50649C5.46095 2.45864 5.39658 2.37677 5.37084 2.28007C5.19455 1.61791 4.59041 1.13053 3.87337 1.13053ZM1.59473 2.68001C1.59473 1.42155 2.61491 0.401367 3.87337 0.401367C4.80935 0.401367 5.61285 0.965434 5.96369 1.77176C5.99584 1.76963 6.02825 1.76855 6.06087 1.76855C6.86629 1.76855 7.51921 2.42147 7.51921 3.22689C7.51921 3.28171 7.51616 3.33591 7.51023 3.3893C8.00728 3.69338 8.33952 4.24132 8.33952 4.86751C8.33952 5.82394 7.56418 6.59928 6.60775 6.59928H2.50618C1.39874 6.59928 0.500977 5.70152 0.500977 4.59407C0.500977 3.81305 0.947312 3.13701 1.59815 2.80588C1.59588 2.76418 1.59473 2.72222 1.59473 2.68001ZM4.16245 2.42221C4.30483 2.27983 4.53567 2.27983 4.67805 2.42221L5.7718 3.51596C5.91418 3.65834 5.91418 3.88918 5.7718 4.03156C5.62942 4.17394 5.39858 4.17394 5.2562 4.03156L4.78483 3.56019L4.78483 5.14095C4.78483 5.3423 4.6216 5.50553 4.42025 5.50553C4.21889 5.50553 4.05566 5.3423 4.05566 5.14095L4.05566 3.56019L3.5843 4.03156C3.44192 4.17394 3.21108 4.17394 3.0687 4.03156C2.92632 3.88918 2.92632 3.65834 3.0687 3.51596L4.16245 2.42221Z" fill="white"/>
-                                                    </svg>
-                                                    <span class="text-white text-[8.75px] font-semibold -translate-y-[3px] ml-[2.63px]">Upload</span>
-                                                </button>
-                                            </div>
-                                    </div> -->
-
-                <!-- Berhasil -->
-                <!-- <div v-if="base == 'PKS'" class="flex w-auto h-[130px]">
-                  <a :href="linkDownloadKemitraan7" v-if="fileNameKemitraan7"
-                    class="w-[289px] h-auto border-[1px] mt-[18px] rounded-t-lg rounded-b-lg">
-                    <div class="w-auto h-[40px] bg-[#0EA976] rounded-t-lg"><span
-                        class="text-white font-semibold ml-4 absolute translate-y-2">PKS</span></div>
-                    <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span class="text-[#333333] text-xs">Dokumen PKS</span>
-                      <svg width="46" height="46" class="-translate-y-2 translate-x-5 " viewBox="0 0 46 46" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_685_22194)">
-                          <g opacity="0.4" filter="url(#filter1_d_685_22194)">
-                            <path
-                              d="M19 26.5C23.1421 26.5 26.5 23.1421 26.5 19C26.5 14.8579 23.1421 11.5 19 11.5C14.8579 11.5 11.5 14.8579 11.5 19C11.5 23.1421 14.8579 26.5 19 26.5Z"
-                              fill="#8ADFC3" />
-                          </g>
-                          <path
-                            d="M18.3081 22.1256C18.1581 22.1256 18.0156 22.0656 17.9106 21.9606L15.7881 19.8381C15.5706 19.6206 15.5706 19.2606 15.7881 19.0431C16.0056 18.8256 16.3656 18.8256 16.5831 19.0431L18.3081 20.7681L22.1631 16.9131C22.3806 16.6956 22.7406 16.6956 22.9581 16.9131C23.1756 17.1306 23.1756 17.4906 22.9581 17.7081L18.7056 21.9606C18.6006 22.0656 18.4581 22.1256 18.3081 22.1256Z"
-                            fill="#0C8D63" />
-                        </g>
-                        <defs>
-                          <filter id="filter0_d_685_22194" x="6" y="7" width="26" height="26"
-                            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dy="1" />
-                            <feGaussianBlur stdDeviation="2" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix type="matrix"
-                              values="0 0 0 0 0.054902 0 0 0 0 0.662745 0 0 0 0 0.462745 0 0 0 0.15 0" />
-                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_685_22194" />
-                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_685_22194"
-                              result="shape" />
-                          </filter>
-                          <filter id="filter1_d_685_22194" x="0.5" y="0.5" width="45" height="45"
-                            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                            <feColorMatrix in="SourceAlpha" type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                            <feOffset dx="4" dy="4" />
-                            <feGaussianBlur stdDeviation="7.5" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix type="matrix"
-                              values="0 0 0 0 0.763946 0 0 0 0 0.970231 0 0 0 0 0.498223 0 0 0 0.5 0" />
-                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_685_22194" />
-                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_685_22194"
-                              result="shape" />
-                          </filter>
-                        </defs>
-                      </svg>
-                    </div>
-                    <div class="w-[265px] h-auto flex ml-3 py-[10px]">
-                      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="14.5652" cy="14.5652" r="14.5652" fill="#E2FCF3" />
-                        <path
-                          d="M19.4206 12.7088C19.4143 12.6531 19.4021 12.5982 19.3842 12.545V12.4904C19.355 12.428 19.3161 12.3706 19.2689 12.3204L15.6276 8.67914C15.5774 8.63193 15.52 8.59301 15.4576 8.56383H15.403C15.3414 8.52847 15.2733 8.50578 15.2027 8.49707H11.5311C11.0482 8.49707 10.5851 8.68889 10.2437 9.03033C9.90227 9.37177 9.71045 9.83486 9.71045 10.3177V18.8141C9.71045 19.297 9.90227 19.7601 10.2437 20.1015C10.5851 20.4429 11.0482 20.6348 11.5311 20.6348H17.5999C18.0828 20.6348 18.5459 20.4429 18.8873 20.1015C19.2288 19.7601 19.4206 19.297 19.4206 18.8141V12.7453V12.7088ZM15.7793 10.5665L17.3511 12.1384H16.3862C16.2252 12.1384 16.0709 12.0744 15.957 11.9606C15.8432 11.8468 15.7793 11.6924 15.7793 11.5315V10.5665ZM18.2068 18.8141C18.2068 18.9751 18.1429 19.1294 18.0291 19.2432C17.9153 19.357 17.7609 19.421 17.5999 19.421H11.5311C11.3701 19.421 11.2158 19.357 11.102 19.2432C10.9882 19.1294 10.9242 18.9751 10.9242 18.8141V10.3177C10.9242 10.1568 10.9882 10.0024 11.102 9.88859C11.2158 9.77478 11.3701 9.71084 11.5311 9.71084H14.5655V11.5315C14.5655 12.0144 14.7573 12.4774 15.0988 12.8189C15.4402 13.1603 15.9033 13.3521 16.3862 13.3521H18.2068V18.8141Z"
-                          fill="#0EA976" />
-                      </svg>
-                      <div class="ml-[13px] -translate-y-2 truncate pe-5">
-                        <span class="text-[#333333] text-[9.06px] font-semibold">{{ fileNameKemitraan7 }}</span>
-                        <p class="text-[#9E9E9E] text-[7.77px]">{{ fileSizeKemitraan7 }}</p>
-                      </div>
-                    </div>
-                  </a>
-                  <div v-else class="w-[289px] h-auto border-[1px] rounded-t-lg rounded-b-lg mt-3">
-                    <div class="w-auto h-[40px] bg-[#bcc6d2] rounded-t-lg"><span
-                        class="text-white font-semibold ml-4 absolute translate-y-2">PKS</span></div>
-                    <div class="w-[265px] h-[18px] flex justify-between ml-3 mt-[10px]">
-                      <span class="text-[#333333] text-xs">Dokumen PKS</span>
-                    </div>
-                    <div class="w-[265px] h-auto flex ml-3 py-[10px]">
-                      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="14.5652" cy="14.5652" r="14.5652" fill="#bcc6d2" />
-                        <path
-                          d="M19.4206 12.7088C19.4143 12.6531 19.4021 12.5982 19.3842 12.545V12.4904C19.355 12.428 19.3161 12.3706 19.2689 12.3204L15.6276 8.67914C15.5774 8.63193 15.52 8.59301 15.4576 8.56383H15.403C15.3414 8.52847 15.2733 8.50578 15.2027 8.49707H11.5311C11.0482 8.49707 10.5851 8.68889 10.2437 9.03033C9.90227 9.37177 9.71045 9.83486 9.71045 10.3177V18.8141C9.71045 19.297 9.90227 19.7601 10.2437 20.1015C10.5851 20.4429 11.0482 20.6348 11.5311 20.6348H17.5999C18.0828 20.6348 18.5459 20.4429 18.8873 20.1015C19.2288 19.7601 19.4206 19.297 19.4206 18.8141V12.7453V12.7088ZM15.7793 10.5665L17.3511 12.1384H16.3862C16.2252 12.1384 16.0709 12.0744 15.957 11.9606C15.8432 11.8468 15.7793 11.6924 15.7793 11.5315V10.5665ZM18.2068 18.8141C18.2068 18.9751 18.1429 19.1294 18.0291 19.2432C17.9153 19.357 17.7609 19.421 17.5999 19.421H11.5311C11.3701 19.421 11.2158 19.357 11.102 19.2432C10.9882 19.1294 10.9242 18.9751 10.9242 18.8141V10.3177C10.9242 10.1568 10.9882 10.0024 11.102 9.88859C11.2158 9.77478 11.3701 9.71084 11.5311 9.71084H14.5655V11.5315C14.5655 12.0144 14.7573 12.4774 15.0988 12.8189C15.4402 13.1603 15.9033 13.3521 16.3862 13.3521H18.2068V18.8141Z"
-                          fill="white" />
-                      </svg>
-                      <div class="ml-[13px] -translate-y-2 pt-1">
-                        <span class="text-[#333333] text-[9.06px] font-semibold">Belum ada</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -2521,6 +2327,8 @@ import { dateParsing, convertDatetime } from '@/utils/helper';
 
 <script>
 import { baseURL } from '@/api/apiManager';
+import { mapperStatus } from '@/utils/helper';
+import router from '@/router';
 export default {
   data() {
     return {
@@ -2599,6 +2407,7 @@ export default {
       fileSizeKemitraan11: null,
       linkDownloadKemitraan11: "",
       origin: null,
+      progressKemitraan: null,
 
       isLoading: false,
       modalFailed: {
@@ -2714,96 +2523,97 @@ export default {
             if (item.fileType == 'KKO') {
               this.fileNameKKO = item.fileName;
               this.fileSizeKKO = item.fileSize;
-              this.linkDownloadKKO = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKKO = item.fileUrl;
             }
             if (item.fileType == 'KKF') {
               this.fileNameKKF = item.fileName;
               this.fileSizeKKF = item.fileSize;
-              this.linkDownloadKKF = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKKF = item.fileUrl;
             }
             if (item.fileType == 'KKR') {
               this.fileNameKKR = item.fileName;
               this.fileSizeKKR = item.fileSize;
-              this.linkDownloadKKR = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKKR = item.fileUrl;
             }
             if (item.fileType == 'KKB') {
               this.fileNameKKB = item.fileName;
               this.fileSizeKKB = item.fileSize;
-              this.linkDownloadKKB = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKKB = item.fileUrl;
             }
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadsurat = item.fileUrl;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadmitra = item.fileUrl;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadlainnya = item.fileUrl;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = item.fileUrl;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = item.fileUrl;
             }
             if (item.fileType == 'Evaluasi') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = item.fileUrl;
             }
             if (item.fileType == 'Negosiasi') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = item.fileUrl;
             }
             if (item.fileType == 'BAK Pemilihan Mitra') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = item.fileUrl;
             }
             if (item.fileType == 'Surat Pesanan') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = item.fileUrl;
             }
 
             if (item.fileType == 'Draft PKS') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = item.fileUrl;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan8 = item.fileName;
               this.fileSizeKemitraan8 = item.fileSize;
-              this.linkDownloadKemitraan8 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan8 = item.fileUrl;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan9 = item.fileName;
               this.fileSizeKemitraan9 = item.fileSize;
-              this.linkDownloadKemitraan9 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan9 = item.fileUrl;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan10 = item.fileName;
               this.fileSizeKemitraan10 = item.fileSize;
-              this.linkDownloadKemitraan10 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan10 = item.fileUrl;
             }
 
             if (item.fileType == 'PKS') {
               this.fileNameKemitraan11 = item.fileName;
               this.fileSizeKemitraan11 = item.fileSize;
-              this.linkDownloadKemitraan11 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan11 = item.fileUrl;
             }
           })
+          this.progressKemitraan = mapperStatus(res.data.positionLevel, res.data.status, res.data.attachmentsPks, res.data.isStopClock)[0]
           // if (
           //   this.fileNameKKB && this.fileSizeKKB && this.fileNameKKR && this.fileSizeKKR &&
           //   this.fileNameKKF && this.fileSizeKKF && this.fileNameKKO && this.fileSizeKKO &&
@@ -2814,7 +2624,6 @@ export default {
           // ) {
           //   this.disableKirim = false;
           // }
-          console.log(res.data);
           this.isLoading = false;
         } else {
           this.isLoading = false;
@@ -2836,63 +2645,63 @@ export default {
             if (item.fileType == 'Dokumen Surat Menyurat') {
               this.fileNamesurat = item.fileName;
               this.fileSizesurat = item.fileSize;
-              this.linkDownloadsurat = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadsurat = item.fileUrl;
             }
             if (item.fileType == 'Proposal Mitra') {
               this.fileNamemitra = item.fileName;
               this.fileSizemitra = item.fileSize;
-              this.linkDownloadmitra = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadmitra = item.fileUrl;
             }
             if (item.fileType == 'Dokumen Lainnya') {
               this.fileNamelainnya = item.fileName;
               this.fileSizelainnya = item.fileSize;
-              this.linkDownloadlainnya = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadlainnya = item.fileUrl;
             }
             if (item.fileType == 'Surat Penawaran') {
               this.fileNameKemitraan1 = item.fileName;
               this.fileSizeKemitraan1 = item.fileSize;
-              this.linkDownloadKemitraan1 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan1 = item.fileUrl;
             }
             if (item.fileType == 'Proposal') {
               this.fileNameKemitraan2 = item.fileName;
               this.fileSizeKemitraan2 = item.fileSize;
-              this.linkDownloadKemitraan2 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan2 = item.fileUrl;
             }
 
             if (item.fileType == 'Draft MoU/NDA') {
               this.fileNameKemitraan3 = item.fileName;
               this.fileSizeKemitraan3 = item.fileSize;
-              this.linkDownloadKemitraan3 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan3 = item.fileUrl;
             }
             if (item.fileType == 'Review User') {
               this.fileNameKemitraan4 = item.fileName;
               this.fileSizeKemitraan4 = item.fileSize;
-              this.linkDownloadKemitraan4 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan4 = item.fileUrl;
             }
             if (item.fileType == 'Review Legal') {
               this.fileNameKemitraan5 = item.fileName;
               this.fileSizeKemitraan5 = item.fileSize;
-              this.linkDownloadKemitraan5 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan5 = item.fileUrl;
             }
             if (item.fileType == 'Review Mitra') {
               this.fileNameKemitraan6 = item.fileName;
               this.fileSizeKemitraan6 = item.fileSize;
-              this.linkDownloadKemitraan6 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan6 = item.fileUrl;
             }
 
             if (item.fileType == 'MoU/NDA') {
               this.fileNameKemitraan7 = item.fileName;
               this.fileSizeKemitraan7 = item.fileSize;
-              this.linkDownloadKemitraan7 = `${baseURL}/download/file/${item.id}`;
+              this.linkDownloadKemitraan7 = item.fileUrl;
             }
           })
+          this.progressKemitraan = mapperStatus(res.data.positionLevel, res.data.status, res.data.attachmentsMou, res.data.isStopClock)[0]
           // if (
           //   this.fileNamesurat && this.fileSizesurat && res.data.partnershipTitle &&
           //   res.data.partnershipCandidate && res.data.scopesMou.length > 0
           // ) {
           //   this.disableKirim = false;
           // }
-          console.log(res.data);
           this.isLoading = false;
         } else {
           this.isLoading = false;

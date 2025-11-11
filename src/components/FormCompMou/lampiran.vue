@@ -10,10 +10,14 @@ const props = defineProps({
     type: Object, // data bisa berupa string, objek, atau array
     default: null, // data opsional dengan default null
   },
+  onFileSizeOver: {
+    type: Function,
+    required: true
+  }
 });
 
 const emit = defineEmits([
-    'fileProposal', 'fileSurat', 'fileLainnya', 'fileProposalId', 'fileSuratId', 'fileLainnyaId'
+    'fileProposal', 'fileSurat', 'fileLainnya', 'fileProposalId', 'fileSuratId', 'fileLainnyaId',
 ])
 
 // Dokumen Surat Menyurat
@@ -33,6 +37,8 @@ const isUploadedmitra = ref(false);
 const fileNamemitra = ref('');
 const fileSizemitra = ref('');
 const fileIdmitra = ref(null);
+
+const maxSizeFile = 10 * 1024 * 1024;
 
 watch(
   () => props.data, 
@@ -62,6 +68,9 @@ watch(
 function handleFileUploadmitra(event) {
     const file = event.target.files[0];
     if (file) {
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
+        }
         isUploadedmitra.value = true;
         fileNamemitra.value = file.name;
         fileSizemitra.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
@@ -85,6 +94,9 @@ function handleDeletemitra() {
 function handleFileUploadsurat(event) {
     const file = event.target.files[0];
     if (file) {
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
+        }
         isUploadedsurat.value = true;
         fileNamesurat.value = file.name;
         fileSizesurat.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
@@ -108,6 +120,9 @@ function handleDeletesurat() {
 function handleFileUploadlainnya(event) {
     const file = event.target.files[0];
     if (file) {
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
+        }
         isUploadedlainnya.value = true;
         fileNamelainnya.value = file.name;
         fileSizelainnya.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
@@ -151,7 +166,7 @@ function handleDeletelainnya() {
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadmitra">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadmitra">
                         </label>
                     </div></div>
             </div>
@@ -190,7 +205,7 @@ function handleDeletelainnya() {
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadsurat">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadsurat">
                         </label>
                     </div></div>
             </div>
@@ -229,7 +244,7 @@ function handleDeletelainnya() {
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadlainnya">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadlainnya">
                         </label>
                     </div></div>
                 </div>

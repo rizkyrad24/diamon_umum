@@ -419,7 +419,6 @@ export default {
         this.isDataOpen = !this.isDataOpen;
     },
     goToPage(page) {
-        console.log('Attempting to go to page:', page);
         if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;
         }
@@ -433,8 +432,6 @@ export default {
         const newRowsPerPage = Number(option);
         this.DataOption = option;
         this.rowsPerPage = newRowsPerPage;
-        console.log('Data Option:', this.DataOption);
-        console.log('Rows per Page:', this.rowsPerPage);
 
         const totalPages = Math.ceil(this.dataRows.length / this.rowsPerPage);
         if (this.currentPage > totalPages) {

@@ -155,7 +155,7 @@
           <Lampiran :isDisplay="positionForm == 6" @fileKKB="(val) => (fileKKB = val)"
             @fileKKR="(val) => (fileKKR = val)" @fileKKF="(val) => (fileKKF = val)" @fileKKO="(val) => (fileKKO = val)"
             @fileProposal="(val) => (fileProposal = val)" @fileSurat="(val) => (fileSurat = val)"
-            @fileLainnya="(val) => (fileLainnya = val)" />
+            @fileLainnya="(val) => (fileLainnya = val)" :onFileSizeOver="onFileSizeOver"/>
 
           <svg width="1150" class="mt-36 ml-4" height="1" viewBox="0 0 1150 1" fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -277,6 +277,14 @@ function closeModalDialog() {
   }
 }
 
+function onFileSizeOver(message) {
+  modalFailed.value = {
+    isVisible: true,
+    title: 'File Terlalu Besar',
+    message: message
+  }
+}
+
 // Popup Create
 function SendCreate() {
   modalDialog.value = {
@@ -323,9 +331,9 @@ function moveNext() {
       positionForm.value++;
     }
   }
-  scopes.value.forEach((element, index) => {
-    console.log(`scopesPks[${index}].scopeName`, element.scopeName)
-  });
+  // scopes.value.forEach((element, index) => {
+  //   console.log(`scopesPks[${index}].scopeName`, element.scopeName)
+  // });
 }
 
 function movePrevious() {
@@ -333,9 +341,9 @@ function movePrevious() {
     positionForm.value--
   }
   isNextDisable.value = false;
-  scopes.value.forEach((element, index) => {
-    console.log(`scopesPks[${index}].scopeName`, element.scopeName)
-  });
+  // scopes.value.forEach((element, index) => {
+  //   console.log(`scopesPks[${index}].scopeName`, element.scopeName)
+  // });
 }
 
 async function getDataApi(mouNumberInput) {
@@ -351,7 +359,6 @@ async function getDataApi(mouNumberInput) {
     scopes.value = res.data.scopesMou;
     mouNumber.value = res.data.mouNdaNumber;
     dataInitial.value = {...res.data, scopesPks: res.data.scopesMou};
-    console.log(res.data, 'data di induk')
     isLoading.value = false;
   } else {
     isLoading.value = false;
@@ -428,9 +435,9 @@ async function postPks(successFunction, failFunction) {
     sort++
   }
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   const res = await fetchPostForm("staff/pks/create", null, form, router);
   if (res.status == 201) {
     isLoading.value = false;
@@ -438,7 +445,6 @@ async function postPks(successFunction, failFunction) {
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 

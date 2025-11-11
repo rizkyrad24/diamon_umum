@@ -5,7 +5,7 @@
   <div :class="!props.isDisplay ? 'hidden' : ''">
     <h1 class="text-xl font-medium pl-4 py-6">Dasar</h1>
     <div v-if="isAmandement && isNumberEditable" class="pl-4 w-[1155px] flex justify-between">
-      <!-- MOU -->
+      <!-- Last PKS -->
       <div>
         <label class="text-[#4D5E80] font-medium">Cari PKS Yang Akan Dilanjutkan <span class="text-[#B3B3B3] text-xs">(Bantuan)</span></label>
         <div class="relative w-[540px] mt-2 tipe-container">
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <!-- Nomor Mou -->
+      <!-- Nomor Last PKS -->
       <div class="translate-x-4">
         <label class="text-[#4D5E80] font-medium">Nomor PKS yang dilanjutkan <span class="text-[#B3B3B3] text-xs">(Opsional)</span></label>
         <form action="" class="w-[555px] py-[10px] px-4 mt-2 border-[1px] rounded-lg text-sm flex justify-between">
@@ -74,9 +74,9 @@
               <li @click="jenisOption({ value: 'K', label: 'Konsorsium' })"
                 :class="{ 'bg-[#2671D9] text-white rounded-b-lg': jenissOption?.value === 'K', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'K' }"
                 class="cursor-pointer px-4 py-2">Konsorsium</li>
-              <li @click="jenisOption({ value: 'R', label: 'Resseler' })"
+              <li @click="jenisOption({ value: 'R', label: 'Reseller' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'R', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'R' }"
-                class="cursor-pointer border-b-[1px] px-4 py-2">Resseler</li>
+                class="cursor-pointer border-b-[1px] px-4 py-2">Reseller</li>
               <li @click="jenisOption({ value: 'B', label: 'Bundling Layanan' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'B', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'B' }"
                 class="cursor-pointer border-b-[1px] px-4 py-2">Bundling Layanan</li>
@@ -462,7 +462,6 @@ async function getDataMouListApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.mouNdaNumber,
       label: item.partnershipTitle,
@@ -483,7 +482,6 @@ async function getDataLastPksListApi() {
   let params = null;
   const res = await fetchGet(url, params, router);
   if (res.status == 200) {
-    console.log(res.data)
     const cleanData = res.data.map((item) => ({
       value: item.pksNumber,
       label: item.title,

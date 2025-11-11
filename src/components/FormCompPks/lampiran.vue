@@ -21,7 +21,7 @@
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadKKB">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadKKB">
                         </label>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadKKR">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadKKR">
                         </label>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadKKF">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadKKF">
                         </label>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadKKO">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadKKO">
                         </label>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadmitra">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadmitra">
                         </label>
                     </div>
                 </div>
@@ -230,7 +230,7 @@
                     <div class="flex justify-center mt-2">
                         <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                             Unggah
-                            <input type="file" class="hidden" id="fileinput" @change="handleFileUploadsurat">
+                            <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadsurat">
                         </label>
                     </div>
                 </div>
@@ -271,7 +271,7 @@
                 <div class="flex justify-center mt-2">
                     <label class="w-[58px] h-8 text-[10px] text-[#2671D9] font-semibold flex justify-center py-2 border-[1px] border-[#2671D9] rounded-lg cursor-pointer hover:bg-[#2671D9] hover:text-white">
                         Unggah
-                        <input type="file" class="hidden" @change="handleFileUploadlainnya">
+                        <input type="file" class="hidden" accept=".pdf, .docx" id="fileinput" @change="handleFileUploadlainnya">
                     </label>
                 </div>
             </div>
@@ -307,6 +307,10 @@ const props = defineProps({
     type: Object, // data bisa berupa string, objek, atau array
     default: null, // data opsional dengan default null
   },
+  onFileSizeOver: {
+    type: Function,
+    required: true
+  }
 });
 
 const emit = defineEmits([
@@ -350,6 +354,8 @@ const isUploadedlainnya = ref(false);
 const fileNamelainnya = ref('');
 const fileSizelainnya = ref('');
 const filelainnyaId = ref(null);
+
+const maxSizeFile = 10 * 1024 * 1024;
 
 watch(
   () => props.data, 
@@ -399,11 +405,14 @@ watch(
 function handleFileUploadKKB(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedKKB.value = true;
-    fileNameKKB.value = file.name;
-    fileSizeKKB.value = (file.size / 1024 / 1024).toFixed(2) + ' MB'; 
-    emit("fileKKB", file);
-    if (fileKKBId.value) {
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
+        }
+        isUploadedKKB.value = true;
+        fileNameKKB.value = file.name;
+        fileSizeKKB.value = (file.size / 1024 / 1024).toFixed(2) + ' MB'; 
+        emit("fileKKB", file);
+        if (fileKKBId.value) {
             emit('fileKKBId', fileKKBId.value);
         } else {
             emit('fileKKBId', null);
@@ -424,15 +433,18 @@ function handleDeleteKKB() {
 function handleFileUploadKKR(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedKKR.value = true;
-    fileNameKKR.value = file.name;
-    fileSizeKKR.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-    emit("fileKKR", file);
-    if (fileKKRId.value) {
-            emit('fileKKRId', fileKKRId.value);
-        } else {
-            emit('fileKKRId', null);
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
         }
+        isUploadedKKR.value = true;
+        fileNameKKR.value = file.name;
+        fileSizeKKR.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        emit("fileKKR", file);
+        if (fileKKRId.value) {
+                emit('fileKKRId', fileKKRId.value);
+            } else {
+                emit('fileKKRId', null);
+            }
     }
 }
 function handleDeleteKKR() {
@@ -449,15 +461,18 @@ function handleDeleteKKR() {
 function handleFileUploadKKF(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedKKF.value = true;
-    fileNameKKF.value = file.name;
-    fileSizeKKF.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-    emit("fileKKF", file);
-    if (fileKKFId.value) {
-            emit('fileKKFId', fileKKFId.value);
-        } else {
-            emit('fileKKFId', null);
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
         }
+        isUploadedKKF.value = true;
+        fileNameKKF.value = file.name;
+        fileSizeKKF.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        emit("fileKKF", file);
+        if (fileKKFId.value) {
+                emit('fileKKFId', fileKKFId.value);
+            } else {
+                emit('fileKKFId', null);
+            }
     }
 }
 function handleDeleteKKF() {
@@ -474,15 +489,18 @@ function handleDeleteKKF() {
 function handleFileUploadKKO(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedKKO.value = true;
-    fileNameKKO.value = file.name;
-    fileSizeKKO.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-    emit("fileKKO", file);
-    if (fileKKOId.value) {
-            emit('fileKKOId', fileKKOId.value);
-        } else {
-            emit('fileKKOId', null);
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
         }
+        isUploadedKKO.value = true;
+        fileNameKKO.value = file.name;
+        fileSizeKKO.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        emit("fileKKO", file);
+        if (fileKKOId.value) {
+                emit('fileKKOId', fileKKOId.value);
+            } else {
+                emit('fileKKOId', null);
+            }
     }
 }
 function handleDeleteKKO() {
@@ -499,15 +517,18 @@ function handleDeleteKKO() {
 function handleFileUploadmitra(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedmitra.value = true;
-    fileNamemitra.value = file.name;
-    fileSizemitra.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-    emit("fileProposal", file);
-    if (filemitraId.value) {
-            emit('fileProposalId', filemitraId.value);
-        } else {
-            emit('fileProposalId', null);
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
         }
+        isUploadedmitra.value = true;
+        fileNamemitra.value = file.name;
+        fileSizemitra.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        emit("fileProposal", file);
+        if (filemitraId.value) {
+                emit('fileProposalId', filemitraId.value);
+            } else {
+                emit('fileProposalId', null);
+            }
     }
 }
 function handleDeletemitra() {
@@ -524,15 +545,18 @@ function handleDeletemitra() {
 function handleFileUploadsurat(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedsurat.value = true;
-    fileNamesurat.value = file.name;
-    fileSizesurat.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-    emit("fileSurat", file);
-    if (filesuratId.value) {
-            emit('fileSuratId', filesuratId.value);
-        } else {
-            emit('fileSuratId', null);
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
         }
+        isUploadedsurat.value = true;
+        fileNamesurat.value = file.name;
+        fileSizesurat.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        emit("fileSurat", file);
+        if (filesuratId.value) {
+                emit('fileSuratId', filesuratId.value);
+            } else {
+                emit('fileSuratId', null);
+            }
     }
 }
 function handleDeletesurat() {
@@ -549,15 +573,18 @@ function handleDeletesurat() {
 function handleFileUploadlainnya(event) {
     const file = event.target.files[0];
     if (file) {
-    isUploadedlainnya.value = true;
-    fileNamelainnya.value = file.name;
-    fileSizelainnya.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-    emit("fileLainnya", file);
-    if (filelainnyaId.value) {
-            emit('fileLainnyaId', filelainnyaId.value);
-        } else {
-            emit('fileLainnyaId', null);
+        if (file.size > maxSizeFile) {
+            return props.onFileSizeOver(`Maaf ukuran file ${(file.size / 1024 / 1024).toFixed(2)} MB melebihi 10 MB`)
         }
+        isUploadedlainnya.value = true;
+        fileNamelainnya.value = file.name;
+        fileSizelainnya.value = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        emit("fileLainnya", file);
+        if (filelainnyaId.value) {
+                emit('fileLainnyaId', filelainnyaId.value);
+            } else {
+                emit('fileLainnyaId', null);
+            }
     }
 }
 function handleDeletelainnya() {

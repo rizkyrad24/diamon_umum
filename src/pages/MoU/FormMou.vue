@@ -127,7 +127,8 @@
             @note="(val) => (note = val)" />
           <MitraBisnis :isDisplay="positionForm == 4" @partnershipCandidate="(val) => (partnershipCandidate = val)" />
           <Lampiran :isDisplay="positionForm == 5" @fileProposal="(val) => (fileProposal = val)"
-            @fileSurat="(val) => (fileSurat = val)" @fileLainnya="(val) => (fileLainnya = val)" />
+            @fileSurat="(val) => (fileSurat = val)" @fileLainnya="(val) => (fileLainnya = val)" 
+            :onFileSizeOver="onFileSizeOver"/>
 
           <svg width="1150" class="mt-28 ml-4" height="1" viewBox="0 0 1160 1" fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -236,6 +237,14 @@ function closeModalDialog() {
   }
 }
 
+function onFileSizeOver(message) {
+  modalFailed.value = {
+    isVisible: true,
+    title: 'File Terlalu Besar',
+    message: message
+  }
+}
+
 // Popup Create
 function SendCreate() {
   modalDialog.value = {
@@ -281,13 +290,6 @@ function moveNext() {
     }
     if (!isNextDisable.value) {
       positionForm.value++;
-      // console.log('base: ', base.value)
-      // console.log('title: ', partnershipTitle.value)
-      // console.log('createdDate', createdDate.value)
-      // console.log('scoopes', scopes.value)
-      // console.log('background', background.value)
-      // console.log('note', note.value)
-      // console.log('candidate', partnershipCandidate.value)
       // isNextDisable.value = true
     }
     // if (positionForm.value == 2 && scopes.value.length > 0) {
@@ -335,9 +337,9 @@ async function postMounda(successFunction, failFunction) {
     sort++
   }
   // Display the values
-  for (var pair of form.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
+  // for (var pair of form.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
   const res = await fetchPostForm("staff/mounda/create", null, form, router);
   if (res.status == 201) {
     isLoading.value = false;
@@ -345,7 +347,6 @@ async function postMounda(successFunction, failFunction) {
   } else {
     isLoading.value = false;
     failFunction();
-    console.log(res.data.message)
   }
 }
 
@@ -392,7 +393,6 @@ function getInputValuesPos2() {
   const inputs = document.querySelectorAll('.input-pos-2');
   const values = Array.from(inputs).map(input => input.value);
   scopes.value = Array.from(values);
-  console.log(inputs)
 }
 
 function movePrevious() {

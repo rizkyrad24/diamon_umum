@@ -11,8 +11,7 @@ const props = defineProps({
     default: null, // data opsional dengan default null
   },
 });
-const emit = defineEmits(['base', 'partnershipTitle', 'createdDate', 'bisnisType'])
-console.log(props.data, 'dasar')
+const emit = defineEmits(['base', 'partnershipTitle', 'createdDate', 'bisnisType']);
 
 const isDropdownOpen = ref(false);
 const selectedOption = ref('');

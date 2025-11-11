@@ -118,7 +118,6 @@ const route = useRoute();
 
 const isDropdownOpen = ref(false);
 // const isDropdownMasterDataOpen = ref(false);
-console.log('route name', route.name)
 
 const isDashboardActive = computed(() => route.name === 'Dashboard');
 const isPksActive = computed(() => ['PKS', 'Rab', 'Pksruanglingkup', 'Pkslainnya', 'Pksmitrabisnis', 'Pkslampiran'].includes(route.name));

@@ -227,7 +227,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                     </th>
                     <th class="w-[124px] px-3">
                       <div class="flex justify-between">Tipe
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortTipe" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -240,7 +240,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                     </th>
                     <th class="w-[124px] px-3">
                       <div class="flex justify-between">Status
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortStatus" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -253,7 +253,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                     </th>
                     <th class="w-[124px] px-3">
                       <div class="flex justify-between">Tanggal Perjanjian
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortDateStart" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -266,7 +266,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                     </th>
                     <th class="w-[124px] px-3">
                       <div class="flex justify-between">Tanggal Selesai Perjanjian
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortDateEnd" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -279,7 +279,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                     </th>
                     <th class="w-[124px] px-3">
                       <div class="flex justify-between">Hari Menuju Selesai
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortHariMenujuSelesai" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -292,7 +292,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                     </th>
                     <th class="w-[278px] px-3">
                       <div class="flex justify-between">Keterangan
-                        <svg width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
+                        <svg @click="SortKeterangan" width="16" height="16" class="cursor-pointer" viewBox="0 0 16 16" fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.4252 3.14404C11.7073 3.14404 11.9359 3.36467 11.9359 3.63684L11.9359 11.3174L14.1282 9.20189C14.3276 9.00944 14.651 9.00944 14.8504 9.20189C15.0499 9.39434 15.0499 9.70636 14.8504 9.89881L11.7863 12.8556C11.6906 12.948 11.5607 12.9999 11.4252 12.9999C11.2898 12.9999 11.1599 12.948 11.0641 12.8556L8.00001 9.89881C7.80057 9.70636 7.80057 9.39434 8.00001 9.20189C8.19944 9.00944 8.52279 9.00944 8.72223 9.20189L10.9145 11.3174L10.9145 3.63684C10.9145 3.36467 11.1432 3.14404 11.4252 3.14404Z"
@@ -308,7 +308,7 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                 </thead>
                 <!-- Baris -->
                 <tbody>
-                  <tr v-for="row in paginatedRows" :key="row.id"
+                  <tr v-for="(row, index) in paginatedRows" :key="row.id"
                     class="bg-white border-b text-sm text-[#333333] h-[77px]">
                     <td class="w-[74px] px-3">{{ row.id }}</td>
                     <td class="w-[268px] px-3">{{ row.judul }}</td>
@@ -318,21 +318,47 @@ import { mapperStatus, mapperKeterangan, dateParsing, dueDateParsing } from "@/u
                       <span :class="row.statusClass"
                         class="px-[8px] py-1 text-xs font-medium border-1 rounded-[100px]">{{ row.status }}</span>
                     </td>
-                    <td class="w-[124px] px-3">{{ row.tgl }}</td>
-                    <td class="w-[124px] px-3">{{ row.tgl_end }}</td>
+                    <td class="w-[124px] px-3">{{ row.tgl? dateParsing(row.tgl): "-" }}</td>
+                    <td class="w-[124px] px-3">{{ row.tgl_end? dateParsing(row.tgl_end): "-" }}</td>
                     <td v-if="row.count_down > 0" class="w-[124px] px-3 text-[#18c429]">H-{{ row.count_down }}</td>
                     <td v-else-if="row.count_down == 0" class="w-[124px] px-3 text-[#f9c01a]">H</td>
                     <td v-else-if="row.count_down < 0" class="w-[124px] px-3 text-[#FF5656]">H+{{ row.count_down * -1 }}</td>
-                    <td v-else class="w-[124px] px-3 text-[#FF5656]"></td>
+                    <td v-else class="w-[124px] px-3 text-[#FF5656]">-</td>
                     <td class="w-[278px] px-3">{{ row.ket }}
                       <!-- <span class="block text-[#7F7F80]">{{ row.tgl }}</span> -->
                     </td>
                     <td class="w-[54px] px-3">
-                      <div class="w-6 h-6 bg-[#E5E7E9] rounded-lg flex justify-center cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-[2px]" viewBox="0 0 128 512">
-                          <path
-                            d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+                      <div @click="toggleView1(index, row.type)"
+                        class="bg-[#E5E7E9] rounded-lg flex justify-center cursor-pointer">
+                        <svg width="16" height="12" class="mx-2 my-2" viewBox="0 0 16 12" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.00054 1.66634C5.20282 1.66634 2.82717 3.48083 1.98949 5.99905C1.989 6.00052 1.989 6.00234 1.98949 6.00381C2.82821 8.52021 5.20296 10.333 7.99937 10.333C10.7971 10.333 13.1727 8.51852 14.0104 6.0003C14.0109 5.99882 14.0109 5.99701 14.0104 5.99554C13.1717 3.47914 10.797 1.66634 8.00054 1.66634ZM0.724321 5.5782C1.7378 2.53148 4.61156 0.333008 8.00054 0.333008C11.3879 0.333008 14.2606 2.52944 15.2753 5.57394C15.367 5.84883 15.367 6.14622 15.2756 6.42115C14.2621 9.46787 11.3883 11.6663 7.99937 11.6663C4.61197 11.6663 1.7393 9.46991 0.72457 6.42541C0.632951 6.15052 0.632864 5.85314 0.724321 5.5782ZM8 4.66634C7.26362 4.66634 6.66666 5.26329 6.66666 5.99967C6.66666 6.73605 7.26362 7.33301 8 7.33301C8.73638 7.33301 9.33333 6.73605 9.33333 5.99967C9.33333 5.26329 8.73638 4.66634 8 4.66634ZM5.33333 5.99967C5.33333 4.52692 6.52724 3.33301 8 3.33301C9.47276 3.33301 10.6667 4.52691 10.6667 5.99967C10.6667 7.47243 9.47276 8.66634 8 8.66634C6.52724 8.66634 5.33333 7.47243 5.33333 5.99967Z"
+                            fill="#2671D9" />
                         </svg>
+                      </div>
+                      <!-- View -->
+                      <div v-if="activeViewIndex === index" class="absolute -translate-x-[70px] -translate-y-[36px]">
+                        <!-- PKS type -->
+                        <router-link v-if="row.type === 'PKS'" :to="{
+                          path: `/Detailproses/PKS/${row.did}`,
+                          query: { origin: 'selesai' }
+                        }">
+                          <div
+                            class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
+                          </div>
+                        </router-link>
+                        <!-- MoU type -->
+                        <router-link v-if="row.type === 'MoU' || row.type === 'NDA'" :to="{
+                          path: `/Detailproses/MOU/${row.did}`,
+                          query: { origin: 'selesai' }
+                        }">
+                          <div
+                            class="h-[40px] rounded-lg border-[1px] border-[#E5E7E9] flex cursor-pointer shadow-lg bg-white hover:bg-gray-200 hover:border-[#2671D9]">
+                            <span class="text-[#333333] w-[60px] text-center mt-[10px] hover:text-[#2671D9]">View</span>
+                          </div>
+                        </router-link>
                       </div>
                     </td>
                   </tr>
@@ -479,6 +505,7 @@ export default {
       searchQuery: '',
       filterClickListener: null,
       isLoading: false,
+      activeViewIndex: null,
       dataRows: [],
       // dataRows: [
       //   { id: 1, judul: 'Kerja Sama Reseller Produk IBM', code: '100122', type: 'PKS', status: 'Selesai', statusClass: 'bg-[#E2FCF3] text-[#0EA976] border-[#8ADFC3]', ket: 'Pengajuan Selesai', tgl: 'Tanggal : 04/04/2024' },
@@ -585,6 +612,13 @@ export default {
   },
 
   methods: {
+    toggleView1(index) {
+      if (this.activeViewIndex === index) {
+        this.activeViewIndex = null;
+      } else {
+        this.activeViewIndex = index;
+      }
+    },
     SortCode() {
       if (this.codeSortOrder === 'asc') {
         this.dataRows.sort((a, b) => {
@@ -632,6 +666,84 @@ export default {
         this.dataRows.sort((a, b) => b.judul.localeCompare(a.judul));
       }
     },
+    SortTipe() {
+      if (this.sortTipe === 'asc') {
+        this.dataRows.sort((a, b) => b.type.localeCompare(a.type));
+        this.sortTipe = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.type.localeCompare(b.type));
+        this.sortTipe = 'asc';
+      }
+    },
+    SortStatus() {
+      if (this.sortStatus === 'asc') {
+        this.dataRows.sort((a, b) => b.status.localeCompare(a.status));
+        this.sortStatus = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.status.localeCompare(b.status));
+        this.sortStatus = 'asc';
+      }
+    },
+    SortDateStart() {
+      if (this.tglSortOrder === 'asc') {
+        this.dataRows.sort((a, b) => {
+          const tglA = a.tgl? new Date(a.tgl.split('/').reverse().join('-')): new Date(0);
+          const tglB = b.tgl? new Date(b.tgl.split('/').reverse().join('-')): new Date(0);
+          return tglA - tglB;
+        });
+        this.tglSortOrder = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => {
+          const tglA = a.tgl? new Date(a.tgl.split('/').reverse().join('-')): new Date(0);
+          const tglB = b.tgl? new Date(b.tgl.split('/').reverse().join('-')): new Date(0);
+          return tglB - tglA;
+        });
+        this.tglSortOrder = 'asc';
+      }
+    },
+    SortDateEnd() {
+      if (this.tgl_endSortOrder === 'asc') {
+        this.dataRows.sort((a, b) => {
+          const tgl_endA = a.tgl_end? new Date(a.tgl_end.split('/').reverse().join('-')): new Date(0);
+          const tgl_endB = b.tgl_end? new Date(b.tgl_end.split('/').reverse().join('-')): new Date(0);
+          return tgl_endA - tgl_endB;
+        });
+        this.tgl_endSortOrder = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => {
+          const tgl_endA = a.tgl_end? new Date(a.tgl_end.split('/').reverse().join('-')): new Date(0);
+          const tgl_endB = b.tgl_end? new Date(b.tgl_end.split('/').reverse().join('-')): new Date(0);
+          return tgl_endB - tgl_endA;
+        });
+        this.tgl_endSortOrder = 'asc';
+      }
+    },
+    SortHariMenujuSelesai() {
+      if (this.countDown === 'asc') {
+        this.dataRows.sort((a, b) => {
+          const countA = a.count_down? a.count_down: -1000000;
+          const countB = b.count_down? b.count_down: -1000000;
+          return countA - countB
+        });
+        this.countDown = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => {
+          const countA = a.count_down? a.count_down: -1000000;
+          const countB = b.count_down? b.count_down: -1000000;
+          return countB - countA
+        });
+        this.countDown = 'asc';
+      }
+    },
+    SortKeterangan() {
+      if (this.sortKeterangan === 'asc') {
+        this.dataRows.sort((a, b) => b.ket.localeCompare(a.ket));
+        this.sortKeterangan = 'desc';
+      } else {
+        this.dataRows.sort((a, b) => a.ket.localeCompare(b.ket));
+        this.sortKeterangan = 'asc';
+      }
+    },
     clearFilterType() {
       this.filterType = '';
       isFilterTipe.value = false;
@@ -652,7 +764,6 @@ export default {
       this.isDataOpen = !this.isDataOpen;
     },
     goToPage(page) {
-      console.log('Attempting to go to page:', page);
       if (page >= 1 && page <= this.filteredTotalPages) {
         this.currentPage = page;
       }
@@ -666,8 +777,6 @@ export default {
       const newRowsPerPage = Number(option);
       this.DataOption = option;
       this.rowsPerPage = newRowsPerPage;
-      console.log('Data Option:', this.DataOption);
-      console.log('Rows per Page:', this.rowsPerPage);
       const totalPages = Math.ceil(this.dataRows.length / this.rowsPerPage);
       if (this.currentPage > totalPages) {
         this.currentPage = totalPages;
@@ -681,6 +790,7 @@ export default {
 			const res = await fetchGet("staff/mounda/finish", null, this.$router);
 			if (res.status == 200) {
 				const cleanData = res.data.map((item) => ({
+            did: item.id,
             judul: item.partnershipTitle,
             code: item.submissionNumber,
             type: item.base == "MOU" ? "MoU" : item.base,
@@ -689,11 +799,10 @@ export default {
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsMou, item.isStopClock)[1],
             ket: mapperKeterangan(item.positionLevel, item.status, item.endContractDate),
-            tgl: dateParsing(item.approvalCompletionDate),
-            tgl_end: dateParsing(item.endContractDate),
+            tgl: item.approvalCompletionDate,
+            tgl_end: item.endContractDate,
             count_down: dueDateParsing(item.endContractDate)
           }))
-				console.log(res.data)
 				boxResult = boxResult.concat(cleanData)
 			} else {
 				this.isLoading = false;
@@ -706,6 +815,7 @@ export default {
 			const res2 = await fetchGet("staff/pks/finish", null, this.$router);
 			if (res2.status == 200) {
 				const cleanData2 = res2.data.map((item) => ({
+            did: item.id,
             judul: item.partnershipTitle,
             code: item.submissionNumber,
             type: "PKS",
@@ -714,13 +824,12 @@ export default {
             statusap: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[0],
             statusClass: mapperStatus(item.positionLevel, item.status, item.attachmentsPks, item.isStopClock)[1],
             ket: mapperKeterangan(item.positionLevel, item.status, item.endContractDate),
-            tgl: dateParsing(item.approvalCompletionDate),
-            tgl_end: dateParsing(item.endContractDate),
+            tgl: item.approvalCompletionDate,
+            tgl_end: item.endContractDate,
             count_down: dueDateParsing(item.endContractDate),
           }))
 				boxResult = boxResult.concat(cleanData2)
 				boxResult = boxResult.map((item, index) => ({ id: index + 1, ...item }))
-				console.log(res2.data)
 			} else {
 				this.isLoading = false;
         modalFailed.value = {
