@@ -71,9 +71,9 @@
               <li @click="jenisOption({ value: 'JV', label: 'Joint Venture' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'JV', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'JV' }"
                 class="cursor-pointer border-b-[1px] px-4 py-2">Joint Venture</li>
-              <li @click="jenisOption({ value: 'K', label: 'Konsorsium' })"
+              <li @click="jenisOption({ value: 'K', label: 'Join Operation' })"
                 :class="{ 'bg-[#2671D9] text-white rounded-b-lg': jenissOption?.value === 'K', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'K' }"
-                class="cursor-pointer px-4 py-2">Konsorsium</li>
+                class="cursor-pointer px-4 py-2">Join Operation</li>
               <li @click="jenisOption({ value: 'R', label: 'Reseller' })"
                 :class="{ 'bg-[#2671D9] text-white': jenissOption?.value === 'R', 'hover:bg-[#E9F1FB] hover:text-[#2671D9] hover:font-medium': jenissOption?.value !== 'R' }"
                 class="cursor-pointer border-b-[1px] px-4 py-2">Reseller</li>

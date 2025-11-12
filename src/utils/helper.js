@@ -250,7 +250,7 @@ export const partnershipTypeParsing = (partnershipType) => {
     return {value: 'B', label: 'Bundling Layanan'}
   }
   if (partnershipType == "Konsorsium") {
-    return {value: 'K', label: 'Konsorsium'}
+    return {value: 'K', label: 'Join Operation'}
   }
   if (partnershipType == "Marketer") {
     return {value: 'M', label: 'Marketer'}

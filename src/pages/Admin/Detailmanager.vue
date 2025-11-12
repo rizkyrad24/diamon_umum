@@ -107,7 +107,7 @@ import { dateParsing } from '@/utils/helper';
                     </div>
                     <div v-if="base === 'PKS'" class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Jenis Kemitraan</h1>
-                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType || '-' }}</span>
+                      <span class="text-[#7F7F80]">{{ dataBerkas?.partnershipType.toLowerCase() === "konsorsium" ? "Join Operation" : dataBerkas?.partnershipType || '-'  }}</span>
                     </div>
                     <div class="w-[541px] flex mt-6 text-[#333333]">
                       <h1 class="w-[150px]">Pelaksana</h1>
